@@ -7,7 +7,6 @@ namespace Domain.Entity
     {
         public Post()
         {
-            Equipment = new HashSet<Equipment>();
             Feedbacks = new HashSet<Feedback>();
             Images = new HashSet<Image>();
         }
@@ -21,7 +20,6 @@ namespace Domain.Entity
         public Guid AccountId { get; set; }
 
         public virtual Account Account { get; set; } = null!;
-        public virtual ICollection<Equipment> Equipment { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Image> Images { get; set; }
     }

@@ -8,16 +8,16 @@ namespace Application
     {
         public static IServiceCollection AddDJRepository(this IServiceCollection services)
         {
-            services.AddTransient<IAccountRepository, AccountRepositoryImp>();
-            services.AddTransient<IEquiptmentRepository, EquiptmentRepositoryImp>();
-            services.AddTransient<IFeedbackRepository, FeedbackRepositoryImp>();
-            services.AddTransient<IHistoryEquipmentRepository, HistoryEquipmentRepositoryImp>();
-            services.AddTransient<IImageRepository, IImageRepository>();
-            services.AddTransient<IPostRepository, PostRepositoryImp>();
-            services.AddTransient<IResourceRepository, ResourceRepositoryImp>();
-            services.AddTransient<ITaskRepository, TaskRepositoryImp>();
-            return services;
 
+            services.AddScoped<IAccountRepository, AccountRepositoryImp>();
+            services.AddScoped<IEquiptmentRepository, EquiptmentRepositoryImp>();
+            services.AddScoped<IFeedbackRepository, FeedbackRepositoryImp>();
+            services.AddScoped<IHistoryEquipmentRepository, HistoryEquipmentRepositoryImp>();
+            services.AddScoped<IImageRepository, IImageRepository>();
+            services.AddScoped<IPostRepository, PostRepositoryImp>();
+            services.AddScoped<IResourceRepository, ResourceRepositoryImp>();
+            services.AddScoped<ITaskRepository, TaskRepositoryImp>();
+            return services;
         }
     }
 }

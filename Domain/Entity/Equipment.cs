@@ -7,6 +7,7 @@ namespace Domain.Entity
     {
         public Equipment()
         {
+            Feedbacks = new HashSet<Feedback>();
             HistoryEquipments = new HashSet<HistoryEquipment>();
         }
 
@@ -15,11 +16,10 @@ namespace Domain.Entity
         public string Location { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public string? ImageEquip { get; set; }
-        public Guid ReportId { get; set; }
         public Guid ResourcesId { get; set; }
 
-        public virtual Post Report { get; set; } = null!;
         public virtual Resource Resources { get; set; } = null!;
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<HistoryEquipment> HistoryEquipments { get; set; }
     }
 }

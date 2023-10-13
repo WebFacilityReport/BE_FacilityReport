@@ -19,9 +19,9 @@ namespace Domain.Entity
         public string Size { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public string? Image { get; set; }
-        public Guid TaskId { get; set; }
+        public Guid JobId { get; set; }
 
-        public virtual Task Task { get; set; } = null!;
+        public virtual Job Job { get; set; } = null!;
         public virtual ICollection<Equipment> Equipment { get; set; }
     }
 }

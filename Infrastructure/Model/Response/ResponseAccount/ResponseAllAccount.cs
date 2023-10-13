@@ -13,10 +13,6 @@ namespace Infrastructure.Model.Response.ResponseAccount
         public string Address { get; set; } = null!;
         public DateTime Birthday { get; set; }
         public string Role { get; set; } = null!;
-
-        public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<Post> Posts { get; set; }
-        public virtual ICollection<Domain.Entity.Task> TaskCreators { get; set; }
-        public virtual ICollection<Domain.Entity.Task> TaskEmployees { get; set; }
+      
     }
 }

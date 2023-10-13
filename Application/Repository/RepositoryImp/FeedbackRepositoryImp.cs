@@ -1,4 +1,5 @@
 ﻿using Application.IGenericRepository.GeneircRepositoryImp;
+using Application.Repository;
 using Domain.Entity;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repository.RepositoryImp
 {
-    public class FeedbackRepositoryImp : GenericRepositoryImp<Feedback>,IFeedbackRepository
+    public class FeedbackRepositoryImp : GenericRepositoryImp<Feedback>, IFeedbackRepository
     {
         public FeedbackRepositoryImp(FacilityReportContext context) : base(context)
         {

@@ -8,9 +8,9 @@ namespace Domain.Entity
         public Account()
         {
             Feedbacks = new HashSet<Feedback>();
+            JobCreators = new HashSet<Job>();
+            JobEmployees = new HashSet<Job>();
             Posts = new HashSet<Post>();
-            TaskCreators = new HashSet<Task>();
-            TaskEmployees = new HashSet<Task>();
         }
 
         public Guid AccountId { get; set; }
@@ -21,10 +21,11 @@ namespace Domain.Entity
         public string Address { get; set; } = null!;
         public DateTime Birthday { get; set; }
         public string Role { get; set; } = null!;
+        public string Status { get; set; } = null!;
 
         public virtual ICollection<Feedback> Feedbacks { get; set; }
+        public virtual ICollection<Job> JobCreators { get; set; }
+        public virtual ICollection<Job> JobEmployees { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
-        public virtual ICollection<Task> TaskCreators { get; set; }
-        public virtual ICollection<Task> TaskEmployees { get; set; }
     }
 }

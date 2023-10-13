@@ -1,7 +1,6 @@
-﻿
-namespace Application.IGenericRepository
+﻿namespace Application.IGenericRepository
 {
-    public interface IGenericRepository<T>where T : class
+    public interface IGenericRepository<T> where T : class
     {
         T Add(T entity);
         T Update(T entity);

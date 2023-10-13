@@ -1,4 +1,5 @@
 using BE_FacilityFeedBackWebApi.Configuration;
+using BE_FacilityFeedBackWebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseRouting();
 app.UseHttpsRedirection();
+// USING MIDDLEWARE
 //app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseCors();

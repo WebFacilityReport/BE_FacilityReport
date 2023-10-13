@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(FacilityReportContext))]
-    [Migration("20231012213401_InitialCreate")]
+    [Migration("20231013223421_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,9 +58,9 @@ namespace Domain.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(2000)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("phone");
 
                     b.Property<string>("Role")
@@ -70,22 +70,29 @@ namespace Domain.Migrations
                         .HasColumnType("varchar(2000)")
                         .HasColumnName("role");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("status");
+
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(2000)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("username");
 
                     b.HasKey("AccountId");
 
-                    b.HasIndex(new[] { "Email" }, "UQ__Account__AB6E616404176BC4")
+                    b.HasIndex(new[] { "Email" }, "UQ__Account__AB6E6164E43B4FD9")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "Phone" }, "UQ__Account__B43B145F50121052")
+                    b.HasIndex(new[] { "Phone" }, "UQ__Account__B43B145FA4C9659A")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "Username" }, "UQ__Account__F3DBC57223143E54")
+                    b.HasIndex(new[] { "Username" }, "UQ__Account__F3DBC572F6D49005")
                         .IsUnique();
 
                     b.ToTable("Account", (string)null);
@@ -115,24 +122,18 @@ namespace Domain.Migrations
                         .HasColumnType("varchar(2000)")
                         .HasColumnName("location");
 
-                    b.Property<Guid>("ReportId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("reportId");
-
                     b.Property<Guid>("ResourcesId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("resourcesId");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(2000)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("status");
 
                     b.HasKey("EquipmentId");
-
-                    b.HasIndex("ReportId");
 
                     b.HasIndex("ResourcesId");
 
@@ -152,14 +153,18 @@ namespace Domain.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasMaxLength(5000)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(5000)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("comment");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("date")
                         .HasColumnName("created_at");
+
+                    b.Property<Guid>("EquipmentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("equipmentId");
 
                     b.Property<int>("NumberFeedBack")
                         .HasColumnType("int")
@@ -171,14 +176,16 @@ namespace Domain.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(5000)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(5000)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("status");
 
                     b.HasKey("FeedBackId");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("EquipmentId");
 
                     b.HasIndex("ReportId");
 
@@ -215,7 +222,7 @@ namespace Domain.Migrations
                         .HasColumnName("status");
 
                     b.HasKey("HistoryId")
-                        .HasName("PK__HistoryE__19BDBDD35836AD21");
+                        .HasName("PK__HistoryE__19BDBDD3247C79B7");
 
                     b.HasIndex("EquipmentId");
 
@@ -229,11 +236,8 @@ namespace Domain.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("imageId");
 
-                    b.Property<string>("DateImgae")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
+                    b.Property<DateTime>("DateImgae")
+                        .HasColumnType("date")
                         .HasColumnName("dateImgae");
 
                     b.Property<string>("NameImage")
@@ -259,6 +263,66 @@ namespace Domain.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Image", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entity.Job", b =>
+                {
+                    b.Property<Guid>("JobId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("jobId");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("date")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("creatorId");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("date")
+                        .HasColumnName("deadline");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(2000)")
+                        .HasColumnName("description");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("employeeId");
+
+                    b.Property<string>("NameTask")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(2000)")
+                        .HasColumnName("nameTask");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(2000)")
+                        .HasColumnName("title");
+
+                    b.HasKey("JobId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Job", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entity.Post", b =>
@@ -291,9 +355,9 @@ namespace Domain.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(2000)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("status");
 
                     b.Property<string>("Title")
@@ -334,6 +398,10 @@ namespace Domain.Migrations
                         .HasColumnType("varchar(2000)")
                         .HasColumnName("image");
 
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("jobId");
+
                     b.Property<string>("NameResource")
                         .IsRequired()
                         .HasMaxLength(2000)
@@ -350,14 +418,10 @@ namespace Domain.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(2000)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("status");
-
-                    b.Property<Guid>("TaskId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("taskId");
 
                     b.Property<int>("TotalQuantity")
                         .HasColumnType("int")
@@ -368,88 +432,20 @@ namespace Domain.Migrations
                         .HasColumnName("usedQuantity_");
 
                     b.HasKey("ResourcesId")
-                        .HasName("PK__Resource__557C3399331034E6");
+                        .HasName("PK__Resource__557C33998F6B65AB");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("JobId");
 
                     b.ToTable("Resources");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Task", b =>
-                {
-                    b.Property<Guid>("TaskId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("taskId");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("date")
-                        .HasColumnName("created_at");
-
-                    b.Property<Guid>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("creatorId");
-
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("date")
-                        .HasColumnName("deadline");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("description");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("employeeId");
-
-                    b.Property<string>("NameTask")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("nameTask");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("status");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("title");
-
-                    b.HasKey("TaskId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("Task", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entity.Equipment", b =>
                 {
-                    b.HasOne("Domain.Entity.Post", "Report")
-                        .WithMany("Equipment")
-                        .HasForeignKey("ReportId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Equipment__repor__49C3F6B7");
-
                     b.HasOne("Domain.Entity.Resource", "Resources")
                         .WithMany("Equipment")
                         .HasForeignKey("ResourcesId")
                         .IsRequired()
-                        .HasConstraintName("FK__Equipment__resou__4AB81AF0");
-
-                    b.Navigation("Report");
+                        .HasConstraintName("FK__Equipment__resou__45F365D3");
 
                     b.Navigation("Resources");
                 });
@@ -460,15 +456,23 @@ namespace Domain.Migrations
                         .WithMany("Feedbacks")
                         .HasForeignKey("AccountId")
                         .IsRequired()
-                        .HasConstraintName("FK__Feedback__accoun__403A8C7D");
+                        .HasConstraintName("FK__Feedback__accoun__4F7CD00D");
+
+                    b.HasOne("Domain.Entity.Equipment", "Equipment")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("EquipmentId")
+                        .IsRequired()
+                        .HasConstraintName("FK__Feedback__equipm__5070F446");
 
                     b.HasOne("Domain.Entity.Post", "Report")
                         .WithMany("Feedbacks")
                         .HasForeignKey("ReportId")
                         .IsRequired()
-                        .HasConstraintName("FK__Feedback__report__3F466844");
+                        .HasConstraintName("FK__Feedback__report__4E88ABD4");
 
                     b.Navigation("Account");
+
+                    b.Navigation("Equipment");
 
                     b.Navigation("Report");
                 });
@@ -479,7 +483,7 @@ namespace Domain.Migrations
                         .WithMany("HistoryEquipments")
                         .HasForeignKey("EquipmentId")
                         .IsRequired()
-                        .HasConstraintName("FK__HistoryEq__equip__4D94879B");
+                        .HasConstraintName("FK__HistoryEq__equip__48CFD27E");
 
                     b.Navigation("Equipment");
                 });
@@ -490,9 +494,28 @@ namespace Domain.Migrations
                         .WithMany("Images")
                         .HasForeignKey("PostId")
                         .IsRequired()
-                        .HasConstraintName("FK__Image__postId__5070F446");
+                        .HasConstraintName("FK__Image__postId__4BAC3F29");
 
                     b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Job", b =>
+                {
+                    b.HasOne("Domain.Entity.Account", "Creator")
+                        .WithMany("JobCreators")
+                        .HasForeignKey("CreatorId")
+                        .IsRequired()
+                        .HasConstraintName("FK__Job__creatorId__3F466844");
+
+                    b.HasOne("Domain.Entity.Account", "Employee")
+                        .WithMany("JobEmployees")
+                        .HasForeignKey("EmployeeId")
+                        .IsRequired()
+                        .HasConstraintName("FK__Job__employeeId__403A8C7D");
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Domain.Entity.Post", b =>
@@ -508,54 +531,40 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Resource", b =>
                 {
-                    b.HasOne("Domain.Entity.Task", "Task")
+                    b.HasOne("Domain.Entity.Job", "Job")
                         .WithMany("Resources")
-                        .HasForeignKey("TaskId")
+                        .HasForeignKey("JobId")
                         .IsRequired()
-                        .HasConstraintName("FK__Resources__taskI__46E78A0C");
+                        .HasConstraintName("FK__Resources__jobId__4316F928");
 
-                    b.Navigation("Task");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Task", b =>
-                {
-                    b.HasOne("Domain.Entity.Account", "Creator")
-                        .WithMany("TaskCreators")
-                        .HasForeignKey("CreatorId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Task__creatorId__4316F928");
-
-                    b.HasOne("Domain.Entity.Account", "Employee")
-                        .WithMany("TaskEmployees")
-                        .HasForeignKey("EmployeeId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Task__employeeId__440B1D61");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Employee");
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Domain.Entity.Account", b =>
                 {
                     b.Navigation("Feedbacks");
 
+                    b.Navigation("JobCreators");
+
+                    b.Navigation("JobEmployees");
+
                     b.Navigation("Posts");
-
-                    b.Navigation("TaskCreators");
-
-                    b.Navigation("TaskEmployees");
                 });
 
             modelBuilder.Entity("Domain.Entity.Equipment", b =>
                 {
+                    b.Navigation("Feedbacks");
+
                     b.Navigation("HistoryEquipments");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Job", b =>
+                {
+                    b.Navigation("Resources");
                 });
 
             modelBuilder.Entity("Domain.Entity.Post", b =>
                 {
-                    b.Navigation("Equipment");
-
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Images");
@@ -564,11 +573,6 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Entity.Resource", b =>
                 {
                     b.Navigation("Equipment");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Task", b =>
-                {
-                    b.Navigation("Resources");
                 });
 #pragma warning restore 612, 618
         }

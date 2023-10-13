@@ -1,17 +1,29 @@
 ﻿using Application.IGenericRepository.GeneircRepositoryImp;
+using Application.Repository;
 using Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Repository.RepositoryImp
 {
-    public class ResourceRepositoryImp : GenericRepositoryImp<Resource>,IResourceRepository
+    public class ResourceRepositoryImp : GenericRepositoryImp<Resource>, IResourceRepository
     {
         public ResourceRepositoryImp(FacilityReportContext context) : base(context)
         {
+        }
+
+        public async Task<List<Resource>> GetALLResource()
+        {
+            return await _context.Set<Resource>().Include(c => c.Job).Include(c => c.Equipment).ToListAsync();
+        }
+
+        public async Task<Resource> GetById(Guid resourceId)
+        {
+            var resource = await _context.Set<Resource>().Include(c => c.Job).Include(c => c.Equipment).FirstOrDefaultAsync(c => c.ResourcesId == resourceId);
+            if (resource == null)
+            {
+                throw new Exception("Khong tim thay resource Id");
+            }
+            return resource;
         }
     }
 }

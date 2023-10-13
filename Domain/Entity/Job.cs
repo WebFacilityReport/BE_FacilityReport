@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Domain.Entity
 {
-    public partial class Task
+    public partial class Job
     {
-        public Task()
+        public Job()
         {
             Resources = new HashSet<Resource>();
         }
 
-        public Guid TaskId { get; set; }
+        public Guid JobId { get; set; }
         public string Status { get; set; } = null!;
         public string NameTask { get; set; } = null!;
         public DateTime CreatedAt { get; set; }

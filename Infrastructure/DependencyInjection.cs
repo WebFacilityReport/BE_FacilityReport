@@ -9,6 +9,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Domain.Entity;
+using Infrastructure.Common.SecurityService;
+using Infrastructure.Common.SecurityService.Imp;
 
 namespace Infrastructure
 {
@@ -26,7 +28,9 @@ namespace Infrastructure
             services.AddTransient<IImageService, ImageServiceImp>();
             services.AddTransient<IJobService, JobServiceImp>();
             services.AddTransient<IPostService, PostServiceImp>();
-            services.AddTransient<IResourceService, ResourceServiceImp>();
+            services.AddTransient<IReService, ResourceServiceImp>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<ITokensHandler, TokensHandler>();
 
             // ADD SQL
             services.AddDbContext<FacilityReportContext>(options => options.UseSqlServer(databaseConnection));

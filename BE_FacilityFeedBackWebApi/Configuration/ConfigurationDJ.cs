@@ -1,4 +1,5 @@
-﻿using Infrastructure;
+﻿using BE_FacilityFeedBackWebApi.Middlewares;
+using Infrastructure;
 using Infrastructure.Common;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics;
@@ -17,12 +18,11 @@ namespace BE_FacilityFeedBackWebApi.Configuration
 
             services.AddDJService(appConfiguration.DatabaseConnection);
             services.AddSingleton(appConfiguration);
-
-
             services.AddDJSwagger();
-
             services.AddControllers();
             services.AddEndpointsApiExplorer();
+            // ADD MIDDLEWARE
+            services.AddSingleton<GlobalExceptionMiddleware>();
             services.AddSwaggerGen();
             services.AddHealthChecks();
             services.AddSingleton<Stopwatch>();
