@@ -155,7 +155,7 @@ namespace Domain.Migrations
                     comment = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
                     numberFeedBack = table.Column<int>(type: "int", nullable: false),
                     reportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    accountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    accountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     equipmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -165,7 +165,8 @@ namespace Domain.Migrations
                         name: "FK__Feedback__accoun__4F7CD00D",
                         column: x => x.accountId,
                         principalTable: "Account",
-                        principalColumn: "accountId");
+                        principalColumn: "accountId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK__Feedback__equipm__5070F446",
                         column: x => x.equipmentId,

@@ -145,7 +145,7 @@ namespace Domain.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("feedBackId");
 
-                    b.Property<Guid>("AccountId")
+                    b.Property<Guid?>("AccountId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("accountId");
 
@@ -453,7 +453,7 @@ namespace Domain.Migrations
                     b.HasOne("Domain.Entity.Account", "Account")
                         .WithMany("Feedbacks")
                         .HasForeignKey("AccountId")
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Restrict)
                         .HasConstraintName("FK__Feedback__accoun__4F7CD00D");
 
                     b.HasOne("Domain.Entity.Equipment", "Equipment")

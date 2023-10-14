@@ -160,7 +160,8 @@ namespace Domain.Entity
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Feedbacks)
                     .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict) // thay vì ClientSetNull
+                    .IsRequired(false)
                     .HasConstraintName("FK__Feedback__accoun__4F7CD00D");
 
                 entity.HasOne(d => d.Equipment)

@@ -9,4 +9,5 @@ public class RequestResouce
     public int TotalQuantity { get; set; }
     public string Size { get; set; }
     public string? Image { get; set; }
+
 }
