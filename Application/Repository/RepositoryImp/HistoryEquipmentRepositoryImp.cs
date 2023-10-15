@@ -1,6 +1,7 @@
 ﻿using Application.IGenericRepository.GeneircRepositoryImp;
 using Application.Repository;
 using Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,27 @@ namespace Application.Repository.RepositoryImp
     {
         public HistoryEquipmentRepositoryImp(FacilityReportContext context) : base(context)
         {
+        }
+
+        public  async Task<List<HistoryEquipment>> GetAll()
+        {
+            return await _context.Set<HistoryEquipment>()
+                .Include(c=>c.Equipment)
+                .Include(c=>c.Job)
+                .ToListAsync();
+        }
+
+        public async Task<HistoryEquipment> GetById(Guid id)
+        {
+            var history= await _context.Set<HistoryEquipment>()
+                .Include(c => c.Equipment)
+                .Include(c => c.Job)
+                .FirstOrDefaultAsync(c=>c.HistoryId==id);
+            if (history == null)
+            {
+                throw new Exception("Khong tim thay History ID");
+            }
+            return history;
         }
     }
 }

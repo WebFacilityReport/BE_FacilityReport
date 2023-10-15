@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 
 namespace Domain.Entity
 {
@@ -10,7 +9,9 @@ namespace Domain.Entity
         public string Status { get; set; } = null!;
         public string NameHistory { get; set; } = null!;
         public Guid EquipmentId { get; set; }
+        public Guid JobId { get; set; }
 
         public virtual Equipment Equipment { get; set; } = null!;
+        public virtual Job Job { get; set; } = null!;
     }
 }

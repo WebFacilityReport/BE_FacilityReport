@@ -7,6 +7,7 @@ namespace Domain.Entity
     {
         public Job()
         {
+            HistoryEquipments = new HashSet<HistoryEquipment>();
             Resources = new HashSet<Resource>();
         }
 
@@ -22,6 +23,7 @@ namespace Domain.Entity
 
         public virtual Account Creator { get; set; } = null!;
         public virtual Account Employee { get; set; } = null!;
+        public virtual ICollection<HistoryEquipment> HistoryEquipments { get; set; }
         public virtual ICollection<Resource> Resources { get; set; }
     }
 }

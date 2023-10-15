@@ -30,9 +30,9 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPost]
-        public async Task<ActionResult<ResponseTask>> CreateTask(RequestTask requestTask)
+        public async Task<ActionResult<ResponseTask>> CreateTaskResouce(RequestTaskResource requestTaskResource)
         {
-            var response = await _jobService.AddTask(requestTask);
+            var response = await _jobService.AddTaskResource(requestTaskResource);
             return Ok(new
             {
                 Success = HttpStatusCode.OK,
@@ -40,6 +40,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
+
         [HttpGet]
         public async Task<ActionResult<ResponseTask>> GetTaskById(Guid taskId)
         {

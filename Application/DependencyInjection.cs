@@ -8,7 +8,6 @@ namespace Application
     {
         public static IServiceCollection AddDJRepository(this IServiceCollection services)
         {
-
             services.AddScoped<IAccountRepository, AccountRepositoryImp>();
             services.AddScoped<IEquiptmentRepository, EquiptmentRepositoryImp>();
             services.AddScoped<IFeedbackRepository, FeedbackRepositoryImp>();

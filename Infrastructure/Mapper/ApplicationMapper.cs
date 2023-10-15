@@ -68,13 +68,29 @@ public class ApplicationMapper : Profile
         //----------------------------------------------------------------
 
         // RequestTask
-        CreateMap<RequestTask, Job>()
+        CreateMap<RequestTaskResource, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
              .ForMember(p => p.NameTask, act => act.MapFrom(src => src.NameTask))
-             .ForMember(p => p.Description, act => act.MapFrom(src => src.Description))
              .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
              .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
-             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId));
+             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
+             .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
+             .ForMember(c => c.Resources, act => act.MapFrom(c => new List<Resource>
+             {
+                 new Resource
+                 {
+                 Size = c.Size,
+                 CreatedAt = DateTime.Now,
+                 Description = c.Description,
+                 Status = "INACTIVE",
+                 TotalQuantity = c.TotalQuantity,
+                 Image = c.Image,
+                 UsedQuantity = 0,
+                 NameResource = c.NameResource,
+                 }
+             }));
+
+
         CreateMap<RequestUpdateTask, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
              .ForMember(p => p.NameTask, act => act.MapFrom(src => src.NameTask))
@@ -101,14 +117,6 @@ public class ApplicationMapper : Profile
         //----------------------------------------------------------------
 
         // Request Resource
-        CreateMap<RequestResouce, Resource>()
-             .ForMember(p => p.NameResource, act => act.MapFrom(src => src.NameResource))
-             .ForMember(p => p.JobId, act => act.MapFrom(src => src.TaskId))
-             .ForMember(p => p.Description, act => act.MapFrom(src => src.Description))
-             .ForMember(p => p.TotalQuantity, act => act.MapFrom(src => src.TotalQuantity))
-             .ForMember(p => p.Size, act => act.MapFrom(src => src.Size))
-             .ForMember(p => p.Image, act => act.MapFrom(src => src.Image));
-
 
         // Response Resource
         CreateMap<Resource, ResponseResource>()

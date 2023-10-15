@@ -37,18 +37,17 @@ namespace Domain.Entity
             {
                 entity.ToTable("Account");
 
-                entity.HasIndex(e => e.Email, "UQ__Account__AB6E6164E43B4FD9")
+                entity.HasIndex(e => e.Email, "UQ__Account__AB6E616438192AAC")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Phone, "UQ__Account__B43B145FA4C9659A")
+                entity.HasIndex(e => e.Phone, "UQ__Account__B43B145FCFB2D8F0")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Username, "UQ__Account__F3DBC572F6D49005")
+                entity.HasIndex(e => e.Username, "UQ__Account__F3DBC572E6EDA6FA")
                     .IsUnique();
 
                 entity.Property(e => e.AccountId)
                     .ValueGeneratedOnAdd()
-
                     .HasColumnName("accountId");
 
                 entity.Property(e => e.Address)
@@ -71,7 +70,7 @@ namespace Domain.Entity
                     .HasColumnName("password");
 
                 entity.Property(e => e.Phone)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("phone");
 
@@ -81,12 +80,12 @@ namespace Domain.Entity
                     .HasColumnName("role");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("status");
 
                 entity.Property(e => e.Username)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("username");
             });
@@ -95,7 +94,6 @@ namespace Domain.Entity
             {
                 entity.Property(e => e.EquipmentId)
                     .ValueGeneratedOnAdd()
-
                     .HasColumnName("equipmentId");
 
                 entity.Property(e => e.CreatedAt)
@@ -115,7 +113,7 @@ namespace Domain.Entity
                 entity.Property(e => e.ResourcesId).HasColumnName("resourcesId");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("status");
 
@@ -132,7 +130,6 @@ namespace Domain.Entity
 
                 entity.Property(e => e.FeedBackId)
                     .ValueGeneratedOnAdd()
-
                     .HasColumnName("feedBackId");
 
                 entity.Property(e => e.AccountId).HasColumnName("accountId");
@@ -150,43 +147,40 @@ namespace Domain.Entity
 
                 entity.Property(e => e.NumberFeedBack).HasColumnName("numberFeedBack");
 
-                entity.Property(e => e.ReportId).HasColumnName("reportId");
+                entity.Property(e => e.PostId).HasColumnName("postId");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("status");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Feedbacks)
                     .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.Restrict) // thay vì ClientSetNull
-                    .IsRequired(false)
-                    .HasConstraintName("FK__Feedback__accoun__4F7CD00D");
+                    .HasConstraintName("FK__Feedback__accoun__5070F446");
 
                 entity.HasOne(d => d.Equipment)
                     .WithMany(p => p.Feedbacks)
                     .HasForeignKey(d => d.EquipmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Feedback__equipm__5070F446");
+                    .HasConstraintName("FK__Feedback__equipm__5165187F");
 
-                entity.HasOne(d => d.Report)
+                entity.HasOne(d => d.Post)
                     .WithMany(p => p.Feedbacks)
-                    .HasForeignKey(d => d.ReportId)
+                    .HasForeignKey(d => d.PostId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Feedback__report__4E88ABD4");
+                    .HasConstraintName("FK__Feedback__postId__4F7CD00D");
             });
 
             modelBuilder.Entity<HistoryEquipment>(entity =>
             {
                 entity.HasKey(e => e.HistoryId)
-                    .HasName("PK__HistoryE__19BDBDD3247C79B7");
+                    .HasName("PK__HistoryE__19BDBDD3A787AABA");
 
                 entity.ToTable("HistoryEquipment");
 
                 entity.Property(e => e.HistoryId)
                     .ValueGeneratedOnAdd()
-
                     .HasColumnName("historyId");
 
                 entity.Property(e => e.Date)
@@ -194,6 +188,8 @@ namespace Domain.Entity
                     .HasColumnName("date");
 
                 entity.Property(e => e.EquipmentId).HasColumnName("equipmentId");
+
+                entity.Property(e => e.JobId).HasColumnName("jobId");
 
                 entity.Property(e => e.NameHistory)
                     .HasMaxLength(2000)
@@ -210,6 +206,12 @@ namespace Domain.Entity
                     .HasForeignKey(d => d.EquipmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__HistoryEq__equip__48CFD27E");
+
+                entity.HasOne(d => d.Job)
+                    .WithMany(p => p.HistoryEquipments)
+                    .HasForeignKey(d => d.JobId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__HistoryEq__jobId__49C3F6B7");
             });
 
             modelBuilder.Entity<Image>(entity =>
@@ -218,7 +220,6 @@ namespace Domain.Entity
 
                 entity.Property(e => e.ImageId)
                     .ValueGeneratedOnAdd()
-
                     .HasColumnName("imageId");
 
                 entity.Property(e => e.DateImgae)
@@ -241,7 +242,7 @@ namespace Domain.Entity
                     .WithMany(p => p.Images)
                     .HasForeignKey(d => d.PostId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Image__postId__4BAC3F29");
+                    .HasConstraintName("FK__Image__postId__4CA06362");
             });
 
             modelBuilder.Entity<Job>(entity =>
@@ -250,7 +251,6 @@ namespace Domain.Entity
 
                 entity.Property(e => e.JobId)
                     .ValueGeneratedOnAdd()
-
                     .HasColumnName("jobId");
 
                 entity.Property(e => e.CreatedAt)
@@ -276,7 +276,7 @@ namespace Domain.Entity
                     .HasColumnName("nameTask");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("status");
 
@@ -304,7 +304,6 @@ namespace Domain.Entity
 
                 entity.Property(e => e.PostId)
                     .ValueGeneratedOnAdd()
-
                     .HasColumnName("postId");
 
                 entity.Property(e => e.AccountId).HasColumnName("accountId");
@@ -324,7 +323,7 @@ namespace Domain.Entity
                     .HasColumnName("image");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("status");
 
@@ -343,11 +342,10 @@ namespace Domain.Entity
             modelBuilder.Entity<Resource>(entity =>
             {
                 entity.HasKey(e => e.ResourcesId)
-                    .HasName("PK__Resource__557C33998F6B65AB");
+                    .HasName("PK__Resource__557C3399398C1175");
 
                 entity.Property(e => e.ResourcesId)
                     .ValueGeneratedOnAdd()
-
                     .HasColumnName("resourcesId");
 
                 entity.Property(e => e.CreatedAt)
@@ -377,7 +375,7 @@ namespace Domain.Entity
                     .HasColumnName("size");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(255)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("status");
 

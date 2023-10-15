@@ -1,15 +1,12 @@
 ﻿using Application.IGenericRepository;
 using Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Repository
 {
     public interface IEquiptmentRepository : IGenericRepository<Equipment>
     {
-        List<Equipment> GetEquipment();
+        Task<List<Equipment>> GetEquipment();
+        Task<Equipment> GetById(Guid id);
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Application.IGenericRepository;
+using Domain.Entity;
 
 namespace Application.Repository
 {
-    public interface ITaskRepository : IGenericRepository<Domain.Entity.Job>
+    public interface ITaskRepository : IGenericRepository<Job>
     {
-        Task<List<Domain.Entity.Job>> GetAll();
-        Task<Domain.Entity.Job> GetById(Guid taskId);
+        Task<List<Job>> GetAll();
+        Task<Job> GetById(Guid taskId);
     }
 }

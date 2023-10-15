@@ -56,9 +56,9 @@ namespace Domain.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("phone");
 
                     b.Property<string>("Role")
@@ -70,27 +70,27 @@ namespace Domain.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("status");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("username");
 
                     b.HasKey("AccountId");
 
-                    b.HasIndex(new[] { "Email" }, "UQ__Account__AB6E6164E43B4FD9")
+                    b.HasIndex(new[] { "Email" }, "UQ__Account__AB6E616438192AAC")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "Phone" }, "UQ__Account__B43B145FA4C9659A")
+                    b.HasIndex(new[] { "Phone" }, "UQ__Account__B43B145FCFB2D8F0")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "Username" }, "UQ__Account__F3DBC572F6D49005")
+                    b.HasIndex(new[] { "Username" }, "UQ__Account__F3DBC572E6EDA6FA")
                         .IsUnique();
 
                     b.ToTable("Account", (string)null);
@@ -126,9 +126,9 @@ namespace Domain.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("status");
 
                     b.HasKey("EquipmentId");
@@ -168,15 +168,15 @@ namespace Domain.Migrations
                         .HasColumnType("int")
                         .HasColumnName("numberFeedBack");
 
-                    b.Property<Guid>("ReportId")
+                    b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("reportId");
+                        .HasColumnName("postId");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("status");
 
                     b.HasKey("FeedBackId");
@@ -185,7 +185,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("EquipmentId");
 
-                    b.HasIndex("ReportId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("Feedback", (string)null);
                 });
@@ -205,6 +205,10 @@ namespace Domain.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("equipmentId");
 
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("jobId");
+
                     b.Property<string>("NameHistory")
                         .IsRequired()
                         .HasMaxLength(2000)
@@ -220,9 +224,11 @@ namespace Domain.Migrations
                         .HasColumnName("status");
 
                     b.HasKey("HistoryId")
-                        .HasName("PK__HistoryE__19BDBDD3247C79B7");
+                        .HasName("PK__HistoryE__19BDBDD3A787AABA");
 
                     b.HasIndex("EquipmentId");
+
+                    b.HasIndex("JobId");
 
                     b.ToTable("HistoryEquipment", (string)null);
                 });
@@ -302,9 +308,9 @@ namespace Domain.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("status");
 
                     b.Property<string>("Title")
@@ -353,9 +359,9 @@ namespace Domain.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("status");
 
                     b.Property<string>("Title")
@@ -416,9 +422,9 @@ namespace Domain.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("varchar(2000)")
                         .HasColumnName("status");
 
                     b.Property<int>("TotalQuantity")
@@ -430,7 +436,7 @@ namespace Domain.Migrations
                         .HasColumnName("usedQuantity_");
 
                     b.HasKey("ResourcesId")
-                        .HasName("PK__Resource__557C33998F6B65AB");
+                        .HasName("PK__Resource__557C3399398C1175");
 
                     b.HasIndex("JobId");
 
@@ -453,26 +459,25 @@ namespace Domain.Migrations
                     b.HasOne("Domain.Entity.Account", "Account")
                         .WithMany("Feedbacks")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("FK__Feedback__accoun__4F7CD00D");
+                        .HasConstraintName("FK__Feedback__accoun__5070F446");
 
                     b.HasOne("Domain.Entity.Equipment", "Equipment")
                         .WithMany("Feedbacks")
                         .HasForeignKey("EquipmentId")
                         .IsRequired()
-                        .HasConstraintName("FK__Feedback__equipm__5070F446");
+                        .HasConstraintName("FK__Feedback__equipm__5165187F");
 
-                    b.HasOne("Domain.Entity.Post", "Report")
+                    b.HasOne("Domain.Entity.Post", "Post")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("ReportId")
+                        .HasForeignKey("PostId")
                         .IsRequired()
-                        .HasConstraintName("FK__Feedback__report__4E88ABD4");
+                        .HasConstraintName("FK__Feedback__postId__4F7CD00D");
 
                     b.Navigation("Account");
 
                     b.Navigation("Equipment");
 
-                    b.Navigation("Report");
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("Domain.Entity.HistoryEquipment", b =>
@@ -483,7 +488,15 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasConstraintName("FK__HistoryEq__equip__48CFD27E");
 
+                    b.HasOne("Domain.Entity.Job", "Job")
+                        .WithMany("HistoryEquipments")
+                        .HasForeignKey("JobId")
+                        .IsRequired()
+                        .HasConstraintName("FK__HistoryEq__jobId__49C3F6B7");
+
                     b.Navigation("Equipment");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Domain.Entity.Image", b =>
@@ -492,7 +505,7 @@ namespace Domain.Migrations
                         .WithMany("Images")
                         .HasForeignKey("PostId")
                         .IsRequired()
-                        .HasConstraintName("FK__Image__postId__4BAC3F29");
+                        .HasConstraintName("FK__Image__postId__4CA06362");
 
                     b.Navigation("Post");
                 });
@@ -558,6 +571,8 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Job", b =>
                 {
+                    b.Navigation("HistoryEquipments");
+
                     b.Navigation("Resources");
                 });
 

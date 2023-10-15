@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Entity;
 using Domain.Enum;
 using Infrastructure.IUnitofwork;
 using Infrastructure.Model.Request.RequestTask;
@@ -24,7 +25,7 @@ namespace Infrastructure.IService.ServiceImplement
             var employeeId = await _unitofWork.Account.GetById(requestTask.EmployeeId);
             if (creatorId.Role.Equals(ROlE.MANAGER_OFFICE.ToString()) && employeeId.Role.Equals(ROlE.STAFF.ToString()))
             {
-                var task = _mapper.Map<Domain.Entity.Job>(requestTask);
+                var task = _mapper.Map<Job>(requestTask);
                 var add = _unitofWork.Task.Add(task);
                 add.CreatedAt = DateTime.Now;
                 add.Status = StatusTask.ACTIVE.ToString();
@@ -32,6 +33,24 @@ namespace Infrastructure.IService.ServiceImplement
                 return _mapper.Map<ResponseTask>(add);
             }
             throw new Exception("Không thể giao task");
+        }
+
+        public async Task<ResponseTask> AddTaskResource(RequestTaskResource requestTaskResource)
+        {
+            var creatorId = await _unitofWork.Account.GetById(requestTaskResource.CreatorId);
+            var employeeId = await _unitofWork.Account.GetById(requestTaskResource.EmployeeId);
+            if (creatorId.Role.Equals(ROlE.MANAGER_OFFICE.ToString()) && employeeId.Role.Equals(ROlE.STAFF.ToString()))
+            {
+                var job = _mapper.Map<Job>(requestTaskResource);
+                var add = _unitofWork.Task.Add(job);
+                add.CreatedAt = DateTime.Now;
+                 _unitofWork.Resource.Add(job.Resources.FirstOrDefault());
+                add.Status = StatusTask.ACTIVE.ToString();
+                _unitofWork.Commit();
+                return _mapper.Map<ResponseTask>(add);
+            }
+            throw new Exception("Không thể giao task");
+
         }
 
         public async Task<ResponseTask> ChangeStatus(Guid taskId, string status)
