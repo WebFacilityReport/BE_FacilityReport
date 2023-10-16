@@ -13,7 +13,6 @@ namespace Application
             services.AddScoped<IFeedbackRepository, FeedbackRepositoryImp>();
             services.AddScoped<IHistoryEquipmentRepository, HistoryEquipmentRepositoryImp>();
             services.AddScoped<IImageRepository, IImageRepository>();
-            services.AddScoped<IPostRepository, PostRepositoryImp>();
             services.AddScoped<IResourceRepository, ResourceRepositoryImp>();
             services.AddScoped<ITaskRepository, TaskRepositoryImp>();
             return services;

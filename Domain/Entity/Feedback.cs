@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 
 namespace Domain.Entity
 {
@@ -10,12 +9,12 @@ namespace Domain.Entity
         public string Status { get; set; } = null!;
         public string Comment { get; set; } = null!;
         public int NumberFeedBack { get; set; }
-        public Guid PostId { get; set; }
         public Guid? AccountId { get; set; }
         public Guid EquipmentId { get; set; }
 
         public virtual Account? Account { get; set; }
         public virtual Equipment Equipment { get; set; } = null!;
-        public virtual Post Post { get; set; } = null!;
+        public virtual ICollection<Image>? Images { get; set; }
+
     }
 }

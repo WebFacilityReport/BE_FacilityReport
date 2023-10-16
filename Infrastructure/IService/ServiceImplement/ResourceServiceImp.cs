@@ -50,6 +50,13 @@ namespace Infrastructure.IService.ServiceImplement
             return _mapper.Map<ResponseResource>(resource);
         }
 
+        public async Task<ResponseResource> UpdateStatus(Guid resourceId, string status)
+        {
+            var resource = await _unitofWork.Resource.GetById(resourceId);
+            resource.Status = status;
+            _unitofWork.Resource.Update(resource);
+            return _mapper.Map<ResponseResource>(resource);
 
+        }
     }
 }

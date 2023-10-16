@@ -51,6 +51,17 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
+        [HttpPost]
+        public async Task<ActionResult<ResponseTask>> FixTaskEquipment(RequestUpdateStatusHistory requestUpdateStatusHistory)
+        {
+            var response = await _jobService.UpdateHistoryEquipment(requestUpdateStatusHistory);
+            return Ok(new
+            {
+                Success = HttpStatusCode.OK,
+                Message = "Success",
+                Data = response
+            });
+        }
         [HttpGet]
         public async Task<ActionResult<ResponseTask>> GetTaskById(Guid taskId)
         {

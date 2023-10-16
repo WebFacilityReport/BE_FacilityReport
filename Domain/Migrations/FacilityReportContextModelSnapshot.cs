@@ -168,10 +168,6 @@ namespace Domain.Migrations
                         .HasColumnType("int")
                         .HasColumnName("numberFeedBack");
 
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("postId");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(2000)
@@ -184,8 +180,6 @@ namespace Domain.Migrations
                     b.HasIndex(new[] { "AccountId" }, "IX_Feedback_accountId");
 
                     b.HasIndex(new[] { "EquipmentId" }, "IX_Feedback_equipmentId");
-
-                    b.HasIndex(new[] { "PostId" }, "IX_Feedback_postId");
 
                     b.ToTable("Feedback", (string)null);
                 });
@@ -247,16 +241,16 @@ namespace Domain.Migrations
                         .HasColumnType("date")
                         .HasColumnName("dateImgae");
 
+                    b.Property<Guid>("FeedbackId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("feedbackId");
+
                     b.Property<string>("NameImage")
                         .IsRequired()
                         .HasMaxLength(2000)
                         .IsUnicode(false)
                         .HasColumnType("varchar(2000)")
                         .HasColumnName("nameImage");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("postId");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -267,7 +261,7 @@ namespace Domain.Migrations
 
                     b.HasKey("ImageId");
 
-                    b.HasIndex(new[] { "PostId" }, "IX_Image_postId");
+                    b.HasIndex("FeedbackId");
 
                     b.ToTable("Image", (string)null);
                 });
@@ -330,55 +324,6 @@ namespace Domain.Migrations
                     b.HasIndex(new[] { "EmployeeId" }, "IX_Job_employeeId");
 
                     b.ToTable("Job", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entity.Post", b =>
-                {
-                    b.Property<Guid>("PostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("postId");
-
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("accountId");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("date")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Image")
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("image");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("status");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("title");
-
-                    b.HasKey("PostId");
-
-                    b.HasIndex(new[] { "AccountId" }, "IX_Post_accountId");
-
-                    b.ToTable("Post", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entity.Resource", b =>
@@ -473,17 +418,9 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasConstraintName("FK__Feedback__equipm__5165187F");
 
-                    b.HasOne("Domain.Entity.Post", "Post")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("PostId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Feedback__postId__4F7CD00D");
-
                     b.Navigation("Account");
 
                     b.Navigation("Equipment");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("Domain.Entity.HistoryEquipment", b =>
@@ -507,13 +444,12 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Image", b =>
                 {
-                    b.HasOne("Domain.Entity.Post", "Post")
+                    b.HasOne("Domain.Entity.Feedback", "Feedback")
                         .WithMany("Images")
-                        .HasForeignKey("PostId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Image__postId__4CA06362");
+                        .HasForeignKey("FeedbackId")
+                        .IsRequired();
 
-                    b.Navigation("Post");
+                    b.Navigation("Feedback");
                 });
 
             modelBuilder.Entity("Domain.Entity.Job", b =>
@@ -535,17 +471,6 @@ namespace Domain.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Post", b =>
-                {
-                    b.HasOne("Domain.Entity.Account", "Account")
-                        .WithMany("Posts")
-                        .HasForeignKey("AccountId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Post__accountId__3C69FB99");
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("Domain.Entity.Resource", b =>
                 {
                     b.HasOne("Domain.Entity.Job", "Job")
@@ -564,8 +489,6 @@ namespace Domain.Migrations
                     b.Navigation("JobCreators");
 
                     b.Navigation("JobEmployees");
-
-                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("Domain.Entity.Equipment", b =>
@@ -575,19 +498,17 @@ namespace Domain.Migrations
                     b.Navigation("HistoryEquipments");
                 });
 
+            modelBuilder.Entity("Domain.Entity.Feedback", b =>
+                {
+                    b.Navigation("Images");
+                });
+
             modelBuilder.Entity("Domain.Entity.Job", b =>
                 {
                     b.Navigation("HistoryEquipments")
                         .IsRequired();
 
                     b.Navigation("Resource");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Post", b =>
-                {
-                    b.Navigation("Feedbacks");
-
-                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("Domain.Entity.Resource", b =>

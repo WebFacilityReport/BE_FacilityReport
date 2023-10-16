@@ -7,8 +7,8 @@ namespace Domain.Entity
         public string NameImage { get; set; } = null!;
         public DateTime DateImgae { get; set; } 
         public string Status { get; set; } = null!;
-        public Guid PostId { get; set; }
+        public Guid FeedbackId { get; set; }
 
-        public virtual Post Post { get; set; } = null!;
+        public virtual Feedback Feedback { get; set; } = null!;
     }
 }

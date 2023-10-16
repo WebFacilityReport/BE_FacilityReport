@@ -33,24 +33,9 @@ namespace Infrastructure.IService.ServiceImplement
 
                 if (resource.TotalQuantity > resource.UsedQuantity)
                 {
-                    HistoryEquipment equipmentHistory = new HistoryEquipment
-                    {
-                        Date = DateTime.Now,
-                        NameHistory = NAMETASK.EQUIPMENT.ToString(),
-                        Status = StatusTask.INACTIVE.ToString(),
-                        Equipment = new Equipment
-                        {
-                            Status = StatusTask.INACTIVE.ToString(),
-                            ImageEquip = requestTaskEquipment.ImageEquip,
-                            CreatedAt = DateTime.Now,
-                            Location = requestTaskEquipment.Location,
-                            ResourcesId = requestTaskEquipment.ResourceId,
-                        }
-                    };
                     resource.UsedQuantity += 1;
-                    job.HistoryEquipments = equipmentHistory;
-                    _unitofWork.HistoryEquipment.Add(equipmentHistory);
-                    _unitofWork.Equiptment.Add(equipmentHistory.Equipment);
+                    _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
+                    _unitofWork.Equiptment.Add(job.HistoryEquipments.Equipment);
                     _unitofWork.Task.Add(job);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(job);
@@ -62,7 +47,6 @@ namespace Infrastructure.IService.ServiceImplement
             }
             throw new Exception("Không thể giao task");
         }
-
 
         public async Task<ResponseTask> AddTaskResource(RequestTaskResource requestTaskResource)
         {
@@ -103,6 +87,30 @@ namespace Infrastructure.IService.ServiceImplement
             var task = await _unitofWork.Task.GetById(taskId);
             return _mapper.Map<ResponseTask>(task);
         }
+
+        public async Task<ResponseTask> UpdateHistoryEquipment(RequestUpdateStatusHistory requestUpdateStatusHistory)
+        {
+            var creator = await _unitofWork.Account.GetById(requestUpdateStatusHistory.CreatorId);
+            var employee = await _unitofWork.Account.GetById(requestUpdateStatusHistory.EmployeeId);
+            var equipment = await _unitofWork.Equiptment.GetById(requestUpdateStatusHistory.EquipmentId);
+            if (creator.Role.Equals(ROlE.MANAGER_OFFICE.ToString()) && employee.Role.Equals(ROlE.STAFF.ToString()))
+            {
+                if (equipment.Status.Equals(STATUSEQUIPMENT.FIX.ToString()))
+                {
+                    var job = _mapper.Map<Job>(requestUpdateStatusHistory);
+                    job.Status = StatusTask.ACTIVE.ToString();
+                    job.NameTask = NAMETASK.EQUIPMENT.ToString();
+                    job.HistoryEquipments.EquipmentId = requestUpdateStatusHistory.EquipmentId;
+                    _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
+                    _unitofWork.Task.Add(job);
+                    _unitofWork.Commit();
+                    return _mapper.Map<ResponseTask>(job);
+                }
+                throw new Exception("Thiết bị không bị hỏng ");
+            }
+            throw new Exception("Không thể giao task");
+        }
+
         public async Task<ResponseTask> UpdateTask(Guid taskId, RequestUpdateTask requestUpdateTask)
         {
             var task = await _unitofWork.Task.GetById(taskId);
@@ -111,5 +119,7 @@ namespace Infrastructure.IService.ServiceImplement
             _unitofWork.Commit();
             return _mapper.Map<ResponseTask>(update);
         }
+
+
     }
 }

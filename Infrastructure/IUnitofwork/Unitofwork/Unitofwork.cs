@@ -15,7 +15,6 @@ namespace Infrastructure.IUnitofwork.Unitofwork
             _historyEquipmentRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IResourceRepository _resourceRepository;
-        private readonly IPostRepository _postRepository;
 
         public Unitofwork(FacilityReportContext context)
         {
@@ -24,7 +23,6 @@ namespace Infrastructure.IUnitofwork.Unitofwork
             _equipmentRepository = new EquiptmentRepositoryImp(context);
             _taskRepository = new TaskRepositoryImp(context);
             _imageRepository = new ImageRepositoryImp(context);
-            _postRepository = new PostRepositoryImp(context);
             _resourceRepository = new ResourceRepositoryImp(context);
             _historyEquipmentRepository = new HistoryEquipmentRepositoryImp(context);
             _feedbackRepository = new FeedbackRepositoryImp(context);
@@ -40,7 +38,6 @@ namespace Infrastructure.IUnitofwork.Unitofwork
 
         public IImageRepository Image => _imageRepository;
 
-        public IPostRepository Post => _postRepository;
 
         public IResourceRepository Resource => _resourceRepository;
 

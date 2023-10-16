@@ -14,7 +14,6 @@ namespace Infrastructure.IUnitofwork
         IFeedbackRepository Feedback { get; }
         IHistoryEquipmentRepository HistoryEquipment { get; }
         IImageRepository Image { get; }
-        IPostRepository Post { get; }
         IResourceRepository Resource { get; }
         ITaskRepository Task { get; }
         void Commit();

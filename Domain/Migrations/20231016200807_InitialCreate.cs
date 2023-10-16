@@ -58,28 +58,6 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Post",
-                columns: table => new
-                {
-                    postId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    description = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
-                    title = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
-                    created_at = table.Column<DateTime>(type: "date", nullable: false),
-                    status = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
-                    image = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: true),
-                    accountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Post", x => x.postId);
-                    table.ForeignKey(
-                        name: "FK__Post__accountId__3C69FB99",
-                        column: x => x.accountId,
-                        principalTable: "Account",
-                        principalColumn: "accountId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Resources",
                 columns: table => new
                 {
@@ -103,26 +81,6 @@ namespace Domain.Migrations
                         column: x => x.jobId,
                         principalTable: "Job",
                         principalColumn: "jobId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Image",
-                columns: table => new
-                {
-                    imageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    nameImage = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
-                    dateImgae = table.Column<DateTime>(type: "date", nullable: false),
-                    status = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
-                    postId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Image", x => x.imageId);
-                    table.ForeignKey(
-                        name: "FK__Image__postId__4CA06362",
-                        column: x => x.postId,
-                        principalTable: "Post",
-                        principalColumn: "postId");
                 });
 
             migrationBuilder.CreateTable(
@@ -155,7 +113,6 @@ namespace Domain.Migrations
                     status = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
                     comment = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
                     numberFeedBack = table.Column<int>(type: "int", nullable: false),
-                    postId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     accountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     equipmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -172,11 +129,6 @@ namespace Domain.Migrations
                         column: x => x.equipmentId,
                         principalTable: "Equipment",
                         principalColumn: "equipmentId");
-                    table.ForeignKey(
-                        name: "FK__Feedback__postId__4F7CD00D",
-                        column: x => x.postId,
-                        principalTable: "Post",
-                        principalColumn: "postId");
                 });
 
             migrationBuilder.CreateTable(
@@ -204,6 +156,26 @@ namespace Domain.Migrations
                         column: x => x.jobId,
                         principalTable: "Job",
                         principalColumn: "jobId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    imageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    nameImage = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
+                    dateImgae = table.Column<DateTime>(type: "date", nullable: false),
+                    status = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
+                    feedbackId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.imageId);
+                    table.ForeignKey(
+                        name: "FK_Image_Feedback_feedbackId",
+                        column: x => x.feedbackId,
+                        principalTable: "Feedback",
+                        principalColumn: "feedBackId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -240,11 +212,6 @@ namespace Domain.Migrations
                 column: "equipmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedback_postId",
-                table: "Feedback",
-                column: "postId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_HistoryEquipment_equipmentId",
                 table: "HistoryEquipment",
                 column: "equipmentId");
@@ -256,9 +223,9 @@ namespace Domain.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Image_postId",
+                name: "IX_Image_feedbackId",
                 table: "Image",
-                column: "postId");
+                column: "feedbackId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Job_creatorId",
@@ -271,11 +238,6 @@ namespace Domain.Migrations
                 column: "employeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_accountId",
-                table: "Post",
-                column: "accountId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Resources_jobId",
                 table: "Resources",
                 column: "jobId",
@@ -285,19 +247,16 @@ namespace Domain.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Feedback");
-
-            migrationBuilder.DropTable(
                 name: "HistoryEquipment");
 
             migrationBuilder.DropTable(
                 name: "Image");
 
             migrationBuilder.DropTable(
-                name: "Equipment");
+                name: "Feedback");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "Equipment");
 
             migrationBuilder.DropTable(
                 name: "Resources");

@@ -31,17 +31,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
-        [HttpPost]
-        public async Task<ActionResult<ResponseResource>> CreateResource(RequestResouce requestResouce)
-        {
-            var response = await _resourceService.AddResource(requestResouce);
-            return Ok(new
-            {
-                Success = HttpStatusCode.OK,
-                Message = "Success",
-                Data = response
-            });
-        }
+        
         [HttpGet]
         public async Task<ActionResult<Resource>> GetById(Guid resourceId)
         {

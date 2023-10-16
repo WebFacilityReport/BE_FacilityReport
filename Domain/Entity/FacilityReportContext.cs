@@ -19,7 +19,6 @@ namespace Domain.Entity
         public virtual DbSet<HistoryEquipment> HistoryEquipments { get; set; } = null!;
         public virtual DbSet<Image> Images { get; set; } = null!;
         public virtual DbSet<Job> Jobs { get; set; } = null!;
-        public virtual DbSet<Post> Posts { get; set; } = null!;
         public virtual DbSet<Resource> Resources { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -134,7 +133,6 @@ namespace Domain.Entity
 
                 entity.HasIndex(e => e.EquipmentId, "IX_Feedback_equipmentId");
 
-                entity.HasIndex(e => e.PostId, "IX_Feedback_postId");
 
                 entity.Property(e => e.FeedBackId)
                     .ValueGeneratedOnAdd()
@@ -155,8 +153,6 @@ namespace Domain.Entity
 
                 entity.Property(e => e.NumberFeedBack).HasColumnName("numberFeedBack");
 
-                entity.Property(e => e.PostId).HasColumnName("postId");
-
                 entity.Property(e => e.Status)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
@@ -172,12 +168,6 @@ namespace Domain.Entity
                     .HasForeignKey(d => d.EquipmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Feedback__equipm__5165187F");
-
-                entity.HasOne(d => d.Post)
-                    .WithMany(p => p.Feedbacks)
-                    .HasForeignKey(d => d.PostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Feedback__postId__4F7CD00D");
             });
 
             modelBuilder.Entity<HistoryEquipment>(entity =>
@@ -231,7 +221,7 @@ namespace Domain.Entity
             {
                 entity.ToTable("Image");
 
-                entity.HasIndex(e => e.PostId, "IX_Image_postId");
+                entity.HasIndex(e => e.FeedbackId);
 
                 entity.Property(e => e.ImageId)
                     .ValueGeneratedOnAdd()
@@ -246,18 +236,17 @@ namespace Domain.Entity
                     .IsUnicode(false)
                     .HasColumnName("nameImage");
 
-                entity.Property(e => e.PostId).HasColumnName("postId");
+                entity.Property(e => e.FeedbackId).HasColumnName("feedbackId");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("status");
 
-                entity.HasOne(d => d.Post)
+                entity.HasOne(d => d.Feedback)
                     .WithMany(p => p.Images)
-                    .HasForeignKey(d => d.PostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Image__postId__4CA06362");
+                    .HasForeignKey(d => d.FeedbackId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Job>(entity =>
@@ -317,48 +306,6 @@ namespace Domain.Entity
                     .HasConstraintName("FK__Job__employeeId__403A8C7D");
             });
 
-            modelBuilder.Entity<Post>(entity =>
-            {
-                entity.ToTable("Post");
-
-                entity.HasIndex(e => e.AccountId, "IX_Post_accountId");
-
-                entity.Property(e => e.PostId)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("postId");
-
-                entity.Property(e => e.AccountId).HasColumnName("accountId");
-
-                entity.Property(e => e.CreatedAt)
-                    .HasColumnType("date")
-                    .HasColumnName("created_at");
-
-                entity.Property(e => e.Description)
-                    .HasMaxLength(2000)
-                    .IsUnicode(false)
-                    .HasColumnName("description");
-
-                entity.Property(e => e.Image)
-                    .HasMaxLength(2000)
-                    .IsUnicode(false)
-                    .HasColumnName("image");
-
-                entity.Property(e => e.Status)
-                    .HasMaxLength(2000)
-                    .IsUnicode(false)
-                    .HasColumnName("status");
-
-                entity.Property(e => e.Title)
-                    .HasMaxLength(2000)
-                    .IsUnicode(false)
-                    .HasColumnName("title");
-
-                entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Posts)
-                    .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Post__accountId__3C69FB99");
-            });
 
             modelBuilder.Entity<Resource>(entity =>
             {

@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Domain.Entity;
 using Domain.Enum;
+using Infrastructure.Model.Request;
 using Infrastructure.Model.Request.RequestAccount;
+using Infrastructure.Model.Request.RequestFeedBack;
 using Infrastructure.Model.Request.RequestTask;
 using Infrastructure.Model.Response.ResponseAccount;
+using Infrastructure.Model.Response.ResponseEquipment;
+using Infrastructure.Model.Response.ResponseFeedBack;
 using Infrastructure.Model.Response.ResponseResource;
 using Infrastructure.Model.Response.ResponseTask;
 using Infrastructure.Model.Security;
@@ -98,10 +102,35 @@ public class ApplicationMapper : Profile
                  new HistoryEquipment
                  {
                      Date=DateTime.Now,
-                     NameHistory=NAMETASK.EQUIPMENT.ToString(),
-                     Status= StatusTask.INACTIVE.ToString(),                     
+                     NameHistory=NAMETASK.CREATEEQUIPMENT.ToString(),
+                     Status= StatusTask.INACTIVE.ToString(),
+                     Equipment = new Equipment
+                     {
+                         Status = StatusTask.INACTIVE.ToString(),
+                         ImageEquip = c.ImageEquip,
+                         CreatedAt = DateTime.Now,
+                         Location = c.Location,
+                         ResourcesId = c.ResourceId,
+                     }
                  }));
 
+        //---------------------------------------------------------
+        // UPDATE TASK EQUIPMENT
+        CreateMap<RequestUpdateStatusHistory, Job>()
+            .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
+            .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
+            .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
+            .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
+            .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
+            .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
+                new HistoryEquipment
+                {
+                    Date = DateTime.Now,
+                    NameHistory = NAMETASK.FIXEQUIPMENT.ToString(),
+                    Status = StatusTask.INACTIVE.ToString(),
+                }));
+
+        //--------------------------------------------------------
         CreateMap<RequestUpdateTask, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
              .ForMember(p => p.NameTask, act => act.MapFrom(src => src.NameTask))
@@ -141,5 +170,39 @@ public class ApplicationMapper : Profile
              .ForMember(p => p.CreatedAt, act => act.MapFrom(src => src.CreatedAt))
              .ForMember(p => p.TaskId, act => act.MapFrom(src => src.JobId))
              .ForMember(p => p.Image, act => act.MapFrom(src => src.Image));
+
+
+
+
+        //----------------------------------------------------------------
+        // FeedBack 
+        //----------------------------------------------------------------
+
+        CreateMap<RequestFeedBack, Feedback>()
+             .ForMember(p => p.Comment, act => act.MapFrom(src => src.Comment))
+             .ForMember(p => p.AccountId, act => act.MapFrom(src => src.AccountId))
+             .ForMember(p => p.EquipmentId, act => act.MapFrom(src => src.EquipmentId));
+
+        //----------------------------------------------------------------
+        CreateMap<Feedback, ResponseFeedBack>()
+             .ForMember(p => p.Comment, act => act.MapFrom(src => src.Comment))
+             .ForMember(p => p.CreatedAt, act => act.MapFrom(src => src.CreatedAt))
+             .ForMember(p => p.FeedBackId, act => act.MapFrom(src => src.FeedBackId))
+             .ForMember(p => p.Status, act => act.MapFrom(src => src.Status))
+             .ForMember(p => p.NumberFeedBack, act => act.MapFrom(src => src.NumberFeedBack))
+             .ForMember(p => p.AccountId, act => act.MapFrom(src => src.AccountId))
+             .ForMember(p => p.EquipmentId, act => act.MapFrom(src => src.EquipmentId));
+        //----------------------------------------------------------------
+
+
+        //----------------------------------------------------------------
+        CreateMap<Equipment, ResponseEquipment>()
+             .ForMember(p => p.EquipmentId, act => act.MapFrom(src => src.EquipmentId))
+             .ForMember(p => p.ResourcesId, act => act.MapFrom(src => src.ResourcesId))
+             .ForMember(p => p.Status, act => act.MapFrom(src => src.Status))
+             .ForMember(p => p.Location, act => act.MapFrom(src => src.Location))
+             .ForMember(p => p.ImageEquip, act => act.MapFrom(src => src.ImageEquip))
+             .ForMember(p => p.CreatedAt, act => act.MapFrom(src => src.CreatedAt));
+        //----------------------------------------------------------------
     }
 }

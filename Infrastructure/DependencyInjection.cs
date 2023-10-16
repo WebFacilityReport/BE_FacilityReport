@@ -27,7 +27,6 @@ namespace Infrastructure
             services.AddTransient<IHistoryEquipmentService, HistoryEquipmentServiceImp>();
             services.AddTransient<IImageService, ImageServiceImp>();
             services.AddTransient<IJobService, JobServiceImp>();
-            services.AddTransient<IPostService, PostServiceImp>();
             services.AddTransient<IReService, ResourceServiceImp>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokensHandler, TokensHandler>();

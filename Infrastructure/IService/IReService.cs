@@ -8,5 +8,6 @@ namespace Infrastructure.IService
         Task<List<ResponseResource>> GetAllResource();
         Task<ResponseResource> GetById(Guid resourceId);
         Task<ResponseResource> AddResource(RequestResouce requestResouce);
+        Task<ResponseResource> UpdateStatus(Guid resourceId,string status);
     }
 }
