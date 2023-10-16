@@ -9,9 +9,8 @@ namespace Infrastructure.IService
     {
         Task<List<ResponseTask>> GetAllTask();
         Task<ResponseTask> GetTaskById(Guid taskId);
-        Task<ResponseTask> AddTask(RequestTask requestTask);
         Task<ResponseTask> AddTaskResource(RequestTaskResource requestTaskResource);
-
+        Task<ResponseTask> AddTaskEquipmentByResourceId(RequestTaskEquipment requestTaskEquipment);
         Task<ResponseTask> ChangeStatus(Guid taskId, string status);
         Task<ResponseTask> UpdateTask(Guid taskId, RequestUpdateTask requestUpdateTask);
 

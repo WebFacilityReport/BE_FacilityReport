@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entity;
+using Domain.Enum;
 using Infrastructure.Model.Request.RequestAccount;
 using Infrastructure.Model.Request.RequestResource;
 using Infrastructure.Model.Request.RequestTask;
@@ -67,29 +68,40 @@ public class ApplicationMapper : Profile
         //Task
         //----------------------------------------------------------------
 
-        // RequestTask
+        // RequestTaskResource
         CreateMap<RequestTaskResource, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
-             .ForMember(p => p.NameTask, act => act.MapFrom(src => src.NameTask))
              .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
              .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
              .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
              .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
-             .ForMember(c => c.Resources, act => act.MapFrom(c => new List<Resource>
-             {
+             .ForMember(c => c.Resource, act => act.MapFrom(c =>
                  new Resource
                  {
-                 Size = c.Size,
-                 CreatedAt = DateTime.Now,
-                 Description = c.Description,
-                 Status = "INACTIVE",
-                 TotalQuantity = c.TotalQuantity,
-                 Image = c.Image,
-                 UsedQuantity = 0,
-                 NameResource = c.NameResource,
-                 }
-             }));
+                     Size = c.Size,
+                     CreatedAt = DateTime.Now,
+                     Description = c.Description,
+                     Status = "INACTIVE",
+                     TotalQuantity = c.TotalQuantity,
+                     Image = c.Image,
+                     UsedQuantity = 0,
+                     NameResource = c.NameResource,
 
+                 }));
+        // RequestTaskEquipment
+        CreateMap<RequestTaskEquipment, Job>()
+             .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
+             .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
+             .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
+             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
+             .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
+             .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
+                 new HistoryEquipment
+                 {
+                     Date=DateTime.Now,
+                     NameHistory=NAMETASK.EQUIPMENT.ToString(),
+                     Status= StatusTask.INACTIVE.ToString(),                     
+                 }));
 
         CreateMap<RequestUpdateTask, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))

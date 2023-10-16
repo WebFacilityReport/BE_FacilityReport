@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Repository.RepositoryImp
 {
-    public class TaskRepositoryImp : GenericRepositoryImp<Domain.Entity.Job>, ITaskRepository
+    public class TaskRepositoryImp : GenericRepositoryImp<Job>, ITaskRepository
     {
         public TaskRepositoryImp(FacilityReportContext context) : base(context)
         {
@@ -13,17 +13,17 @@ namespace Application.Repository.RepositoryImp
 
 
 
-        public Task<List<Domain.Entity.Job>> GetAll()
+        public Task<List<Job>> GetAll()
         {
-            return _context.Set<Domain.Entity.Job>().Include(a => a.Creator).Include(a => a.Employee).Include(r => r.Resources).ToListAsync();
+            return _context.Set<Job>().Include(a => a.Creator).Include(a => a.Employee).Include(r => r.Resource).ToListAsync();
         }
 
-        public async Task<Domain.Entity.Job> GetById(Guid taskId)
+        public async Task<Job> GetById(Guid taskId)
         {
-            var task = await _context.Set<Domain.Entity.Job>()
+            var task = await _context.Set<Job>()
                 .Include(a => a.Creator)
                 .Include(a => a.Employee)
-                .Include(r => r.Resources)
+                .Include(r => r.Resource)
                 .FirstOrDefaultAsync(c => c.JobId == taskId);
             if (task == null)
             {

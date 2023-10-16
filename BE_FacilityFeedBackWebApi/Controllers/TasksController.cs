@@ -40,7 +40,17 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
-
+        [HttpPost]
+        public async Task<ActionResult<ResponseTask>> CreateTaskEquipment(RequestTaskEquipment requestTaskEquipment)
+        {
+            var response = await _jobService.AddTaskEquipmentByResourceId(requestTaskEquipment);
+            return Ok(new
+            {
+                Success = HttpStatusCode.OK,
+                Message = "Success",
+                Data = response
+            });
+        }
         [HttpGet]
         public async Task<ActionResult<ResponseTask>> GetTaskById(Guid taskId)
         {

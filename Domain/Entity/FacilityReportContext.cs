@@ -92,6 +92,8 @@ namespace Domain.Entity
 
             modelBuilder.Entity<Equipment>(entity =>
             {
+                entity.HasIndex(e => e.ResourcesId, "IX_Equipment_resourcesId");
+
                 entity.Property(e => e.EquipmentId)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("equipmentId");
@@ -127,6 +129,12 @@ namespace Domain.Entity
             modelBuilder.Entity<Feedback>(entity =>
             {
                 entity.ToTable("Feedback");
+
+                entity.HasIndex(e => e.AccountId, "IX_Feedback_accountId");
+
+                entity.HasIndex(e => e.EquipmentId, "IX_Feedback_equipmentId");
+
+                entity.HasIndex(e => e.PostId, "IX_Feedback_postId");
 
                 entity.Property(e => e.FeedBackId)
                     .ValueGeneratedOnAdd()
@@ -179,6 +187,10 @@ namespace Domain.Entity
 
                 entity.ToTable("HistoryEquipment");
 
+                entity.HasIndex(e => e.EquipmentId, "IX_HistoryEquipment_equipmentId");
+
+                entity.HasIndex(e => e.JobId).IsUnique();
+
                 entity.Property(e => e.HistoryId)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("historyId");
@@ -206,10 +218,11 @@ namespace Domain.Entity
                     .HasForeignKey(d => d.EquipmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__HistoryEq__equip__48CFD27E");
+                entity.HasAlternateKey(e => e.JobId);
 
                 entity.HasOne(d => d.Job)
-                    .WithMany(p => p.HistoryEquipments)
-                    .HasForeignKey(d => d.JobId)
+                    .WithOne(p => p.HistoryEquipments)
+                    .HasForeignKey<HistoryEquipment>(d => d.JobId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__HistoryEq__jobId__49C3F6B7");
             });
@@ -217,6 +230,8 @@ namespace Domain.Entity
             modelBuilder.Entity<Image>(entity =>
             {
                 entity.ToTable("Image");
+
+                entity.HasIndex(e => e.PostId, "IX_Image_postId");
 
                 entity.Property(e => e.ImageId)
                     .ValueGeneratedOnAdd()
@@ -248,6 +263,10 @@ namespace Domain.Entity
             modelBuilder.Entity<Job>(entity =>
             {
                 entity.ToTable("Job");
+
+                entity.HasIndex(e => e.CreatorId, "IX_Job_creatorId");
+
+                entity.HasIndex(e => e.EmployeeId, "IX_Job_employeeId");
 
                 entity.Property(e => e.JobId)
                     .ValueGeneratedOnAdd()
@@ -302,6 +321,8 @@ namespace Domain.Entity
             {
                 entity.ToTable("Post");
 
+                entity.HasIndex(e => e.AccountId, "IX_Post_accountId");
+
                 entity.Property(e => e.PostId)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("postId");
@@ -344,6 +365,8 @@ namespace Domain.Entity
                 entity.HasKey(e => e.ResourcesId)
                     .HasName("PK__Resource__557C3399398C1175");
 
+                entity.HasIndex(e => e.JobId).IsUnique(); // Thêm ràng buộc Unique Constraint cho trường JobId
+
                 entity.Property(e => e.ResourcesId)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("resourcesId");
@@ -356,6 +379,7 @@ namespace Domain.Entity
                     .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("description");
+                entity.Property(e => e.JobId).IsRequired(); // Đảm bảo JobId là bắt buộc
 
                 entity.Property(e => e.Image)
                     .HasMaxLength(2000)
@@ -379,13 +403,13 @@ namespace Domain.Entity
                     .IsUnicode(false)
                     .HasColumnName("status");
 
-                entity.Property(e => e.TotalQuantity).HasColumnName("totalQuantity_");
-
-                entity.Property(e => e.UsedQuantity).HasColumnName("usedQuantity_");
+                entity.HasAlternateKey(e => e.JobId);
+                entity.Property(e => e.TotalQuantity).HasColumnName("totalQuantity");
+                entity.Property(e => e.UsedQuantity).HasColumnName("usedQuantity");
 
                 entity.HasOne(d => d.Job)
-                    .WithMany(p => p.Resources)
-                    .HasForeignKey(d => d.JobId)
+                    .WithOne(p => p.Resource)
+                    .HasForeignKey<Resource>(d => d.JobId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Resources__jobId__4316F928");
             });

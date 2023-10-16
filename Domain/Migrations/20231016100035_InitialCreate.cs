@@ -86,8 +86,8 @@ namespace Domain.Migrations
                     resourcesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     nameResource = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
                     description = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
-                    usedQuantity_ = table.Column<int>(type: "int", nullable: false),
-                    totalQuantity_ = table.Column<int>(type: "int", nullable: false),
+                    usedQuantity = table.Column<int>(type: "int", nullable: false),
+                    totalQuantity = table.Column<int>(type: "int", nullable: false),
                     status = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
                     size = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
                     created_at = table.Column<DateTime>(type: "date", nullable: false),
@@ -97,6 +97,7 @@ namespace Domain.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__Resource__557C3399398C1175", x => x.resourcesId);
+                    table.UniqueConstraint("AK_Resources_jobId", x => x.jobId);
                     table.ForeignKey(
                         name: "FK__Resources__jobId__4316F928",
                         column: x => x.jobId,
@@ -192,6 +193,7 @@ namespace Domain.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__HistoryE__19BDBDD3A787AABA", x => x.historyId);
+                    table.UniqueConstraint("AK_HistoryEquipment_jobId", x => x.jobId);
                     table.ForeignKey(
                         name: "FK__HistoryEq__equip__48CFD27E",
                         column: x => x.equipmentId,
@@ -250,7 +252,8 @@ namespace Domain.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_HistoryEquipment_jobId",
                 table: "HistoryEquipment",
-                column: "jobId");
+                column: "jobId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Image_postId",
@@ -275,7 +278,8 @@ namespace Domain.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Resources_jobId",
                 table: "Resources",
-                column: "jobId");
+                column: "jobId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

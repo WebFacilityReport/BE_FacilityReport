@@ -14,3 +14,9 @@ public enum ROlE
     STAFF,
     ADMIN
 }
+
+public enum NAMETASK
+{
+   RESOURCE,
+   EQUIPMENT
+}

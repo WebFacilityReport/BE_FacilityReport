@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(FacilityReportContext))]
-    [Migration("20231014162107_InitialCreate")]
+    [Migration("20231016100035_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,7 +135,7 @@ namespace Domain.Migrations
 
                     b.HasKey("EquipmentId");
 
-                    b.HasIndex("ResourcesId");
+                    b.HasIndex(new[] { "ResourcesId" }, "IX_Equipment_resourcesId");
 
                     b.ToTable("Equipment");
                 });
@@ -183,11 +183,11 @@ namespace Domain.Migrations
 
                     b.HasKey("FeedBackId");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex(new[] { "AccountId" }, "IX_Feedback_accountId");
 
-                    b.HasIndex("EquipmentId");
+                    b.HasIndex(new[] { "EquipmentId" }, "IX_Feedback_equipmentId");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex(new[] { "PostId" }, "IX_Feedback_postId");
 
                     b.ToTable("Feedback", (string)null);
                 });
@@ -228,9 +228,12 @@ namespace Domain.Migrations
                     b.HasKey("HistoryId")
                         .HasName("PK__HistoryE__19BDBDD3A787AABA");
 
-                    b.HasIndex("EquipmentId");
+                    b.HasAlternateKey("JobId");
 
-                    b.HasIndex("JobId");
+                    b.HasIndex("JobId")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "EquipmentId" }, "IX_HistoryEquipment_equipmentId");
 
                     b.ToTable("HistoryEquipment", (string)null);
                 });
@@ -266,7 +269,7 @@ namespace Domain.Migrations
 
                     b.HasKey("ImageId");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex(new[] { "PostId" }, "IX_Image_postId");
 
                     b.ToTable("Image", (string)null);
                 });
@@ -324,9 +327,9 @@ namespace Domain.Migrations
 
                     b.HasKey("JobId");
 
-                    b.HasIndex("CreatorId");
+                    b.HasIndex(new[] { "CreatorId" }, "IX_Job_creatorId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex(new[] { "EmployeeId" }, "IX_Job_employeeId");
 
                     b.ToTable("Job", (string)null);
                 });
@@ -375,7 +378,7 @@ namespace Domain.Migrations
 
                     b.HasKey("PostId");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex(new[] { "AccountId" }, "IX_Post_accountId");
 
                     b.ToTable("Post", (string)null);
                 });
@@ -431,16 +434,19 @@ namespace Domain.Migrations
 
                     b.Property<int>("TotalQuantity")
                         .HasColumnType("int")
-                        .HasColumnName("totalQuantity_");
+                        .HasColumnName("totalQuantity");
 
                     b.Property<int>("UsedQuantity")
                         .HasColumnType("int")
-                        .HasColumnName("usedQuantity_");
+                        .HasColumnName("usedQuantity");
 
                     b.HasKey("ResourcesId")
                         .HasName("PK__Resource__557C3399398C1175");
 
-                    b.HasIndex("JobId");
+                    b.HasAlternateKey("JobId");
+
+                    b.HasIndex("JobId")
+                        .IsUnique();
 
                     b.ToTable("Resources");
                 });
@@ -491,8 +497,8 @@ namespace Domain.Migrations
                         .HasConstraintName("FK__HistoryEq__equip__48CFD27E");
 
                     b.HasOne("Domain.Entity.Job", "Job")
-                        .WithMany("HistoryEquipments")
-                        .HasForeignKey("JobId")
+                        .WithOne("HistoryEquipments")
+                        .HasForeignKey("Domain.Entity.HistoryEquipment", "JobId")
                         .IsRequired()
                         .HasConstraintName("FK__HistoryEq__jobId__49C3F6B7");
 
@@ -545,8 +551,8 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Entity.Resource", b =>
                 {
                     b.HasOne("Domain.Entity.Job", "Job")
-                        .WithMany("Resources")
-                        .HasForeignKey("JobId")
+                        .WithOne("Resource")
+                        .HasForeignKey("Domain.Entity.Resource", "JobId")
                         .IsRequired()
                         .HasConstraintName("FK__Resources__jobId__4316F928");
 
@@ -573,9 +579,10 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Job", b =>
                 {
-                    b.Navigation("HistoryEquipments");
+                    b.Navigation("HistoryEquipments")
+                        .IsRequired();
 
-                    b.Navigation("Resources");
+                    b.Navigation("Resource");
                 });
 
             modelBuilder.Entity("Domain.Entity.Post", b =>
