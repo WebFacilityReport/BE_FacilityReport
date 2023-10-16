@@ -23,6 +23,7 @@ namespace Infrastructure.Common.SecurityService.Imp
         {
             var refreshToken = GenerateRefreshToken();
             var cacheKey = GetCacheKey(refreshToken.Token, account.Username);
+
             _memoryCache.Set(cacheKey, refreshToken, TimeSpan.FromDays(_JWToken.RefreshTokenExpiration));
 
             return BuildAccessToken(account, refreshToken);

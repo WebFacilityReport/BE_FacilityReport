@@ -6,6 +6,7 @@ namespace Infrastructure.Model.Response.ResponseAccount
         public string Token { get; set; }
         public string RefreshToken { get; set; }
         public long Expiration { get; set; }
+        public Guid AccountId { get; set; }
 
     }
 }

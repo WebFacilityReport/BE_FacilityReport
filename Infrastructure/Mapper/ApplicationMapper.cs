@@ -2,7 +2,6 @@
 using Domain.Entity;
 using Domain.Enum;
 using Infrastructure.Model.Request.RequestAccount;
-using Infrastructure.Model.Request.RequestResource;
 using Infrastructure.Model.Request.RequestTask;
 using Infrastructure.Model.Response.ResponseAccount;
 using Infrastructure.Model.Response.ResponseResource;

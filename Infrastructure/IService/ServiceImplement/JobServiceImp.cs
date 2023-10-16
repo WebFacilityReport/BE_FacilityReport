@@ -19,8 +19,6 @@ namespace Infrastructure.IService.ServiceImplement
             _mapper = mapper;
         }
 
-
-
         public async Task<ResponseTask> AddTaskEquipmentByResourceId(RequestTaskEquipment requestTaskEquipment)
         {
             var creator = await _unitofWork.Account.GetById(requestTaskEquipment.CreatorId);
