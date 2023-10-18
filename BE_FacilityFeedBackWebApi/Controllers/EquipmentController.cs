@@ -1,5 +1,6 @@
 ﻿using Infrastructure.IService;
 using Infrastructure.Model.Response.ResponseFeedBack;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -15,8 +16,10 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         {
             _equipmentService = equipmentService;
         }
+
+        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<ResponseFeedBack>> GetAllFeedBack()
+        public async Task<ActionResult<ResponseFeedBack>> GetAllEquipment()
         {
             var response = await _equipmentService.GetEquipment();
             return Ok(new
@@ -26,8 +29,9 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
+        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<ResponseFeedBack>> GetFeedBackById(Guid feedBackId)
+        public async Task<ActionResult<ResponseFeedBack>> GetEquipmentById(Guid feedBackId)
         {
             var response = await _equipmentService.GetById(feedBackId);
             return Ok(new

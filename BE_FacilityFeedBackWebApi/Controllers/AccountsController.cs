@@ -1,6 +1,7 @@
 ﻿using Infrastructure.IService;
 using Infrastructure.Model.Request.RequestAccount;
 using Infrastructure.Model.Response.ResponseAccount;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -75,8 +76,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
-
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<ResponseAllAccount>>> GetALLAccount()
         {
@@ -89,6 +89,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
 
         }
+        [Authorize]
         [HttpPatch]
         public async Task<ActionResult<ResponseAllAccount>> UpdateAccount(Guid accountId, UpdateAccount update)
         {
@@ -101,6 +102,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
 
         }
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<ResponseAllAccount>> ProfileAccount(Guid accountId)
         {

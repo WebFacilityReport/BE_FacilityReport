@@ -2,6 +2,7 @@
 using Infrastructure.IService;
 using Infrastructure.Model.Request.RequestResource;
 using Infrastructure.Model.Response.ResponseResource;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -21,6 +22,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
 
         // GET: api/Resources
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<ResponseResource>>> GetResources()
         {
             var response = await _resourceService.GetAllResource();
@@ -33,6 +35,8 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         }
         
         [HttpGet]
+        [Authorize]
+
         public async Task<ActionResult<Resource>> GetById(Guid resourceId)
         {
             var response = await _resourceService.GetById(resourceId);

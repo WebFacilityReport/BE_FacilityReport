@@ -3,6 +3,7 @@ using Infrastructure.Model.Response.ResponseTask;
 using Infrastructure.IService;
 using System.Net;
 using Infrastructure.Model.Request.RequestTask;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BE_FacilityFeedBackWebApi.Controllers
 {
@@ -19,6 +20,8 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+
         public async Task<ActionResult<List<ResponseTask>>> GetAllTask()
         {
             var response = await _jobService.GetAllTask();
@@ -30,6 +33,8 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPost]
+        [Authorize]
+
         public async Task<ActionResult<ResponseTask>> CreateTaskResouce(RequestTaskResource requestTaskResource)
         {
             var response = await _jobService.AddTaskResource(requestTaskResource);
@@ -41,6 +46,8 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPost]
+        [Authorize]
+
         public async Task<ActionResult<ResponseTask>> CreateTaskEquipment(RequestTaskEquipment requestTaskEquipment)
         {
             var response = await _jobService.AddTaskEquipmentByResourceId(requestTaskEquipment);
@@ -52,6 +59,8 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPost]
+        [Authorize]
+
         public async Task<ActionResult<ResponseTask>> FixTaskEquipment(RequestUpdateStatusHistory requestUpdateStatusHistory)
         {
             var response = await _jobService.UpdateHistoryEquipment(requestUpdateStatusHistory);
@@ -63,6 +72,8 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpGet]
+        [Authorize]
+
         public async Task<ActionResult<ResponseTask>> GetTaskById(Guid taskId)
         {
             var response = await _jobService.GetTaskById(taskId);
@@ -75,6 +86,8 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         }
 
         [HttpPatch]
+        [Authorize]
+
         public async Task<ActionResult<ResponseTask>> ChangeStatus(Guid taskId, string status)
         {
             var response = await _jobService.ChangeStatus(taskId, status);
@@ -86,6 +99,8 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPatch]
+        [Authorize]
+
         public async Task<ActionResult<ResponseTask>> UpdateTask(Guid taskId, RequestUpdateTask requestUpdateTask)
         {
             var response = await _jobService.UpdateTask(taskId, requestUpdateTask);
