@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Domain.Entity
 {
@@ -30,6 +31,16 @@ namespace Domain.Entity
             }
         }
 
+        //private string GetConnectionString()
+        //{
+        //    IConfiguration config = new ConfigurationBuilder()
+        //     .SetBasePath(Directory.GetCurrentDirectory())
+        //    .AddJsonFile("appsettings.json", true, true)
+        //    .Build();
+        //    var strConn = config["ConnectString:DatabaseConnection"];
+
+        //    return strConn;
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>(entity =>
