@@ -91,9 +91,9 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         }
         [Authorize]
         [HttpPatch]
-        public async Task<ActionResult<ResponseAllAccount>> UpdateAccount(Guid accountId, UpdateAccount update)
+        public async Task<ActionResult<ResponseAllAccount>> UpdateAccount(UpdateAccount update)
         {
-            var response = await _accountService.UpdateAccount(accountId, update);
+            var response = await _accountService.UpdateAccount(update);
             return Ok(new
             {
                 Success = HttpStatusCode.OK,
@@ -102,11 +102,12 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
 
         }
+
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<ResponseAllAccount>> ProfileAccount(Guid accountId)
+        public async Task<ActionResult<ResponseAllAccount>> ProfileAccount()
         {
-            var response = await _accountService.GetById(accountId);
+            var response = await _accountService.GetByEmail();
             return Ok(new
             {
                 Success = HttpStatusCode.OK,

@@ -32,8 +32,8 @@ namespace Infrastructure.IService.ServiceImplement
                 throw new Exception("ERROR HASH PASSWORD");
             }
             var response = _tokensHandler.CreateAccessToken(request);
-            
-            var responseMess= _mapper.Map<AuthenResponseMessToken>(response);
+
+            var responseMess = _mapper.Map<AuthenResponseMessToken>(response);
             responseMess.AccountId = request.AccountId;
             return responseMess;
         }
@@ -112,14 +112,21 @@ namespace Infrastructure.IService.ServiceImplement
             return _mapper.Map<ResponseAllAccount>(add);
         }
 
-        public async Task<ResponseAllAccount> UpdateAccount(Guid accountId, UpdateAccount requestUpdateAccount)
+        public async Task<ResponseAllAccount> UpdateAccount(UpdateAccount requestUpdateAccount)
         {
-            var account = await _unitofWork.Account.GetById(accountId);
+            var email = _tokensHandler.ClaimsFromToken();
+            var account = await _unitofWork.Account.GetByEmail(email);
             var update = _mapper.Map(requestUpdateAccount, account);
             update.Password = _passwordHasher.HashPassword(requestUpdateAccount.Password);
             _unitofWork.Account.Update(update);
             _unitofWork.Commit();
             return _mapper.Map<ResponseAllAccount>(update);
+        }
+        public async Task<ResponseAllAccount> GetByEmail()
+        {
+            var email = _tokensHandler.ClaimsFromToken();
+            var account = await _unitofWork.Account.GetByEmail(email);
+            return _mapper.Map<ResponseAllAccount>(account);
         }
     }
 }

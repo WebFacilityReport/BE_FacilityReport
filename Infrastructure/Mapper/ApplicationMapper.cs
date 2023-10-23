@@ -75,7 +75,6 @@ public class ApplicationMapper : Profile
         CreateMap<RequestTaskResource, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
              .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
-             .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
              .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
              .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
              .ForMember(c => c.Resource, act => act.MapFrom(c =>
@@ -95,7 +94,6 @@ public class ApplicationMapper : Profile
         CreateMap<RequestTaskEquipment, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
              .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
-             .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
              .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
              .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
              .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
@@ -119,7 +117,6 @@ public class ApplicationMapper : Profile
         CreateMap<RequestUpdateStatusHistory, Job>()
             .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
             .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
-            .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
             .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
             .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
@@ -180,7 +177,6 @@ public class ApplicationMapper : Profile
 
         CreateMap<RequestFeedBack, Feedback>()
              .ForMember(p => p.Comment, act => act.MapFrom(src => src.Comment))
-             .ForMember(p => p.AccountId, act => act.MapFrom(src => src.AccountId))
              .ForMember(p => p.EquipmentId, act => act.MapFrom(src => src.EquipmentId));
 
         //----------------------------------------------------------------

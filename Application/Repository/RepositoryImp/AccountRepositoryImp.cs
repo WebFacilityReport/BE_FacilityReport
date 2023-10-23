@@ -15,6 +15,20 @@ namespace Application.Repository.RepositoryImp
             return await _context.Set<Account>().Include(c => c.JobCreators).Include(c => c.JobEmployees).Include(f => f.Feedbacks).ToListAsync();
         }
 
+        public async Task<Account> GetByEmail(string email)
+        {
+            var account = await _context.Set<Account>()
+                           .Include(c => c.JobCreators)
+                           .Include(c => c.JobEmployees)
+                           .Include(f => f.Feedbacks)
+                           .FirstOrDefaultAsync(c => c.Email == email);
+            if (account == null)
+            {
+                throw new Exception("Khong tim thay email");
+            }
+            return account;
+        }
+
         public async Task<Account> GetById(Guid accountId)
         {
             var account = await _context.Set<Account>()

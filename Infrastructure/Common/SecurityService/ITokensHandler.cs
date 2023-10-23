@@ -14,5 +14,7 @@ namespace Infrastructure.Common.SecurityService
         RefreshToken TakeRefreshToken(string token, string userName);
         void RevokeRefreshToken(string token, string userName);
         Task<string> ClaimsFromToken(string token);
+        public string ClaimsFromToken();
+
     }
 }

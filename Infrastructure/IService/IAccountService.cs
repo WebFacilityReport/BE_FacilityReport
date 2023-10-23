@@ -12,11 +12,12 @@ namespace Infrastructure.IService
         Task<ResponseAllAccount> RegisterAccountAdmin(RequestRegisterAccount requestRegisterAccount);
         Task<List<ResponseAllAccount>> GetAllAccounts();
 
-        Task<ResponseAllAccount> UpdateAccount(Guid accountId,UpdateAccount requestUpdateAccount);
+        Task<ResponseAllAccount> UpdateAccount(UpdateAccount requestUpdateAccount);
 
         Task<AuthenResponseMessToken> CreateToken(RequestLogin requestLogin);
         Task<ResponseAllAccount> GetById(Guid accountId);
 
+        Task<ResponseAllAccount> GetByEmail();
 
     }
 }

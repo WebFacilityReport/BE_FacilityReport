@@ -3,7 +3,6 @@ namespace Infrastructure.Model.Request.RequestTask
 {
     public class RequestUpdateStatusHistory
     {
-        public Guid CreatorId { get; set; }
         public Guid EmployeeId { get; set; }
         public Guid EquipmentId { get; set; }
         public string Title { get; set; }

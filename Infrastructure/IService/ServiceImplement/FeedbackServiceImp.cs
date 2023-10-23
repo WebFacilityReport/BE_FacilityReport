@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Entity;
 using Domain.Enum;
+using Infrastructure.Common.SecurityService;
 using Infrastructure.IUnitofwork;
 using Infrastructure.Model.Request.RequestFeedBack;
 using Infrastructure.Model.Response.ResponseFeedBack;
@@ -12,17 +13,21 @@ public class FeedbackServiceImp : IFeedbackService
 {
     private readonly IUnitofWork _unitofWork;
     private readonly IMapper _mapper;
+    private readonly ITokensHandler _tokensHandler;
 
-    public FeedbackServiceImp(IUnitofWork unitofWork, IMapper mapper)
+    public FeedbackServiceImp(IUnitofWork unitofWork, IMapper mapper, ITokensHandler tokensHandler)
     {
         _unitofWork = unitofWork;
         _mapper = mapper;
+        _tokensHandler = tokensHandler;
     }
 
     public async Task<ResponseFeedBack> CreateFeedBack(RequestFeedBack requestFeedBack)
     {
+        var email = _tokensHandler.ClaimsFromToken();
+        var account = await _unitofWork.Account.GetByEmail(email);
         var feedback = _mapper.Map<Feedback>(requestFeedBack);
-        await _unitofWork.Account.GetById(requestFeedBack.AccountId);
+        feedback.AccountId = account.AccountId;
         var equipment = await _unitofWork.Equiptment.GetById(requestFeedBack.EquipmentId);
         feedback.NumberFeedBack = 0;
         feedback.Status = STATUSFEEDBACK.ACTIVE.ToString();

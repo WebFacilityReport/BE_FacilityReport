@@ -1,6 +1,4 @@
-﻿
-
-namespace Infrastructure.Common
+﻿namespace Domain.Enum
 {
     public class AppConfiguration
     {

@@ -1,6 +1,5 @@
 ﻿using Domain.Entity;
 using Infrastructure.IService;
-using Infrastructure.Model.Request.RequestResource;
 using Infrastructure.Model.Response.ResponseResource;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

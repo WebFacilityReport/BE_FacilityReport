@@ -1,4 +1,5 @@
 ﻿using BE_FacilityFeedBackWebApi.Middlewares;
+using Domain.Enum;
 using Infrastructure;
 using Infrastructure.Common;
 using Microsoft.OpenApi.Models;
@@ -28,6 +29,7 @@ namespace BE_FacilityFeedBackWebApi.Configuration
             services.AddSingleton<Stopwatch>();
             services.AddHttpContextAccessor();
             services.AddEndpointsApiExplorer();
+            services.AddSignalR();
             return services;
         }
         public static IServiceCollection AddDJSwagger(this IServiceCollection services)

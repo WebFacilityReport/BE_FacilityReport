@@ -1,0 +1,105 @@
+﻿@page
+@model WebRazorPage.Pages.Account.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Account[0].AccountId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account[0].Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account[0].Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account[0].Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account[0].Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account[0].Role)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Account)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthday)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role)
+                </td>
+
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.AccountId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.AccountId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.AccountId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+<!-- JavaScript to connect to the chat hub and send messages -->
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    connection.start().then(function () {
+        // Connection to the hub is established
+    }).catch(function (err) {
+        console.error(err.toString());
+    });
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        var user = "Username"; // Get the user from the input
+        var message = "Message"; // Get the message from the input
+
+        // Send the message to the hub
+        connection.invoke("SendMessage", user, message).catch(function (err) {
+            console.error(err.toString());
+        });
+
+        event.preventDefault();
+    });
+</script>
