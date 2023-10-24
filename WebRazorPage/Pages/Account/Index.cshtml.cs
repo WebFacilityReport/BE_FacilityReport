@@ -9,12 +9,11 @@ namespace WebRazorPage.Pages.Account
     public class IndexModel : PageModel
     {
         private readonly IAccountService _accountService;
-        private readonly IHubContext<ChatHub> _chatHubContext;
 
-        public IndexModel(IAccountService accountService, IHubContext<ChatHub> chatHubContext)
+        public IndexModel(IAccountService accountService, List<ResponseAllAccount> account)
         {
             _accountService = accountService;
-            _chatHubContext = chatHubContext;
+            Account = account;
         }
 
         public List<ResponseAllAccount> Account { get; set; } = default!;
@@ -22,11 +21,7 @@ namespace WebRazorPage.Pages.Account
         public async Task OnGetAsync()
         {
             Account = await _accountService.GetAllAccounts();
-            await _chatHubContext.Clients.All.SendAsync("ReceiveMessage", Account, Account);
         }
-        public async Task SendMessage(string user, string message)
-        {
-            await _chatHubContext.Clients.All.SendAsync("ReceiveMessage", user, message);
-        }
+        
     }
 }
