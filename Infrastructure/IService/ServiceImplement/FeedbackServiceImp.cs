@@ -14,7 +14,11 @@ public class FeedbackServiceImp : IFeedbackService
     private readonly IUnitofWork _unitofWork;
     private readonly IMapper _mapper;
     private readonly ITokensHandler _tokensHandler;
+    // Tạo đối tượng TimeZoneInfo cho múi giờ của Việt Nam
+    static TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
 
+    // Lấy thời gian hiện tại ở Việt Nam
+    DateTime vietnamNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
     public FeedbackServiceImp(IUnitofWork unitofWork, IMapper mapper, ITokensHandler tokensHandler)
     {
         _unitofWork = unitofWork;
@@ -31,7 +35,7 @@ public class FeedbackServiceImp : IFeedbackService
         var equipment = await _unitofWork.Equiptment.GetById(requestFeedBack.EquipmentId);
         feedback.NumberFeedBack = 0;
         feedback.Status = STATUSFEEDBACK.ACTIVE.ToString();
-        feedback.CreatedAt = DateTime.Now;
+        feedback.CreatedAt = vietnamNow;
         equipment.Status = STATUSEQUIPMENT.FIX.ToString();
         _unitofWork.Equiptment.Update(equipment);
         _unitofWork.Feedback.Add(feedback);

@@ -18,7 +18,11 @@ public class ApplicationMapper : Profile
 {
     public ApplicationMapper()
     {
+        // Tạo đối tượng TimeZoneInfo cho múi giờ của Việt Nam
+        TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
 
+        // Lấy thời gian hiện tại ở Việt Nam
+        DateTime vietnamNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
         //----------------------------------------------------------------
         // Login
         //----------------------------------------------------------------
@@ -81,7 +85,7 @@ public class ApplicationMapper : Profile
                  new Resource
                  {
                      Size = c.Size,
-                     CreatedAt = DateTime.Now,
+                     CreatedAt = vietnamNow,
                      Description = c.Description,
                      Status = "INACTIVE",
                      TotalQuantity = c.TotalQuantity,
@@ -99,14 +103,13 @@ public class ApplicationMapper : Profile
              .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
                  new HistoryEquipment
                  {
-                     Date=DateTime.Now,
+                     Date=vietnamNow,
                      NameHistory=NAMETASK.CREATEEQUIPMENT.ToString(),
                      Status= StatusTask.INACTIVE.ToString(),
                      Equipment = new Equipment
                      {
                          Status = StatusTask.INACTIVE.ToString(),
                          ImageEquip = c.ImageEquip,
-                         CreatedAt = DateTime.Now,
                          Location = c.Location,
                          ResourcesId = c.ResourceId,
                      }
@@ -122,7 +125,7 @@ public class ApplicationMapper : Profile
             .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
                 new HistoryEquipment
                 {
-                    Date = DateTime.Now,
+                    Date = vietnamNow,
                     NameHistory = NAMETASK.FIXEQUIPMENT.ToString(),
                     Status = StatusTask.INACTIVE.ToString(),
                 }));

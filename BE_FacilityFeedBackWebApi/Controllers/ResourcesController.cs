@@ -32,13 +32,39 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
-        
+
         [HttpGet]
         [Authorize]
 
         public async Task<ActionResult<Resource>> GetById(Guid resourceId)
         {
             var response = await _resourceService.GetById(resourceId);
+            return Ok(new
+            {
+                Success = HttpStatusCode.OK,
+                Message = "Success",
+                Data = response
+            });
+        }
+        
+        [HttpPatch]
+        [Authorize]
+        public async Task<ActionResult<Resource>> UpdateStatus(Guid resourceId, string status)
+        {
+            var response = await _resourceService.UpdateStatus(resourceId, status);
+            return Ok(new
+            {
+                Success = HttpStatusCode.OK,
+                Message = "Success",
+                Data = response
+            });
+        }
+        [HttpDelete]
+        [Authorize]
+
+        public async Task<ActionResult<Resource>> DeleteStatus(Guid resourceId)
+        {
+            var response = await _resourceService.DeleteStatus(resourceId);
             return Ok(new
             {
                 Success = HttpStatusCode.OK,

@@ -38,6 +38,15 @@ namespace Infrastructure.IService.ServiceImplement
             throw new Exception("Task can't add this");
         }
 
+        public async Task<ResponseResource> DeleteStatus(Guid resourceId)
+        {
+            var resource = await _unitofWork.Resource.GetById(resourceId);
+            resource.Status = StatusResource.INACTIVE.ToString();
+            _unitofWork.Resource.Update(resource);
+            _unitofWork.Commit();
+            return _mapper.Map<ResponseResource>(resource);
+        }
+
         public async Task<List<ResponseResource>> GetAllResource()
         {
             var resource = await _unitofWork.Resource.GetALLResource();
@@ -55,6 +64,7 @@ namespace Infrastructure.IService.ServiceImplement
             var resource = await _unitofWork.Resource.GetById(resourceId);
             resource.Status = status;
             _unitofWork.Resource.Update(resource);
+            _unitofWork.Commit();
             return _mapper.Map<ResponseResource>(resource);
 
         }

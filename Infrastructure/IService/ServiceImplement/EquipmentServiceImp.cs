@@ -1,6 +1,4 @@
-﻿
-using AutoMapper;
-using Domain.Entity;
+﻿using AutoMapper;
 using Infrastructure.IUnitofwork;
 using Infrastructure.Model.Response.ResponseEquipment;
 
