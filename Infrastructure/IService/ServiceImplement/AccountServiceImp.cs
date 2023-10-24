@@ -54,6 +54,23 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseAllAccount> RegisterAccountAdmin(RequestRegisterAccount requestRegisterAccount)
         {
             var account = _mapper.Map<Account>(requestRegisterAccount);
+            var checkUsername = await _unitofWork.Account.ExistByUsername(account.Username);
+            
+            if (checkUsername == true)
+            {
+                throw new Exception("Username Exist");
+            }
+            var checkEmail = await _unitofWork.Account.ExistByEmail(account.Email);
+            if (checkEmail == true)
+            {
+                throw new Exception("Email Exist");
+            }
+            var checkPhone = await _unitofWork.Account.ExistByPhone(account.Phone);
+
+            if (checkPhone == true)
+            {
+                throw new Exception("Phone Exist");
+            }
             account.Password = _passwordHasher.HashPassword(requestRegisterAccount.Password);
             account.Role = ROlE.ADMIN.ToString();
             account.Status = "ACTIVE";
@@ -65,6 +82,23 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseAllAccount> RegisterAccountCustomer(RequestRegisterAccount requestRegisterAccount)
         {
             var account = _mapper.Map<Account>(requestRegisterAccount);
+            var checkUsername = await _unitofWork.Account.ExistByUsername(account.Username);
+
+            if (checkUsername == true)
+            {
+                throw new Exception("Username Exist");
+            }
+            var checkEmail = await _unitofWork.Account.ExistByEmail(account.Email);
+            if (checkEmail == true)
+            {
+                throw new Exception("Email Exist");
+            }
+            var checkPhone = await _unitofWork.Account.ExistByPhone(account.Phone);
+
+            if (checkPhone == true)
+            {
+                throw new Exception("Phone Exist");
+            }
             account.Password = _passwordHasher.HashPassword(requestRegisterAccount.Password);
             account.Role = ROlE.CUSTOMER.ToString();
             account.Status = "ACTIVE";
@@ -77,6 +111,23 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseAllAccount> RegisterAccountManager(RequestRegisterAccount requestRegisterAccount)
         {
             var account = _mapper.Map<Account>(requestRegisterAccount);
+            var checkUsername = await _unitofWork.Account.ExistByUsername(account.Username);
+
+            if (checkUsername == true)
+            {
+                throw new Exception("Username Exist");
+            }
+            var checkEmail = await _unitofWork.Account.ExistByEmail(account.Email);
+            if (checkEmail == true)
+            {
+                throw new Exception("Email Exist");
+            }
+            var checkPhone = await _unitofWork.Account.ExistByPhone(account.Phone);
+
+            if (checkPhone == true)
+            {
+                throw new Exception("Phone Exist");
+            }
             account.Password = _passwordHasher.HashPassword(requestRegisterAccount.Password);
             account.Role = ROlE.MANAGER.ToString();
             account.Status = "ACTIVE";
@@ -90,6 +141,23 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseAllAccount> RegisterAccountManagerOffice(RequestRegisterAccount requestRegisterAccount)
         {
             var account = _mapper.Map<Account>(requestRegisterAccount);
+            var checkUsername = await _unitofWork.Account.ExistByUsername(account.Username);
+
+            if (checkUsername == true)
+            {
+                throw new Exception("Username Exist");
+            }
+            var checkEmail = await _unitofWork.Account.ExistByEmail(account.Email);
+            if (checkEmail == true)
+            {
+                throw new Exception("Email Exist");
+            }
+            var checkPhone = await _unitofWork.Account.ExistByPhone(account.Phone);
+
+            if (checkPhone == true)
+            {
+                throw new Exception("Phone Exist");
+            }
             account.Password = _passwordHasher.HashPassword(requestRegisterAccount.Password);
             account.Role = ROlE.MANAGER_OFFICE.ToString();
             account.Status = "ACTIVE";
@@ -103,6 +171,23 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseAllAccount> RegisterAccountStaff(RequestRegisterAccount requestRegisterAccount)
         {
             var account = _mapper.Map<Account>(requestRegisterAccount);
+            var checkUsername = await _unitofWork.Account.ExistByUsername(account.Username);
+
+            if (checkUsername == true)
+            {
+                throw new Exception("Username Exist");
+            }
+            var checkEmail = await _unitofWork.Account.ExistByEmail(account.Email);
+            if (checkEmail == true)
+            {
+                throw new Exception("Email Exist");
+            }
+            var checkPhone = await _unitofWork.Account.ExistByPhone(account.Phone);
+
+            if (checkPhone == true)
+            {
+                throw new Exception("Phone Exist");
+            }
             account.Password = _passwordHasher.HashPassword(requestRegisterAccount.Password);
             account.Role = ROlE.STAFF.ToString();
             account.Status = "ACTIVE";
@@ -114,9 +199,20 @@ namespace Infrastructure.IService.ServiceImplement
 
         public async Task<ResponseAllAccount> UpdateAccount(UpdateAccount requestUpdateAccount)
         {
-            var email = _tokensHandler.ClaimsFromToken();
-            var account = await _unitofWork.Account.GetByEmail(email);
+            var username = _tokensHandler.ClaimsFromToken();
+            var account = await _unitofWork.Account.GetByUsername(username);
             var update = _mapper.Map(requestUpdateAccount, account);
+            var checkEmail = await _unitofWork.Account.ExistByEmail(account.Email);
+            if (checkEmail == true)
+            {
+                throw new Exception("Email Exist");
+            }
+            var checkPhone = await _unitofWork.Account.ExistByPhone(account.Phone);
+
+            if (checkPhone == true)
+            {
+                throw new Exception("Phone Exist");
+            }
             update.Password = _passwordHasher.HashPassword(requestUpdateAccount.Password);
             _unitofWork.Account.Update(update);
             _unitofWork.Commit();
@@ -124,8 +220,8 @@ namespace Infrastructure.IService.ServiceImplement
         }
         public async Task<ResponseAllAccount> GetByEmail()
         {
-            var email = _tokensHandler.ClaimsFromToken();
-            var account = await _unitofWork.Account.GetByEmail(email);
+            var username = _tokensHandler.ClaimsFromToken();
+            var account = await _unitofWork.Account.GetByUsername(username);
             return _mapper.Map<ResponseAllAccount>(account);
         }
     }

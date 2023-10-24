@@ -10,6 +10,36 @@ namespace Application.Repository.RepositoryImp
         {
         }
 
+        public async Task<bool> ExistByEmail(string email)
+        {
+            var check = await _context.Set<Account>().Include(c => c.JobCreators).Include(c => c.JobEmployees).Include(f => f.Feedbacks).FirstOrDefaultAsync(c => c.Email == email);
+            if (check != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> ExistByPhone(string phone)
+        {
+            var check = await _context.Set<Account>().Include(c => c.JobCreators).Include(c => c.JobEmployees).Include(f => f.Feedbacks).FirstOrDefaultAsync(c => c.Phone == phone);
+            if (check != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> ExistByUsername(string username)
+        {
+            var check = await _context.Set<Account>().Include(c => c.JobCreators).Include(c => c.JobEmployees).Include(f => f.Feedbacks).FirstOrDefaultAsync(c => c.Username == username);
+            if (check != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<List<Account>> GetAll()
         {
             return await _context.Set<Account>().Include(c => c.JobCreators).Include(c => c.JobEmployees).Include(f => f.Feedbacks).ToListAsync();

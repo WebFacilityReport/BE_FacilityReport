@@ -145,9 +145,9 @@ public class TokensHandler : ITokensHandler
         var claims = GetClaimsFromToken(token);
 
         // Lấy thông tin email từ claims
-        var email = claims.FirstOrDefault(c => c.Type == "email")?.Value;
+        var username = claims.FirstOrDefault(c => c.Type == "unique_name")?.Value;
 
-        return email;
+        return username;
     }
 }
 
