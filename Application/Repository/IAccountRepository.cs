@@ -12,6 +12,7 @@ namespace Application.Repository
         Task<bool> ExistByEmail(string email);
         Task<bool> ExistByPhone(string phone);
         Task<bool> ExistByUsername(string username);
+        Task<List<Account>> SearchAccountROLE(string role);
 
 
     }

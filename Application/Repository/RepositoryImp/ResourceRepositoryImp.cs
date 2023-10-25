@@ -13,7 +13,11 @@ namespace Application.Repository.RepositoryImp
 
         public async Task<List<Resource>> GetALLResource()
         {
-            return await _context.Set<Resource>().Include(c => c.Job).Include(c => c.Equipment).ToListAsync();
+            return await _context.Set<Resource>()
+                .Include(c => c.Job)
+                .Include(c => c.Equipment)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToListAsync();
         }
 
         public async Task<Resource> GetById(Guid resourceId)

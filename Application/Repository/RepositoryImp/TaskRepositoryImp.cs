@@ -15,7 +15,13 @@ namespace Application.Repository.RepositoryImp
 
         public Task<List<Job>> GetAll()
         {
-            return _context.Set<Job>().Include(a => a.Creator).Include(a => a.Employee).Include(r => r.Resource).ToListAsync();
+            return _context.Set<Job>()
+                .Include(a => a.Creator)
+                .Include(a => a.Employee)
+                .Include(r => r.Resource)
+                .Include(r => r.Resource)
+                .OrderByDescending(j => j.CreatedAt)
+                .ToListAsync();
         }
 
         public async Task<Job> GetById(Guid taskId)

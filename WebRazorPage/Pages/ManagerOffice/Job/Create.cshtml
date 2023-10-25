@@ -1,0 +1,84 @@
+﻿@page
+@model WebRazorPage.Pages.ManagerOffice.Job.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    var role = HttpContext.Session.GetString("ROLE");
+}
+
+<h1>Create</h1>
+
+<h4>Job </h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AccountId" class="control-label"></label>
+                <input asp-for="AccountId" class="form-control" />
+                <span asp-validation-for="AccountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.EmployeeId" class="control-label"></label>
+                <select asp-for="Job.EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.Title" class="control-label"></label>
+                <input asp-for="Job.Title" class="form-control" />
+                <span asp-validation-for="Job.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.DescriptionJob" class="control-label"></label>
+                <input asp-for="Job.DescriptionJob" class="form-control" />
+                <span asp-validation-for="Job.DescriptionJob" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.Deadline" class="control-label"></label>
+                <input asp-for="Job.Deadline" class="form-control" />
+                <span asp-validation-for="Job.Deadline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.NameResource" class="control-label"></label>
+                <input asp-for="Job.NameResource" class="form-control" />
+                <span asp-validation-for="Job.NameResource" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.Description" class="control-label"></label>
+                <input asp-for="Job.Description" class="form-control" />
+                <span asp-validation-for="Job.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.TotalQuantity" class="control-label"></label>
+                <input asp-for="Job.TotalQuantity" class="form-control" />
+                <span asp-validation-for="Job.TotalQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.Size" class="control-label"></label>
+                <input asp-for="Job.Size" class="form-control" />
+                <span asp-validation-for="Job.Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Job.Image" class="control-label"></label>
+                <input asp-for="Job.Image" class="form-control" />
+                <span asp-validation-for="Job.Image" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+        @if (!string.IsNullOrEmpty(ViewBag.Message))
+        {
+            <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

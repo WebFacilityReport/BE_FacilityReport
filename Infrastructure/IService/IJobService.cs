@@ -1,4 +1,5 @@
-﻿using Infrastructure.Model.Request.RequestTask;
+﻿using Domain.Entity;
+using Infrastructure.Model.Request.RequestTask;
 using Infrastructure.Model.Response.ResponseTask;
 
 namespace Infrastructure.IService
@@ -12,6 +13,7 @@ namespace Infrastructure.IService
         Task<ResponseTask> ChangeStatus(Guid taskId, string status);
         Task<ResponseTask> UpdateTask(Guid taskId, RequestUpdateTask requestUpdateTask);
         Task<ResponseTask> UpdateHistoryEquipment(RequestUpdateStatusHistory requestUpdateStatusHistory);
+        Task<ResponseTask> AddTaskResourceRz(RequestTaskResourceRz requestTaskResource);
 
     }
 }

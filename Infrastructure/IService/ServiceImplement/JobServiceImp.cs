@@ -5,6 +5,7 @@ using Infrastructure.Common.SecurityService;
 using Infrastructure.IUnitofwork;
 using Infrastructure.Model.Request.RequestTask;
 using Infrastructure.Model.Response.ResponseTask;
+using System.Security.Principal;
 
 
 namespace Infrastructure.IService.ServiceImplement
@@ -98,10 +99,18 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseTask> ChangeStatus(Guid taskId, string status)
         {
             var change = await _unitofWork.Task.GetById(taskId);
-            change.Status = status;
-            var update = _unitofWork.Task.Update(change);
-            _unitofWork.Commit();
-            return _mapper.Map<ResponseTask>(update);
+            if (change.Status.Equals(StatusTask.INACTIVE.ToString()) || change.Status.Equals(StatusTask.DONE.ToString()))
+            {
+                throw new Exception("Không được thay đổi Status nữa");
+            }
+            else if (change.Status.Equals(StatusTask.ACTIVE.ToString()))
+            {
+                change.Status = status;
+                _unitofWork.Task.Update(change);
+                _unitofWork.Commit();
+            }
+            return _mapper.Map<ResponseTask>(change);
+
         }
 
         public async Task<List<ResponseTask>> GetAllTask()
@@ -148,11 +157,41 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseTask> UpdateTask(Guid taskId, RequestUpdateTask requestUpdateTask)
         {
             var task = await _unitofWork.Task.GetById(taskId);
-            var change = _mapper.Map(requestUpdateTask, task);
-            var update = _unitofWork.Task.Update(change);
-            _unitofWork.Commit();
-            return _mapper.Map<ResponseTask>(update);
+            if (task.Status.Equals(StatusTask.ACTIVE.ToString()))
+            {
+                var change = _mapper.Map(requestUpdateTask, task);
+                var update = _unitofWork.Task.Update(change);
+                _unitofWork.Commit();
+                return _mapper.Map<ResponseTask>(update);
+            }
+
+            throw new Exception("Không cần phải Update nữa");
+
         }
 
+        public async Task<ResponseTask> AddTaskResourceRz(RequestTaskResourceRz requestTaskResource)
+        {
+            var creatorId = await _unitofWork.Account.GetById(requestTaskResource.CreatorId);
+            var employeeId = await _unitofWork.Account.GetById(requestTaskResource.EmployeeId);
+            if (creatorId.Role.Equals(ROlE.MANAGER_OFFICE.ToString()) && employeeId.Role.Equals(ROlE.STAFF.ToString()))
+            {
+                var job = _mapper.Map<Job>(requestTaskResource);
+                //job.CreatorId = creatorId.AccountId;
+                job.NameTask = NAMETASK.RESOURCE.ToString();
+                job.CreatedAt = vietnamNow;
+                job.Status = StatusTask.ACTIVE.ToString();
+                if (job.Deadline <= job.CreatedAt.AddHours(2))
+                {
+                    throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
+                }
+                var add = _unitofWork.Task.Add(job);
+                _unitofWork.Resource.Add(job.Resource);
+                _unitofWork.Commit();
+                return _mapper.Map<ResponseTask>(add);
+            }
+            throw new Exception("Không thể giao task");
+        }
+
+       
     }
 }

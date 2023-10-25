@@ -16,8 +16,11 @@ namespace Infrastructure.IService
 
         Task<AuthenResponseMessToken> CreateToken(RequestLogin requestLogin);
         Task<ResponseAllAccount> GetById(Guid accountId);
-
         Task<ResponseAllAccount> GetByEmail();
+
+        Task<List<ResponseAllAccount>> SearchAccountRole(string role);
+        Task<ResponseAllAccount> LoginRZ(string username, string password);
+        Task<ResponseAllAccount> GetUsernameRz(string username);
 
     }
 }

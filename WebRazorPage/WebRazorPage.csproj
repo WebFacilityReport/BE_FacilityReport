@@ -20,7 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Account\" />
+    <Folder Include="Pages\Customer\" />
+    <Folder Include="Pages\ManagerOffice\FeedBack\" />
+    <Folder Include="Pages\Manager\" />
+    <Folder Include="Pages\Staff\" />
   </ItemGroup>
 
 </Project>

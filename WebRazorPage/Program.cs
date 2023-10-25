@@ -12,7 +12,10 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddRazorPages();
 builder.Services.DependencyInjection(configuration);
 builder.Services.AddSingleton(builder.Services.DependencyInjection(configuration));
-
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // Adjust as needed
+});
 
 
 var app = builder.Build();
@@ -24,20 +27,18 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseRouting(); // Add this line before UseEndpoints
+app.UseSession();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+app.MapRazorPages();
 
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRazorPages();
     endpoints.MapHub<ChatHub>("/chatHub"); // Map the ChatHub to a specific endpoint
 });
-app.UseHttpsRedirection();
-app.UseStaticFiles();
 
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapRazorPages();
 
 app.Run();

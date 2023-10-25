@@ -86,5 +86,14 @@ namespace Application.Repository.RepositoryImp
             }
             return account;
         }
+        public async Task<List<Account>> SearchAccountROLE(string role)
+        {
+            var account = await _context.Set<Account>()
+                          .Include(c => c.JobCreators)
+                          .Include(c => c.JobEmployees)
+                          .Include(f => f.Feedbacks)
+                          .Where(c => c.Role.Equals(role)).ToListAsync();
+            return account;
+        }
     }
 }

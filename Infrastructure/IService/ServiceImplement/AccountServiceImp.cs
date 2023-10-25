@@ -224,5 +224,29 @@ namespace Infrastructure.IService.ServiceImplement
             var account = await _unitofWork.Account.GetByUsername(username);
             return _mapper.Map<ResponseAllAccount>(account);
         }
+        public async Task<List<ResponseAllAccount>> SearchAccountRole(string role)
+        {
+            var listRole = await _unitofWork.Account.SearchAccountROLE(role.ToUpper());
+            return _mapper.Map<List<ResponseAllAccount>>(listRole);
+
+        }
+
+        public async Task<ResponseAllAccount> LoginRZ(string username, string password)
+        {
+            var account = await _unitofWork.Account.GetByUsername(username);
+            //BCrypto Verify
+            if (!_passwordHasher.VerifyPasswordB(password, account.Password))
+            {
+                throw new Exception("ERROR HASH PASSWORD");
+            }
+            return _mapper.Map<ResponseAllAccount>(account);
+
+        }
+
+        public async Task<ResponseAllAccount> GetUsernameRz(string username)
+        {
+            var login = await _unitofWork.Account.GetByUsername(username);
+            return _mapper.Map<ResponseAllAccount>(login);
+        }
     }
 }

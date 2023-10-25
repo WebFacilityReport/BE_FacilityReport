@@ -87,13 +87,35 @@ public class ApplicationMapper : Profile
                      Size = c.Size,
                      CreatedAt = vietnamNow,
                      Description = c.Description,
-                     Status = "INACTIVE",
+                     Status = StatusResource.INACTIVE.ToString(),
                      TotalQuantity = c.TotalQuantity,
                      Image = c.Image,
                      UsedQuantity = 0,
                      NameResource = c.NameResource,
-
                  }));
+
+        // RequestTaskResourceRz
+        CreateMap<RequestTaskResourceRz, Job>()
+            .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
+            .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
+            .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
+            .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
+            .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
+            .ForMember(c => c.Resource, act => act.MapFrom(c =>
+                new Resource
+                {
+                    Size = c.Size,
+                    CreatedAt = DateTime.Now,
+                    Description = c.Description,
+                    Status = StatusResource.INACTIVE.ToString(),
+                    TotalQuantity = c.TotalQuantity,
+                    Image = c.Image,
+                    UsedQuantity = 0,
+                    NameResource = c.NameResource,
+
+                }));
+
+
         // RequestTaskEquipment
         CreateMap<RequestTaskEquipment, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
@@ -133,10 +155,8 @@ public class ApplicationMapper : Profile
         //--------------------------------------------------------
         CreateMap<RequestUpdateTask, Job>()
              .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
-             .ForMember(p => p.NameTask, act => act.MapFrom(src => src.NameTask))
              .ForMember(p => p.Description, act => act.MapFrom(src => src.Description))
-             .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
-             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId));
+             .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline));
 
 
         // ResponseTask

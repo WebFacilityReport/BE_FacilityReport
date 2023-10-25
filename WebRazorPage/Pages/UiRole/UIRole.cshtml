@@ -1,0 +1,42 @@
+﻿@page "/UIROLE"
+@model WebRazor.Pages.UiRole.UIRoleModel
+@{
+    var role = HttpContext.Session.GetString("ROLE");
+    var accountId = HttpContext.Session.GetString("ACCOUNTID");
+}
+<style>
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+</style>
+@if (role == "MANAGER_OFFICE")
+{
+    <h1>Welcome, MANAGER_OFFICE - @accountId</h1> <a href="/Login/LoginPage" class="btn btn-primary">Log Out</a>
+    <p>You have administrative privileges.</p>
+
+    <div class="button-container">
+        <a href="/ManagerOffice/Job/Index" class="btn btn-primary">Manage Job</a>
+        <a href="/Manufacture/Index" class="btn btn-primary">Manage Manufacture</a>
+        <a href="/CarInfor/Index" class="btn btn-primary">Manage CarInformation</a>
+        <a href="/Suppiler/Index" class="btn btn-primary">Manage Suppiler</a>
+    </div>
+}
+else if (role == "STAFF")
+{
+
+    <h1>Welcome, @accountId!</h1> <a href="/Login/LoginPage" class="btn btn-primary">Log Out</a>
+
+    <div class="button-container">
+        <a href="/ProfileCustomer/Customer/ProfileCustomer?id=@accountId" class="btn btn-primary">Profile Customers</a>
+        <a href="/RentingDetail/Index?id=@accountId" class="btn btn-primary">Manage RentingDetail</a>
+        <a href="/RentingTransaction/Index" class="btn btn-primary">Manage RentingTransaction</a>
+    </div>
+}
+else
+{
+    <h1>Welcome, Guest!</h1>
+    <p>Please log in to access the main page.</p>
+    <a href="/login" class="btn btn-primary">Go to Login</a>
+}
