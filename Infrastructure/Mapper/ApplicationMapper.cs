@@ -125,15 +125,40 @@ public class ApplicationMapper : Profile
              .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
                  new HistoryEquipment
                  {
-                     Date=vietnamNow,
-                     NameHistory=NAMETASK.CREATEEQUIPMENT.ToString(),
-                     Status= StatusTask.INACTIVE.ToString(),
+                     Date = vietnamNow,
+                     NameHistory = NAMETASK.CREATEEQUIPMENT.ToString(),
+                     Status = StatusTask.INACTIVE.ToString(),
                      Equipment = new Equipment
                      {
                          Status = StatusTask.INACTIVE.ToString(),
                          ImageEquip = c.ImageEquip,
                          Location = c.Location,
                          ResourcesId = c.ResourceId,
+                         CreatedAt = vietnamNow,
+                     }
+                 }));
+
+        // RequestTaskEquipmentRZ
+        CreateMap<RequestTaskEquipmentRZ, Job>()
+             .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
+             .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
+             .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
+             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
+             .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
+             .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
+                 new HistoryEquipment
+                 {
+                     Date = vietnamNow,
+                     NameHistory = NAMETASK.CREATEEQUIPMENT.ToString(),
+                     Status = StatusTask.INACTIVE.ToString(),
+                     Equipment = new Equipment
+                     {
+                         Status = StatusTask.INACTIVE.ToString(),
+                         ImageEquip = c.ImageEquip,
+                         Location = c.Location,
+                         ResourcesId = c.ResourceId,
+                         CreatedAt = vietnamNow,
+
                      }
                  }));
 
@@ -141,6 +166,21 @@ public class ApplicationMapper : Profile
         // UPDATE TASK EQUIPMENT
         CreateMap<RequestUpdateStatusHistory, Job>()
             .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
+            .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
+            .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
+            .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
+            .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
+                new HistoryEquipment
+                {
+                    Date = vietnamNow,
+                    NameHistory = NAMETASK.FIXEQUIPMENT.ToString(),
+                    Status = StatusTask.INACTIVE.ToString(),
+                }));
+
+        // UPDATE TASK EQUIPMENTRZ
+        CreateMap<RequestUpdateStatusHistoryRZ, Job>()
+            .ForMember(p => p.Title, act => act.MapFrom(src => src.Title))
+            .ForMember(p => p.CreatorId, act => act.MapFrom(src => src.CreatorId))
             .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
             .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))

@@ -7,5 +7,6 @@ namespace Application.Repository
     {
         Task<List<Job>> GetAll();
         Task<Job> GetById(Guid taskId);
+        Task<Job> CheckExsitTaskbyHistoryWithEquipmentId(Guid equipmentId);
     }
 }

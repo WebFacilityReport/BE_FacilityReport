@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="Pages\Customer\" />
     <Folder Include="Pages\ManagerOffice\FeedBack\" />
+    <Folder Include="Pages\ManagerOffice\Equipment\" />
     <Folder Include="Pages\Manager\" />
     <Folder Include="Pages\Staff\" />
   </ItemGroup>

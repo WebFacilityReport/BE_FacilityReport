@@ -1,6 +1,7 @@
 ﻿using Application.IGenericRepository.GeneircRepositoryImp;
 using Application.Repository;
 using Domain.Entity;
+using Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Repository.RepositoryImp
@@ -11,7 +12,21 @@ namespace Application.Repository.RepositoryImp
         {
         }
 
-
+        public async Task<Job> CheckExsitTaskbyHistoryWithEquipmentId(Guid equipmentId)
+        {
+            var check = await _context.Set<Job>()
+                .Include(c => c.HistoryEquipments)
+                .ThenInclude(c => c.Equipment)
+                .FirstOrDefaultAsync(c => c.HistoryEquipments.EquipmentId == equipmentId
+                       && c.HistoryEquipments.Status.Equals(StatusTask.INACTIVE.ToString())
+                       && c.HistoryEquipments.NameHistory.Equals(NAMETASK.FIXEQUIPMENT.ToString())
+                       );
+            if (check != null)
+            {
+                throw new Exception("Existed Task Equipment");
+            }
+            return check;
+        }
 
         public Task<List<Job>> GetAll()
         {

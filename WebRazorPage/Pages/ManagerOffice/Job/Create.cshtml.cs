@@ -26,22 +26,31 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
         public RequestTaskResourceRz Job { get; set; } = default!;
         public async Task<IActionResult> OnGetAsync()
         {
-            var accountId = HttpContext.Session.GetString("ACCOUNTID");
-            // Check if the session value is not null or empty
-            if (!string.IsNullOrEmpty(accountId))
+            try
             {
-                var account = await _accountService.GetUsernameRz(accountId);
-                AccountId = account.AccountId;
+                var accountId = HttpContext.Session.GetString("ACCOUNTID");
+                // Check if the session value is not null or empty
+                if (!string.IsNullOrEmpty(accountId))
+                {
+                    var account = await _accountService.GetUsernameRz(accountId);
+                    AccountId = account.AccountId;
+                }
+                ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
+                return Page();
             }
-            ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
-            return Page();
+            catch (Exception ex)
+            {
+                ViewData["Message"] = ex.Message.ToString();
+                ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
+
+                return Page();
+            }
         }
 
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            SelectList employeeList = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
 
             try
             {

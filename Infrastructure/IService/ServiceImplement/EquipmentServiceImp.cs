@@ -26,5 +26,11 @@ namespace Infrastructure.IService.ServiceImplement
             var equipment = await _unitofWork.Equiptment.GetEquipment();
             return _mapper.Map<List<ResponseEquipment>>(equipment);
         }
+
+        public async Task<List<ResponseEquipment>> GetEquipmentFix()
+        {
+            var equipment = await _unitofWork.Equiptment.GetallEquipmentFix();
+            return _mapper.Map<List<ResponseEquipment>>(equipment);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.IGenericRepository.GeneircRepositoryImp;
 using Application.Repository;
 using Domain.Entity;
+using Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Repository.RepositoryImp
@@ -18,6 +19,15 @@ namespace Application.Repository.RepositoryImp
                 .Include(c => c.Equipment)
                 .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync();
+        }
+
+        public async Task<List<Resource>> GetAllResourceACTIVE()
+        {
+            var resource = await _context.Set<Resource>()
+                .Include(c => c.Job)
+                .Include(c => c.Equipment)
+                .Where(c => c.Status.Equals(StatusResource.ACTIVE.ToString())).ToListAsync();
+            return resource;
         }
 
         public async Task<Resource> GetById(Guid resourceId)

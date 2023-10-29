@@ -144,6 +144,7 @@ namespace Infrastructure.IService.ServiceImplement
                     {
                         throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
                     }
+                    var checkHistory = await _unitofWork.Task.CheckExsitTaskbyHistoryWithEquipmentId(equipment.EquipmentId);
                     _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
                     _unitofWork.Task.Add(job);
                     _unitofWork.Commit();
@@ -192,6 +193,76 @@ namespace Infrastructure.IService.ServiceImplement
             throw new Exception("Không thể giao task");
         }
 
-       
+        public async Task<ResponseTask> AddTaskEquipmentByResourceIdRZ(RequestTaskEquipmentRZ requestTaskEquipment)
+        {
+            var account = await _unitofWork.Account.GetById(requestTaskEquipment.CreatorId);
+            var employee = await _unitofWork.Account.GetById(requestTaskEquipment.EmployeeId);
+            var resource = await _unitofWork.Resource.GetById(requestTaskEquipment.ResourceId);
+
+            if (account.Role.Equals(ROlE.MANAGER_OFFICE.ToString()) && employee.Role.Equals(ROlE.STAFF.ToString()))
+            {
+                var job = _mapper.Map<Job>(requestTaskEquipment);
+                if (resource.Status.Equals(StatusResource.ACTIVE.ToString()))
+                {
+                    job.CreatorId = account.AccountId;
+                    job.NameTask = NAMETASK.EQUIPMENT.ToString();
+                    job.Status = StatusTask.ACTIVE.ToString();
+
+                    if (resource.TotalQuantity > resource.UsedQuantity)
+                    {
+                        resource.UsedQuantity += 1;
+                        job.CreatedAt = vietnamNow;
+                        if (job.Deadline <= job.CreatedAt.AddHours(2))
+                        {
+                            throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
+                        }
+                        _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
+                        _unitofWork.Equiptment.Add(job.HistoryEquipments.Equipment);
+                        _unitofWork.Task.Add(job);
+                        _unitofWork.Commit();
+                        return _mapper.Map<ResponseTask>(job);
+                    }
+                    else
+                    {
+                        throw new Exception("Used quantity da qua so luong. Yeu cau tao them Resource");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Resource không được sử dụng ( phải được ACTIVE )");
+                }
+
+            }
+            throw new Exception("Không thể giao task");
+        }
+
+        public async Task<ResponseTask> UpdateHistoryEquipmentRZ(RequestUpdateStatusHistoryRZ requestUpdateStatusHistory)
+        {
+            var account = await _unitofWork.Account.GetById(requestUpdateStatusHistory.CreatorId);
+            var employee = await _unitofWork.Account.GetById(requestUpdateStatusHistory.EmployeeId);
+            var equipment = await _unitofWork.Equiptment.GetById(requestUpdateStatusHistory.EquipmentId);
+            if (account.Role.Equals(ROlE.MANAGER_OFFICE.ToString()) && employee.Role.Equals(ROlE.STAFF.ToString()))
+            {
+                if (equipment.Status.Equals(STATUSEQUIPMENT.FIX.ToString()))
+                {
+                    var job = _mapper.Map<Job>(requestUpdateStatusHistory);
+                    job.Status = StatusTask.ACTIVE.ToString();
+                    job.NameTask = NAMETASK.EQUIPMENT.ToString();
+                    job.HistoryEquipments.EquipmentId = requestUpdateStatusHistory.EquipmentId;
+                    job.CreatedAt = vietnamNow;
+                    if (job.Deadline <= job.CreatedAt.AddHours(2))
+                    {
+                        throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
+                    }
+                    await _unitofWork.Task.CheckExsitTaskbyHistoryWithEquipmentId(equipment.EquipmentId);
+                    _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
+                    _unitofWork.Task.Add(job);
+                    _unitofWork.Commit();
+                    return _mapper.Map<ResponseTask>(job);
+                }
+                throw new Exception("Thiết bị không bị hỏng ");
+            }
+            throw new Exception("Không thể giao task");
+        }
     }
 }

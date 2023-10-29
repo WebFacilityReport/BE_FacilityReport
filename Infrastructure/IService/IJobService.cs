@@ -14,6 +14,9 @@ namespace Infrastructure.IService
         Task<ResponseTask> UpdateTask(Guid taskId, RequestUpdateTask requestUpdateTask);
         Task<ResponseTask> UpdateHistoryEquipment(RequestUpdateStatusHistory requestUpdateStatusHistory);
         Task<ResponseTask> AddTaskResourceRz(RequestTaskResourceRz requestTaskResource);
+        Task<ResponseTask> AddTaskEquipmentByResourceIdRZ(RequestTaskEquipmentRZ requestTaskEquipment);
+        Task<ResponseTask> UpdateHistoryEquipmentRZ(RequestUpdateStatusHistoryRZ requestUpdateStatusHistory);
+
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.IGenericRepository.GeneircRepositoryImp;
 using Domain.Entity;
+using Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Repository.RepositoryImp
@@ -8,6 +9,16 @@ namespace Application.Repository.RepositoryImp
     {
         public EquiptmentRepositoryImp(FacilityReportContext context) : base(context)
         {
+        }
+
+        public async Task<List<Equipment>> GetallEquipmentFix()
+        {
+            return await _context.Set<Equipment>()
+                .Include(c => c.HistoryEquipments)
+                .Include(c => c.Resources)
+                .OrderByDescending(c => c.CreatedAt)
+                .Where(c => c.Status.Equals(STATUSEQUIPMENT.FIX.ToString()))
+                .ToListAsync();
         }
 
         public async Task<Equipment> GetById(Guid id)
@@ -26,7 +37,11 @@ namespace Application.Repository.RepositoryImp
 
         public async Task<List<Equipment>> GetEquipment()
         {
-            return await _context.Set<Equipment>().Include(c => c.HistoryEquipments).Include(c => c.Resources).ToListAsync();
+            return await _context.Set<Equipment>()
+                .Include(c => c.HistoryEquipments)
+                .Include(c => c.Resources)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToListAsync();
         }
     }
 }

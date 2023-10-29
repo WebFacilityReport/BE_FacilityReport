@@ -53,6 +53,12 @@ namespace Infrastructure.IService.ServiceImplement
             return _mapper.Map<List<ResponseResource>>(resource);
         }
 
+        public async Task<List<ResponseResource>> getAllResourceACTIVEs()
+        {
+            var resource = await _unitofWork.Resource.GetAllResourceACTIVE();
+            return _mapper.Map<List<ResponseResource>>(resource);
+        }
+
         public async Task<ResponseResource> GetById(Guid resourceId)
         {
             var resource = await _unitofWork.Resource.GetById(resourceId);
