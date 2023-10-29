@@ -1,4 +1,4 @@
 .vs/
 bin/
 obj/
-Domain/Migrations/
+Migrations/

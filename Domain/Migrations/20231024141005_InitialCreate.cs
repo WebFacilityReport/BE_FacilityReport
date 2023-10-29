@@ -11,7 +11,7 @@ namespace Domain.Migrations
         {
             migrationBuilder.CreateTable(
                 name: "Account",
-                columns: table => new
+                columns: table => news
                 {
                     accountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     username = table.Column<string>(type: "varchar(2000)", unicode: false, maxLength: 2000, nullable: false),
