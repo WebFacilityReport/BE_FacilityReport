@@ -37,7 +37,7 @@ namespace Domain.Migrations
                         .HasColumnName("address");
 
                     b.Property<DateTime>("Birthday")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("birthday");
 
                     b.Property<string>("Email")
@@ -104,7 +104,7 @@ namespace Domain.Migrations
                         .HasColumnName("equipmentId");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
                     b.Property<string>("ImageEquip")
@@ -157,7 +157,7 @@ namespace Domain.Migrations
                         .HasColumnName("comment");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
                     b.Property<Guid>("EquipmentId")
@@ -192,7 +192,7 @@ namespace Domain.Migrations
                         .HasColumnName("historyId");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("date");
 
                     b.Property<Guid>("EquipmentId")
@@ -238,7 +238,7 @@ namespace Domain.Migrations
                         .HasColumnName("imageId");
 
                     b.Property<DateTime>("DateImgae")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("dateImgae");
 
                     b.Property<Guid>("FeedbackId")
@@ -274,7 +274,7 @@ namespace Domain.Migrations
                         .HasColumnName("jobId");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
                     b.Property<Guid>("CreatorId")
@@ -282,7 +282,7 @@ namespace Domain.Migrations
                         .HasColumnName("creatorId");
 
                     b.Property<DateTime>("Deadline")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("deadline");
 
                     b.Property<string>("Description")
@@ -326,6 +326,37 @@ namespace Domain.Migrations
                     b.ToTable("Job", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entity.Notification", b =>
+                {
+                    b.Property<string>("NotificationId")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<Guid>("AccountId")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength();
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength();
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Notification", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entity.Resource", b =>
                 {
                     b.Property<Guid>("ResourcesId")
@@ -334,7 +365,7 @@ namespace Domain.Migrations
                         .HasColumnName("resourcesId");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
                     b.Property<string>("Description")
@@ -471,6 +502,16 @@ namespace Domain.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Domain.Entity.Notification", b =>
+                {
+                    b.HasOne("Domain.Entity.Account", "Account")
+                        .WithMany("Notifications")
+                        .HasForeignKey("AccountId")
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("Domain.Entity.Resource", b =>
                 {
                     b.HasOne("Domain.Entity.Job", "Job")
@@ -489,6 +530,8 @@ namespace Domain.Migrations
                     b.Navigation("JobCreators");
 
                     b.Navigation("JobEmployees");
+
+                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("Domain.Entity.Equipment", b =>

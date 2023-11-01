@@ -1,5 +1,6 @@
 using BE_FacilityFeedBackWebApi.Configuration;
 using BE_FacilityFeedBackWebApi.Middlewares;
+using Domain.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,9 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // IConfiguration
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
     .Build();
 
+builder.Services.AddDbContext<FacilityReportContext>();
 
 builder.Services
     .DependencyInjection(configuration);

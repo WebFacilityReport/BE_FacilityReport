@@ -24,6 +24,19 @@ namespace Application.Repository.RepositoryImp
                 .ToListAsync();
         }
 
+        public async Task<HistoryEquipment> GetByEquipmentId(Guid equipemntId)
+        {
+            var history = await _context.Set<HistoryEquipment>()
+                .Include(c => c.Equipment)
+                .Include(c => c.Job)
+                .FirstOrDefaultAsync(c => c.EquipmentId == equipemntId);
+            if (history == null)
+            {
+                throw new Exception("Khong tim thay Equipment ID");
+            }
+            return history;
+        }
+
         public async Task<HistoryEquipment> GetById(Guid id)
         {
             var history= await _context.Set<HistoryEquipment>()
@@ -33,6 +46,19 @@ namespace Application.Repository.RepositoryImp
             if (history == null)
             {
                 throw new Exception("Khong tim thay History ID");
+            }
+            return history;
+        }
+
+        public async Task<HistoryEquipment> SearchTaskById(Guid Taskid)
+        {
+            var history = await _context.Set<HistoryEquipment>()
+                .Include(c => c.Equipment)
+                .Include(c => c.Job)
+                .FirstOrDefaultAsync(c => c.JobId == Taskid);
+            if (history == null)
+            {
+                throw new Exception("Khong tim thay Task ID");
             }
             return history;
         }

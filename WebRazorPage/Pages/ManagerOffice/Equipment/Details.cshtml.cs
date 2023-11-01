@@ -7,23 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entity;
 using Infrastructure.IService;
-using Infrastructure.Model.Response.ResponseTask;
+using Infrastructure.Model.Response.ResponseEquipment;
 
-namespace WebRazorPage.Pages.ManagerOffice.Job
+namespace WebRazorPage.Pages.ManagerOffice.Equipment
 {
     public class DetailsModel : PageModel
     {
-        private readonly IAccountService _accountService;
-        private readonly IJobService _jobService;
+        private readonly IEquipmentService _equipmentService;
 
-        public DetailsModel(IAccountService accountService, IJobService jobService)
+        public DetailsModel(IEquipmentService equipmentService)
         {
-            _accountService = accountService;
-            _jobService = jobService;
+            _equipmentService = equipmentService;
         }
 
-        [BindProperty]
-        public ResponseTask Job { get; set; } = default!;
+        public ResponseEquipment Equipment { get; set; } = default!;
+
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             try
@@ -32,14 +30,15 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
                 {
                     return NotFound();
                 }
-                var job = await _jobService.GetTaskById(id);
-                if (job == null)
+
+                var equipment = await _equipmentService.GetById(id);
+                if (equipment == null)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    Job = job;
+                    Equipment = equipment;
                 }
                 return Page();
             }

@@ -6,10 +6,8 @@
 }
 
 <h1>Index</h1>
+<a href="/UIROLE" class="btn btn-primary">Back</a>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -80,9 +78,9 @@
                     @Html.DisplayFor(modelItem => item.Image)
                 </td>
                 <td>
-                    @*<a asp-page="./Edit" asp-route-id="@item.ResourcesId">Edit</a> |*@
-                    <a asp-page="./Details" asp-route-id="@item.ResourcesId">Details</a>
-                    @*<a asp-page="./Delete" asp-route-id="@item.ResourcesId">Delete</a>*@
+                    <a asp-page="./Edit" asp-route-id="@item.ResourcesId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ResourcesId">Details</a>|
+                    <a asp-page="./Delete" asp-route-id="@item.ResourcesId">Delete</a>
                 </td>
             </tr>
         }

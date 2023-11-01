@@ -9,6 +9,6 @@ namespace Infrastructure.IService
         Task<List<ResponseEquipment>> GetEquipment();
         Task<List<ResponseEquipment>> GetEquipmentFix();
         Task<ResponseEquipment> GetById(Guid equipmentId);
-
+        Task<ResponseEquipment> ChangeStatus(Guid id, string v);
     }
 }

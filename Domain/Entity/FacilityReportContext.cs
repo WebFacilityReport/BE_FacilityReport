@@ -21,26 +21,27 @@ namespace Domain.Entity
         public virtual DbSet<Image> Images { get; set; } = null!;
         public virtual DbSet<Job> Jobs { get; set; } = null!;
         public virtual DbSet<Resource> Resources { get; set; } = null!;
+        public virtual DbSet<Notification> Notifications { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-ULDR55OI\\MSSQLSERVER01;Database=FacilityReport;User ID=sa;Password=12345;TrustServerCertificate=True;MultipleActiveResultSets=true");
+                optionsBuilder.UseSqlServer(GetConnectionString());
             }
         }
 
-        //private string GetConnectionString()
-        //{
-        //    IConfiguration config = new ConfigurationBuilder()
-        //     .SetBasePath(Directory.GetCurrentDirectory())
-        //    .AddJsonFile("appsettings.json", true, true)
-        //    .Build();
-        //    var strConn = config["ConnectString:DatabaseConnection"];
+        private string GetConnectionString()
+        {
+            IConfiguration config = new ConfigurationBuilder()
+             .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.Development.json", true, true)
+            .Build();
+            var strConn = config["ConnectString:DatabaseConnection"];
 
-        //    return strConn;
-        //}
+            return strConn;
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>(entity =>
@@ -66,7 +67,7 @@ namespace Domain.Entity
                     .HasColumnName("address");
 
                 entity.Property(e => e.Birthday)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("birthday");
 
                 entity.Property(e => e.Email)
@@ -109,7 +110,7 @@ namespace Domain.Entity
                     .HasColumnName("equipmentId");
 
                 entity.Property(e => e.CreatedAt)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("created_at");
 
                 entity.Property(e => e.ImageEquip)
@@ -157,7 +158,7 @@ namespace Domain.Entity
                     .HasColumnName("comment");
 
                 entity.Property(e => e.CreatedAt)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("created_at");
 
                 entity.Property(e => e.EquipmentId).HasColumnName("equipmentId");
@@ -197,7 +198,7 @@ namespace Domain.Entity
                     .HasColumnName("historyId");
 
                 entity.Property(e => e.Date)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("date");
 
                 entity.Property(e => e.EquipmentId).HasColumnName("equipmentId");
@@ -239,7 +240,7 @@ namespace Domain.Entity
                     .HasColumnName("imageId");
 
                 entity.Property(e => e.DateImgae)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("dateImgae");
 
                 entity.Property(e => e.NameImage)
@@ -273,13 +274,13 @@ namespace Domain.Entity
                     .HasColumnName("jobId");
 
                 entity.Property(e => e.CreatedAt)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("created_at");
 
                 entity.Property(e => e.CreatorId).HasColumnName("creatorId");
 
                 entity.Property(e => e.Deadline)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("deadline");
 
                 entity.Property(e => e.Description)
@@ -330,7 +331,7 @@ namespace Domain.Entity
                     .HasColumnName("resourcesId");
 
                 entity.Property(e => e.CreatedAt)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("created_at");
 
                 entity.Property(e => e.Description)
@@ -370,6 +371,27 @@ namespace Domain.Entity
                     .HasForeignKey<Resource>(d => d.JobId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Resources__jobId__4316F928");
+            });
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.ToTable("Notification");
+
+                entity.Property(e => e.NotificationId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.AccountId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.Message)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+                entity.Property(e => e.Title)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.HasOne(d => d.Account).WithMany(p => p.Notifications)
+                    .HasForeignKey(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -6,6 +6,7 @@ using Infrastructure.IUnitofwork;
 using Infrastructure.Model.Request.RequestTask;
 using Infrastructure.Model.Response.ResponseTask;
 using System.Security.Principal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace Infrastructure.IService.ServiceImplement
@@ -40,9 +41,8 @@ namespace Infrastructure.IService.ServiceImplement
                 if (resource.Status.Equals(StatusResource.ACTIVE.ToString()))
                 {
                     job.CreatorId = account.AccountId;
-                    job.NameTask = NAMETASK.EQUIPMENT.ToString();
+                    job.NameTask = NAMETASK.CREATEEQUIPMENT.ToString();
                     job.Status = StatusTask.ACTIVE.ToString();
-
                     if (resource.TotalQuantity > resource.UsedQuantity)
                     {
                         resource.UsedQuantity += 1;
@@ -99,7 +99,7 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseTask> ChangeStatus(Guid taskId, string status)
         {
             var change = await _unitofWork.Task.GetById(taskId);
-            if (change.Status.Equals(StatusTask.INACTIVE.ToString()) || change.Status.Equals(StatusTask.DONE.ToString()))
+            if (change.Status.Equals(StatusTask.REJECT.ToString()) || change.Status.Equals(StatusTask.DONE.ToString()))
             {
                 throw new Exception("Không được thay đổi Status nữa");
             }
@@ -138,8 +138,9 @@ namespace Infrastructure.IService.ServiceImplement
                     var job = _mapper.Map<Job>(requestUpdateStatusHistory);
                     job.CreatorId = account.AccountId;
                     job.Status = StatusTask.ACTIVE.ToString();
-                    job.NameTask = NAMETASK.EQUIPMENT.ToString();
+                    job.NameTask = NAMETASK.FIXEQUIPMENT.ToString();
                     job.HistoryEquipments.EquipmentId = requestUpdateStatusHistory.EquipmentId;
+                    job.CreatedAt = DateTime.UtcNow;
                     if (job.Deadline <= job.CreatedAt.AddHours(2))
                     {
                         throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
@@ -166,7 +167,7 @@ namespace Infrastructure.IService.ServiceImplement
                 return _mapper.Map<ResponseTask>(update);
             }
 
-            throw new Exception("Không cần phải Update nữa");
+            throw new Exception("Không cần phải Update nữa (phải được in ACTIVE)");
 
         }
 
@@ -205,7 +206,7 @@ namespace Infrastructure.IService.ServiceImplement
                 if (resource.Status.Equals(StatusResource.ACTIVE.ToString()))
                 {
                     job.CreatorId = account.AccountId;
-                    job.NameTask = NAMETASK.EQUIPMENT.ToString();
+                    job.NameTask = NAMETASK.CREATEEQUIPMENT.ToString();
                     job.Status = StatusTask.ACTIVE.ToString();
 
                     if (resource.TotalQuantity > resource.UsedQuantity)
@@ -247,7 +248,7 @@ namespace Infrastructure.IService.ServiceImplement
                 {
                     var job = _mapper.Map<Job>(requestUpdateStatusHistory);
                     job.Status = StatusTask.ACTIVE.ToString();
-                    job.NameTask = NAMETASK.EQUIPMENT.ToString();
+                    job.NameTask = NAMETASK.FIXEQUIPMENT.ToString();
                     job.HistoryEquipments.EquipmentId = requestUpdateStatusHistory.EquipmentId;
                     job.CreatedAt = vietnamNow;
                     if (job.Deadline <= job.CreatedAt.AddHours(2))
@@ -263,6 +264,97 @@ namespace Infrastructure.IService.ServiceImplement
                 throw new Exception("Thiết bị không bị hỏng ");
             }
             throw new Exception("Không thể giao task");
+        }
+
+        public async Task<List<ResponseTask>> GetListTaskStaff(Guid staffId)
+        {
+            var staff = await _unitofWork.Task.GetAllStaff(staffId);
+            return _mapper.Map<List<ResponseTask>>(staff);
+        }
+
+        public async Task<ResponseTask> ChangeStatusStaff(Guid taskId, string status)
+        {
+            var task = await _unitofWork.Task.GetById(taskId);
+            if (task.Status.Equals(StatusTask.ACTIVE.ToString()))
+            {
+                task.Status = status;
+                if (task.Status.Equals(StatusTask.DONE.ToString()) && task.NameTask.Equals(NAMETASK.RESOURCE.ToString()))
+                {
+                    task.Resource.Status = StatusResource.ACTIVE.ToString();
+                    var update = _unitofWork.Task.Update(task);
+                    _unitofWork.Commit();
+                    return _mapper.Map<ResponseTask>(update);
+                }
+                if (task.Status.Equals(StatusTask.REJECT.ToString()) && task.NameTask.Equals(NAMETASK.RESOURCE.ToString()))
+                {
+                    task.Resource.Status = StatusResource.INACTIVE.ToString();
+                    var update = _unitofWork.Task.Update(task);
+                    _unitofWork.Commit();
+                    return _mapper.Map<ResponseTask>(update);
+                }
+                if (task.Status.Equals(StatusTask.DONE.ToString()) && task.NameTask.Equals(NAMETASK.CREATEEQUIPMENT.ToString()))
+                {
+                    var checkhistory = await _unitofWork.HistoryEquipment.SearchTaskById(task.JobId);
+                    var checkequipemnt = await _unitofWork.HistoryEquipment.GetByEquipmentId(checkhistory.EquipmentId);
+                    checkequipemnt.Status = STATUSEQUIPMENT.ACTIVE.ToString();
+                    checkequipemnt.Equipment.Status = STATUSEQUIPMENT.ACTIVE.ToString();
+                    var update = _unitofWork.Task.Update(task);
+                    _unitofWork.Equiptment.Update(checkequipemnt.Equipment);
+                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipments);
+                    _unitofWork.Commit();
+                    return _mapper.Map<ResponseTask>(update);
+                }
+                if (task.Status.Equals(StatusTask.REJECT.ToString()) && task.NameTask.Equals(NAMETASK.CREATEEQUIPMENT.ToString()))
+                {
+
+                    var checkhistory = await _unitofWork.HistoryEquipment.SearchTaskById(task.JobId);
+                    var checkequipemnt = await _unitofWork.HistoryEquipment.GetByEquipmentId(checkhistory.EquipmentId);
+                    checkequipemnt.Status = STATUSEQUIPMENT.INACTIVE.ToString();
+                    checkequipemnt.Equipment.Status = STATUSEQUIPMENT.INACTIVE.ToString();
+                    var update = _unitofWork.Task.Update(task);
+                    _unitofWork.Equiptment.Update(checkequipemnt.Equipment);
+                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipments);
+                    _unitofWork.Commit();
+                    return _mapper.Map<ResponseTask>(update);
+                }
+                if (task.Status.Equals(StatusTask.DONE.ToString()) && task.NameTask.Equals(NAMETASK.FIXEQUIPMENT.ToString()))
+                {
+                    var checkhistory = await _unitofWork.HistoryEquipment.SearchTaskById(task.JobId);
+                    var checkequipemnt = await _unitofWork.HistoryEquipment.GetByEquipmentId(checkhistory.EquipmentId);
+                    checkequipemnt.Status = STATUSEQUIPMENT.ACTIVE.ToString();
+                    checkequipemnt.Equipment.Status = STATUSEQUIPMENT.ACTIVE.ToString();
+                    var update = _unitofWork.Task.Update(task);
+                    _unitofWork.Equiptment.Update(checkequipemnt.Equipment);
+                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipments);
+                    _unitofWork.Commit();
+                    return _mapper.Map<ResponseTask>(update);
+                }
+                if (task.Status.Equals(StatusTask.REJECT.ToString()) && task.NameTask.Equals(NAMETASK.FIXEQUIPMENT.ToString()))
+                {
+                    var checkhistory = await _unitofWork.HistoryEquipment.SearchTaskById(task.JobId);
+                    var checkequipemnt = await _unitofWork.HistoryEquipment.GetByEquipmentId(checkhistory.EquipmentId);
+                    checkequipemnt.Status = STATUSEQUIPMENT.INACTIVE.ToString();
+                    checkequipemnt.Equipment.Status = STATUSEQUIPMENT.FIX.ToString();
+                    var update = _unitofWork.Task.Update(task);
+                    _unitofWork.Equiptment.Update(checkequipemnt.Equipment);
+                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipments);
+                    _unitofWork.Commit();
+                    return _mapper.Map<ResponseTask>(update);
+                }
+
+            }
+            throw new Exception("Cancel Task (Staff) || DONE Task (Staff)");
+        }
+
+        public async Task<List<ResponseTask>> SearchAllTask(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                var tasks = await _unitofWork.Task.GetAll();
+                return _mapper.Map<List<ResponseTask>>(tasks);
+            }
+            var task = await _unitofWork.Task.SearchTaskGetll(query);
+            return _mapper.Map<List<ResponseTask>>(task);
         }
     }
 }

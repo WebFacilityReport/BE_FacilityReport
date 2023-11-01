@@ -127,10 +127,10 @@ public class ApplicationMapper : Profile
                  {
                      Date = vietnamNow,
                      NameHistory = NAMETASK.CREATEEQUIPMENT.ToString(),
-                     Status = StatusTask.INACTIVE.ToString(),
+                     Status = STATUSEQUIPMENT.INACTIVE.ToString(),
                      Equipment = new Equipment
                      {
-                         Status = StatusTask.INACTIVE.ToString(),
+                         Status = STATUSEQUIPMENT.INACTIVE.ToString(),
                          ImageEquip = c.ImageEquip,
                          Location = c.Location,
                          ResourcesId = c.ResourceId,
@@ -150,10 +150,10 @@ public class ApplicationMapper : Profile
                  {
                      Date = vietnamNow,
                      NameHistory = NAMETASK.CREATEEQUIPMENT.ToString(),
-                     Status = StatusTask.INACTIVE.ToString(),
+                     Status = STATUSEQUIPMENT.INACTIVE.ToString(),
                      Equipment = new Equipment
                      {
-                         Status = StatusTask.INACTIVE.ToString(),
+                         Status = STATUSEQUIPMENT.INACTIVE.ToString(),
                          ImageEquip = c.ImageEquip,
                          Location = c.Location,
                          ResourcesId = c.ResourceId,
@@ -174,7 +174,7 @@ public class ApplicationMapper : Profile
                 {
                     Date = vietnamNow,
                     NameHistory = NAMETASK.FIXEQUIPMENT.ToString(),
-                    Status = StatusTask.INACTIVE.ToString(),
+                    Status = STATUSEQUIPMENT.INACTIVE.ToString(),
                 }));
 
         // UPDATE TASK EQUIPMENTRZ
@@ -189,7 +189,7 @@ public class ApplicationMapper : Profile
                 {
                     Date = vietnamNow,
                     NameHistory = NAMETASK.FIXEQUIPMENT.ToString(),
-                    Status = StatusTask.INACTIVE.ToString(),
+                    Status = STATUSEQUIPMENT.INACTIVE.ToString(),
                 }));
 
         //--------------------------------------------------------

@@ -29,20 +29,30 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+
+
+                if (id == null)
+                {
+                    return NotFound();
+                }
+                var job = await _jobService.GetTaskById(id);
+                if (job == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    Job = job;
+                }
+                return Page();
             }
-            var job = await _jobService.GetTaskById(id);
-            if (job == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                ViewData["Message"] = ex.Message.ToString();
+                return Page();
             }
-            else
-            {
-                Job = job;
-            }
-            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid id)
@@ -53,9 +63,20 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
                 {
                     return NotFound();
                 }
-                var job = await _jobService.ChangeStatus(id, StatusTask.INACTIVE.ToString());
-                Job = job;
+                var role = HttpContext.Session.GetString("ROLE");
+                var accountId = HttpContext.Session.GetString("ACCOUNTID");
+                if (role == "MANAGER_OFFICE")
+                {
+                    var job = await _jobService.ChangeStatusStaff(id, StatusTask.REJECT.ToString());
+                    Job = job;
+                }
+                else if( role == "STAFF")
+                {
+                    var job = await _jobService.ChangeStatusStaff(id, StatusTask.REJECT.ToString());
+                    Job = job;
+                }
                 return RedirectToPage("./Index");
+
             }
             catch (Exception ex)
             {

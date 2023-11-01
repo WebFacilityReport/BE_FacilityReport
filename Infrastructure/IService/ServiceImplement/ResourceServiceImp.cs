@@ -22,20 +22,18 @@ namespace Infrastructure.IService.ServiceImplement
         public async Task<ResponseResource> AddResource(RequestResouce requestResouce)
         {
             var task = await _unitofWork.Task.GetById(requestResouce.TaskId);
-            if (task.Status.Equals(StatusTask.ACCEPT.ToString()))
-            {
-                var resource = _mapper.Map<Resource>(requestResouce);
-                resource.UsedQuantity = 0;
-                resource.Status = StatusResource.ACTIVE.ToString();
-                resource.CreatedAt = DateTime.UtcNow;
-                task.Status = StatusTask.DONE.ToString();
-                task.Deadline = DateTime.UtcNow;
-                _unitofWork.Resource.Add(resource);
-                _unitofWork.Task.Update(task);
-                _unitofWork.Commit();
-                return _mapper.Map<ResponseResource>(resource);
-            }
-            throw new Exception("Task can't add this");
+
+            var resource = _mapper.Map<Resource>(requestResouce);
+            resource.UsedQuantity = 0;
+            resource.Status = StatusResource.ACTIVE.ToString();
+            resource.CreatedAt = DateTime.UtcNow;
+            task.Status = StatusTask.DONE.ToString();
+            task.Deadline = DateTime.UtcNow;
+            _unitofWork.Resource.Add(resource);
+            _unitofWork.Task.Update(task);
+            _unitofWork.Commit();
+            return _mapper.Map<ResponseResource>(resource);
+
         }
 
         public async Task<ResponseResource> DeleteStatus(Guid resourceId)

@@ -28,18 +28,39 @@ public class CreateFixEquipmentModel : PageModel
     public RequestUpdateStatusHistoryRZ Job { get; set; } = default!;
     public async Task<IActionResult> OnGetAsync()
     {
-        var resource = await _reService.getAllResourceACTIVEs();
-        var accountId = HttpContext.Session.GetString("ACCOUNTID");
-
-        // Check if the session value is not null or empty
-        if (!string.IsNullOrEmpty(accountId))
+        try
         {
-            var account = await _accountService.GetUsernameRz(accountId);
-            CreatorId = account.AccountId;
+
+
+            var resource = await _reService.getAllResourceACTIVEs();
+            var accountId = HttpContext.Session.GetString("ACCOUNTID");
+            var test = await _equipmentService.GetEquipmentFix();
+            // Check if the session value is not null or empty
+            if (!string.IsNullOrEmpty(accountId))
+            {
+                var account = await _accountService.GetUsernameRz(accountId);
+                CreatorId = account.AccountId;
+            }
+            ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
+            ViewData["EquipmentId"] = new SelectList((await _equipmentService.GetEquipmentFix()).Select(c => new SelectListItem
+            {
+                Text = $"{c.Location}-{c.EquipmentId}",
+                Value = c.EquipmentId.ToString()
+            }), "Value", "Text");
+            return Page();
         }
-        ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
-        ViewData["EquipmentId"] = new SelectList((await _equipmentService.GetEquipmentFix()).Select(c => c.EquipmentId), "EquipmentId");
-        return Page();
+        catch (Exception ex)
+        {
+            ViewData["Message"] = ex.Message.ToString();
+            ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
+            ViewData["EquipmentId"] = new SelectList((await _equipmentService.GetEquipmentFix()).Select(c => new SelectListItem
+            {
+                Text = $"{c.Location}-{c.EquipmentId}",
+                Value = c.EquipmentId.ToString()
+            }), "Value", "Text");
+            return Page();
+
+        }
     }
 
 
@@ -60,7 +81,11 @@ public class CreateFixEquipmentModel : PageModel
         {
             ViewData["Message"] = ex.Message.ToString();
             ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
-            ViewData["EquipmentId"] = new SelectList((await _equipmentService.GetEquipmentFix()).Select(c => c.EquipmentId), "EquipmentId");
+            ViewData["EquipmentId"] = new SelectList((await _equipmentService.GetEquipmentFix()).Select(c => new SelectListItem
+            {
+                Text = $"{c.Location}-{c.EquipmentId}",
+                Value = c.EquipmentId.ToString()
+            }), "Value", "Text");
 
             return Page();
         }

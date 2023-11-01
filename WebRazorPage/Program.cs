@@ -1,3 +1,4 @@
+using Domain.Entity;
 using Infrastructure.IService.ServiceImplement;
 using WebRazorPage.Configuration;
 
@@ -9,6 +10,8 @@ var configuration = new ConfigurationBuilder()
 .SetBasePath(builder.Environment.ContentRootPath)
 .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
 .Build();
+
+builder.Services.AddDbContext<FacilityReportContext>();
 builder.Services.AddRazorPages();
 builder.Services.DependencyInjection(configuration);
 builder.Services.AddSingleton(builder.Services.DependencyInjection(configuration));

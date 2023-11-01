@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Infrastructure.IService;
 using Infrastructure.Model.Request.RequestTask;
 using Infrastructure.Model.Response.ResponseTask;
+using Domain.Entity;
+using Domain.Enum;
 
 namespace WebRazorPage.Pages.ManagerOffice.Job
 {
@@ -24,38 +26,58 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+                var job = await _jobService.GetTaskById(id);
+                if (job == null)
+                {
+                    return NotFound();
+                }
+                Job = job;
+                //ViewData["CreatorId"] = new SelectList(_context.Accounts, "AccountId", "Address");
+                //ViewData["EmployeeId"] = new SelectList(_context.Accounts, "AccountId", "Address");
+
+                return Page();
             }
-            var job = await _jobService.GetTaskById(id);
-            if (job == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                ViewData["Message"] = ex.Message.ToString();
+                return Page();
             }
-            Job = job;
-            //ViewData["CreatorId"] = new SelectList(_context.Accounts, "AccountId", "Address");
-            //ViewData["EmployeeId"] = new SelectList(_context.Accounts, "AccountId", "Address");
-            RequestJob = new RequestUpdateTask
-            {
-                Description = Job.Description,
-                Deadline = Job.Deadline,
-                Title = Job.Title
-            };
-            return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
+                var role = HttpContext.Session.GetString("ROLE");
+                var accountId = HttpContext.Session.GetString("ACCOUNTID");
+                if (role == "MANAGER_OFFICE")
+                {
+                    RequestJob.Description = Job.Description;
+                    RequestJob.Title = Job.Title;
+                    RequestJob.Deadline = Job.Deadline;
+                    Job = await _jobService.UpdateTask(Job.TaskId, RequestJob);
+                    return RedirectToPage("./Index");
+                }
+                else if (role == "STAFF")
+                {
+                    Job = await _jobService.ChangeStatusStaff(Job.TaskId, StatusTask.DONE.ToString());
+                    return RedirectToPage("./Index");
+                }
                 return Page();
             }
-           
-            Job = await _jobService.UpdateTask(Job.TaskId, RequestJob);
-            return RedirectToPage("./Index");
+            catch (Exception ex)
+            {
+                ViewData["Message"] = ex.Message.ToString();
+                return Page();
+            }
         }
     }
 }

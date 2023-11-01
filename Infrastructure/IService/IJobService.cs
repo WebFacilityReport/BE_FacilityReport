@@ -11,12 +11,14 @@ namespace Infrastructure.IService
         Task<ResponseTask> AddTaskResource(RequestTaskResource requestTaskResource);
         Task<ResponseTask> AddTaskEquipmentByResourceId(RequestTaskEquipment requestTaskEquipment);
         Task<ResponseTask> ChangeStatus(Guid taskId, string status);
+        Task<ResponseTask> ChangeStatusStaff(Guid taskId, string status);
         Task<ResponseTask> UpdateTask(Guid taskId, RequestUpdateTask requestUpdateTask);
         Task<ResponseTask> UpdateHistoryEquipment(RequestUpdateStatusHistory requestUpdateStatusHistory);
         Task<ResponseTask> AddTaskResourceRz(RequestTaskResourceRz requestTaskResource);
         Task<ResponseTask> AddTaskEquipmentByResourceIdRZ(RequestTaskEquipmentRZ requestTaskEquipment);
         Task<ResponseTask> UpdateHistoryEquipmentRZ(RequestUpdateStatusHistoryRZ requestUpdateStatusHistory);
-
+        Task<List<ResponseTask>> GetListTaskStaff(Guid staffId);
+        Task<List<ResponseTask>> SearchAllTask(string query);
 
     }
 }

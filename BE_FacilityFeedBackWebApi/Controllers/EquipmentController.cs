@@ -17,7 +17,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             _equipmentService = equipmentService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<ResponseFeedBack>> GetAllEquipment()
         {
@@ -29,7 +29,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<ResponseFeedBack>> GetEquipmentById(Guid feedBackId)
         {

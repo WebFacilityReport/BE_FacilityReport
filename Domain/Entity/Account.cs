@@ -25,5 +25,7 @@ namespace Domain.Entity
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Job> JobCreators { get; set; }
         public virtual ICollection<Job> JobEmployees { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
+
     }
 }

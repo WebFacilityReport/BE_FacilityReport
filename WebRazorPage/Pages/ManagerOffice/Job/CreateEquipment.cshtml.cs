@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Infrastructure.IService;
 using Infrastructure.Model.Request.RequestTask;
 using Domain.Enum;
+using Domain.Entity;
 
 namespace WebRazorPage.Pages.ManagerOffice.Job
 {
@@ -28,22 +29,41 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
         public async Task<IActionResult> OnGetAsync()
         {
             var resource = await _reService.getAllResourceACTIVEs();
-            var accountId = HttpContext.Session.GetString("ACCOUNTID");
 
-            // Check if the session value is not null or empty
-            if (!string.IsNullOrEmpty(accountId))
+            try
             {
-                var account = await _accountService.GetUsernameRz(accountId);
-                CreatorId = account.AccountId;
+                var accountId = HttpContext.Session.GetString("ACCOUNTID");
+
+                // Check if the session value is not null or empty
+                if (!string.IsNullOrEmpty(accountId))
+                {
+                    var account = await _accountService.GetUsernameRz(accountId);
+                    CreatorId = account.AccountId;
+                }
+                ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
+                ViewData["ResourceId"] = new SelectList(resource.Select(c => new SelectListItem
+                {
+                    Text = $"{c.NameResource}-{c.ResourcesId}",
+                    Value = c.ResourcesId.ToString() // Chuyển ResourceId thành chuỗi (string)
+                }), "Value", "Text"); return Page();
             }
-            ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
-            ViewData["ResourceId"] = new SelectList(resource.Select(c => c.ResourcesId), "ResourceId");
-            return Page();
+            catch (Exception ex)
+            {
+                ViewData["Message"] = ex.Message.ToString();
+                ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
+                ViewData["ResourceId"] = new SelectList(resource.Select(c => new SelectListItem
+                {
+                    Text = $"{c.NameResource}-{c.ResourcesId}",
+                    Value = c.ResourcesId.ToString() // Chuyển ResourceId thành chuỗi (string)
+                }), "Value", "Text");
+                return Page();
+            }
         }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
+
             try
             {
                 if (!ModelState.IsValid || Job == null)
@@ -58,7 +78,11 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
             {
                 ViewData["Message"] = ex.Message.ToString();
                 ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
-                ViewData["ResourceId"] = new SelectList((await _reService.getAllResourceACTIVEs()).Select(c => c.ResourcesId), "ResourceId");
+                ViewData["ResourceId"] = new SelectList((await _reService.getAllResourceACTIVEs()).Select(c => new SelectListItem
+                {
+                    Text = $"{c.NameResource}-{c.ResourcesId}",
+                    Value = c.ResourcesId.ToString() // Chuyển ResourceId thành chuỗi (string)
+                }), "Value", "Text");
 
                 return Page();
             }

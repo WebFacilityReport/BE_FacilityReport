@@ -1,0 +1,65 @@
+﻿@page
+@model WebRazorPage.Pages.ManagerOffice.Equipment.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<a href="/UIROLE" class="btn btn-primary">Back</a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipment[0].EquipmentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipment[0].ResourcesId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipment[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipment[0].Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipment[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipment[0].ImageEquip)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Equipment) {
+        <tr>
+            <td>
+                    @Html.DisplayFor(modelItem => item.EquipmentId)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.ResourcesId)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageEquip)
+                </td>
+            <td>
+                @*<a asp-page="./Edit" asp-route-id="@item.EquipmentId">Edit</a> |*@
+                <a asp-page="./Details" asp-route-id="@item.EquipmentId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.EquipmentId">Delete</a>|
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

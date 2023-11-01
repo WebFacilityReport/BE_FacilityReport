@@ -20,7 +20,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<List<ResponseTask>>> GetAllTask()
         {
@@ -33,7 +33,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPost]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<ResponseTask>> CreateTaskResouce(RequestTaskResource requestTaskResource)
         {
@@ -46,7 +46,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPost]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<ResponseTask>> CreateTaskEquipment(RequestTaskEquipment requestTaskEquipment)
         {
@@ -59,7 +59,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPost]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<ResponseTask>> FixTaskEquipment(RequestUpdateStatusHistory requestUpdateStatusHistory)
         {
@@ -72,7 +72,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpGet]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<ResponseTask>> GetTaskById(Guid taskId)
         {
@@ -86,7 +86,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         }
 
         [HttpPatch]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<ResponseTask>> ChangeStatus(Guid taskId, string status)
         {
@@ -99,7 +99,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpPatch]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<ResponseTask>> UpdateTask(Guid taskId, RequestUpdateTask requestUpdateTask)
         {

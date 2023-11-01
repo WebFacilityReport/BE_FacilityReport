@@ -3,10 +3,8 @@
 public enum StatusTask
 {
     ACTIVE,
-    INACTIVE,
-    ACCEPT,
-    APPLY,
-    DONE
+    DONE,
+    REJECT
 }
 public enum StatusResource
 {
@@ -22,6 +20,7 @@ public enum STATUSEQUIPMENT
 {
     FIX,
     INACTIVE,
-    ACTIVE
+    ACTIVE,
+    REJECT
 }
 

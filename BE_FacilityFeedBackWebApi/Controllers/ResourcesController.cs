@@ -21,7 +21,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
 
         // GET: api/Resources
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<List<ResponseResource>>> GetResources()
         {
             var response = await _resourceService.GetAllResource();
@@ -34,7 +34,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<Resource>> GetById(Guid resourceId)
         {
@@ -48,7 +48,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
         }
         
         [HttpPatch]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<Resource>> UpdateStatus(Guid resourceId, string status)
         {
             var response = await _resourceService.UpdateStatus(resourceId, status);
@@ -60,7 +60,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
             });
         }
         [HttpDelete]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<Resource>> DeleteStatus(Guid resourceId)
         {

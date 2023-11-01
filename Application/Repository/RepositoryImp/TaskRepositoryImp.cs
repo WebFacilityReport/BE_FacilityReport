@@ -18,7 +18,7 @@ namespace Application.Repository.RepositoryImp
                 .Include(c => c.HistoryEquipments)
                 .ThenInclude(c => c.Equipment)
                 .FirstOrDefaultAsync(c => c.HistoryEquipments.EquipmentId == equipmentId
-                       && c.HistoryEquipments.Status.Equals(StatusTask.INACTIVE.ToString())
+                       && c.HistoryEquipments.Job.Status.Equals(StatusTask.ACTIVE.ToString())
                        && c.HistoryEquipments.NameHistory.Equals(NAMETASK.FIXEQUIPMENT.ToString())
                        );
             if (check != null)
@@ -28,15 +28,24 @@ namespace Application.Repository.RepositoryImp
             return check;
         }
 
-        public Task<List<Job>> GetAll()
+        public async Task<List<Job>> GetAll()
         {
-            return _context.Set<Job>()
+            return await _context.Set<Job>()
                 .Include(a => a.Creator)
                 .Include(a => a.Employee)
                 .Include(r => r.Resource)
                 .Include(r => r.Resource)
                 .OrderByDescending(j => j.CreatedAt)
                 .ToListAsync();
+        }
+
+        public async Task<List<Job>> GetAllStaff(Guid staffId)
+        {
+            return await _context.Set<Job>().Include(a => a.Creator)
+                .Include(a => a.Employee)
+                .Include(r => r.Resource)
+                .Include(r => r.Resource)
+                .OrderByDescending(j => j.CreatedAt).Where(c => c.EmployeeId == staffId).ToListAsync();
         }
 
         public async Task<Job> GetById(Guid taskId)
@@ -51,6 +60,18 @@ namespace Application.Repository.RepositoryImp
                 throw new Exception("Khong tim thay Task Id");
             }
             return task;
+        }
+
+        public async Task<List<Job>> SearchTaskGetll(string query)
+        {
+            return await _context.Set<Job>()
+                .Include(a => a.Creator)
+                .Include(a => a.Employee)
+                .Include(r => r.Resource)
+                .OrderByDescending(j => j.CreatedAt)
+                .Where(c=>c.NameTask.ToLower().Contains(query.ToLower()) || c.Title.Contains(query.ToLower()))
+                .ToListAsync();
+
         }
     }
 }
