@@ -25,7 +25,7 @@
     </div>
     <form method="get">
         <div class="form-group">
-            <label for="Query">Từ khóa:</label>
+            <label for="Query">Từ khóa: NameTask || Status</label>
             <input type="text" asp-for="SearchQuery" class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary">Tìm</button>
@@ -114,7 +114,13 @@ else if (role == "STAFF")
 {
     <h1>Index</h1>
     <a href="/UIROLE" class="btn btn-primary">Back</a>
-
+    <form method="get">
+        <div class="form-group">
+            <label for="Query">Từ khóa: NameResource or STATUS </label>
+            <input type="text" asp-for="SearchQuery" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Tìm</button>
+    </form> 
     <table class="table">
         <thead>
             <tr>

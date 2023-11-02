@@ -17,7 +17,7 @@ namespace Infrastructure.IService
         Task<ResponseTask> AddTaskResourceRz(RequestTaskResourceRz requestTaskResource);
         Task<ResponseTask> AddTaskEquipmentByResourceIdRZ(RequestTaskEquipmentRZ requestTaskEquipment);
         Task<ResponseTask> UpdateHistoryEquipmentRZ(RequestUpdateStatusHistoryRZ requestUpdateStatusHistory);
-        Task<List<ResponseTask>> GetListTaskStaff(Guid staffId);
+        Task<List<ResponseTask>> GetListTaskStaff(Guid staffId,string SearchQuery);
         Task<List<ResponseTask>> SearchAllTask(string query);
 
     }

@@ -2,6 +2,7 @@
 using Infrastructure.IService;
 using Infrastructure.Model.Response.ResponseTask;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Enum;
 
 namespace WebRazorPage.Pages.ManagerOffice.Job
 {
@@ -15,8 +16,11 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
             _jobService = jobService;
             _accountService = accountService;
         }
+
+
         [BindProperty(SupportsGet = true)]
         public string SearchQuery { get; set; }
+        [BindProperty(SupportsGet = true)]
         public List<ResponseTask> Job { get; set; } = default!;
 
         public async Task OnGetAsync()
@@ -27,13 +31,12 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
                 if (role == "MANAGER_OFFICE")
                 {
                     Job = await _jobService.SearchAllTask(SearchQuery);
-
                 }
                 else if (role == "STAFF")
                 {
                     var username =  HttpContext.Session.GetString("ACCOUNTID");
                     var account = await _accountService.GetUsernameRz(username);
-                    Job = await _jobService.GetListTaskStaff(account.AccountId);
+                    Job = await _jobService.GetListTaskStaff(account.AccountId, SearchQuery);
                 }
             }
             catch (Exception ex)

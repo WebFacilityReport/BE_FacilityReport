@@ -3,6 +3,7 @@ using Application.Repository;
 using Domain.Entity;
 using Domain.Enum;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Repository.RepositoryImp
 {
@@ -39,13 +40,15 @@ namespace Application.Repository.RepositoryImp
                 .ToListAsync();
         }
 
-        public async Task<List<Job>> GetAllStaff(Guid staffId)
+        public async Task<List<Job>> GetAllStaff(Guid staffId, string SearchQuery)
         {
             return await _context.Set<Job>().Include(a => a.Creator)
                 .Include(a => a.Employee)
                 .Include(r => r.Resource)
                 .Include(r => r.Resource)
-                .OrderByDescending(j => j.CreatedAt).Where(c => c.EmployeeId == staffId).ToListAsync();
+            .OrderByDescending(j => j.CreatedAt)
+            .Where(c => c.EmployeeId == staffId && (c.NameTask.ToUpper().Contains(SearchQuery.ToUpper()) || c.Status.Contains(SearchQuery.ToUpper())))
+            .ToListAsync();
         }
 
         public async Task<Job> GetById(Guid taskId)
@@ -69,7 +72,7 @@ namespace Application.Repository.RepositoryImp
                 .Include(a => a.Employee)
                 .Include(r => r.Resource)
                 .OrderByDescending(j => j.CreatedAt)
-                .Where(c=>c.NameTask.ToLower().Contains(query.ToLower()) || c.Title.Contains(query.ToLower()))
+                .Where(c => c.NameTask.ToLower().Contains(query.ToLower()) || c.Title.Contains(query.ToLower()))
                 .ToListAsync();
 
         }

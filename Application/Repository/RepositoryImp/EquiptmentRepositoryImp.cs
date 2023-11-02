@@ -53,5 +53,16 @@ namespace Application.Repository.RepositoryImp
                 .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync();
         }
+
+        public async Task<List<Equipment>> SearchGetEquipment(string query)
+        {
+            return await _context.Set<Equipment>()
+                 .Include(c => c.HistoryEquipments)
+                 .Include(c => c.Resources)
+                 .OrderByDescending(c => c.CreatedAt)
+                 .Where(c => c.Location.ToLower()
+                 .Contains(query.ToLower()) || c.Status.ToUpper().Contains(query.ToUpper()))
+                 .ToListAsync();
+        }
     }
 }

@@ -32,12 +32,25 @@ namespace Application.Repository.RepositoryImp
 
         public async Task<Resource> GetById(Guid resourceId)
         {
-            var resource = await _context.Set<Resource>().Include(c => c.Job).Include(c => c.Equipment).FirstOrDefaultAsync(c => c.ResourcesId == resourceId);
+            var resource = await _context.Set<Resource>()
+                .Include(c => c.Job)
+                .Include(c => c.Equipment)
+                .FirstOrDefaultAsync(c => c.ResourcesId == resourceId);
             if (resource == null)
             {
                 throw new Exception("Khong tim thay resource Id");
             }
             return resource;
+        }
+
+        public async Task<List<Resource>> SearchGetALLResource(string query)
+        {
+            return await _context.Set<Resource>()
+                  .Include(c => c.Job)
+                  .Include(c => c.Equipment)
+                  .OrderByDescending(c => c.CreatedAt)
+                  .Where(c => c.NameResource.ToUpper().Contains(query.ToUpper()) || c.Status.ToUpper().Contains(query.ToUpper()))
+                  .ToListAsync();
         }
     }
 }

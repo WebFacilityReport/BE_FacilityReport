@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Entity;
 using Infrastructure.IService;
 using Infrastructure.Model.Response.ResponseEquipment;
+using Infrastructure.Model.Response.ResponseResource;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WebRazorPage.Pages.ManagerOffice.Equipment
 {
@@ -21,12 +23,14 @@ namespace WebRazorPage.Pages.ManagerOffice.Equipment
         }
 
         public List<ResponseEquipment> Equipment { get; set; } = default!;
-
+        [BindProperty(SupportsGet = true)]
+        public string SearchQuery { get; set; }
         public async Task OnGetAsync()
         {
+            
             try
             {
-                Equipment = await _equipmentService.GetEquipment();
+                Equipment = await _equipmentService.SearchGetEquipment(SearchQuery);
             }
             catch (Exception ex)
             {

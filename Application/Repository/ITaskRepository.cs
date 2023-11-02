@@ -7,7 +7,7 @@ namespace Application.Repository
     {
         Task<List<Job>> GetAll();
         Task<List<Job>> SearchTaskGetll(string query);
-        Task<List<Job>> GetAllStaff(Guid staffId);
+        Task<List<Job>> GetAllStaff(Guid staffId, string SearchQuery);
         Task<Job> GetById(Guid taskId);
         Task<Job> CheckExsitTaskbyHistoryWithEquipmentId(Guid equipmentId);
     }

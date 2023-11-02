@@ -6,6 +6,7 @@ namespace Infrastructure.IService
     public interface IReService
     {
         Task<List<ResponseResource>> GetAllResource();
+        Task<List<ResponseResource>> SearchGetAllResource(string query);
         Task<ResponseResource> GetById(Guid resourceId);
         Task<ResponseResource> AddResource(RequestResouce requestResouce);
         Task<ResponseResource> UpdateStatus(Guid resourceId, string status);

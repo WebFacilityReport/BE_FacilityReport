@@ -3,86 +3,98 @@
 
 @{
     ViewData["Title"] = "Index";
+    var role = HttpContext.Session.GetString("ROLE");
+    var accountId = HttpContext.Session.GetString("ACCOUNTID");
 }
 
-<h1>Index</h1>
-<a href="/UIROLE" class="btn btn-primary">Back</a>
+@if (role == "MANAGER_OFFICE" || role == "MANAGER")
+{
+    <h1>Index</h1>
+    <a href="/UIROLE" class="btn btn-primary">Back</a>
+    <form method="get">
+        <div class="form-group">
+            <label for="Query">Từ khóa: NameResource or STATUS </label>
+            <input type="text" asp-for="SearchQuery" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Tìm</button>
+    </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].ResourcesId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].TaskId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].NameResource)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].UsedQuantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].TotalQuantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].Size)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resource[0].Image)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Resource)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ResourcesId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NameResource)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UsedQuantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalQuantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Size)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Image)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.ResourcesId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.ResourcesId">Details</a>|
-                    <a asp-page="./Delete" asp-route-id="@item.ResourcesId">Delete</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].ResourcesId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].TaskId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].NameResource)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].UsedQuantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].TotalQuantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].Size)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].Image)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Resource)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResourcesId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NameResource)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UsedQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Size)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Image)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.ResourcesId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ResourcesId">Details</a>|
+                        <a asp-page="./Delete" asp-route-id="@item.ResourcesId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

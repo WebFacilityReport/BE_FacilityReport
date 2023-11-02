@@ -266,9 +266,14 @@ namespace Infrastructure.IService.ServiceImplement
             throw new Exception("Không thể giao task");
         }
 
-        public async Task<List<ResponseTask>> GetListTaskStaff(Guid staffId)
+        public async Task<List<ResponseTask>> GetListTaskStaff(Guid staffId, string SearchQuery)
         {
-            var staff = await _unitofWork.Task.GetAllStaff(staffId);
+            if (string.IsNullOrEmpty(SearchQuery))
+            {
+                var tasks = await _unitofWork.Task.GetAll();
+                return _mapper.Map<List<ResponseTask>>(tasks);
+            }
+            var staff = await _unitofWork.Task.GetAllStaff(staffId,SearchQuery);
             return _mapper.Map<List<ResponseTask>>(staff);
         }
 

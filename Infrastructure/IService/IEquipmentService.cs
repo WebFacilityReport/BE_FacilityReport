@@ -7,6 +7,7 @@ namespace Infrastructure.IService
     public interface IEquipmentService
     {
         Task<List<ResponseEquipment>> GetEquipment();
+        Task<List<ResponseEquipment>> SearchGetEquipment(string query);
         Task<List<ResponseEquipment>> GetEquipmentFix();
         Task<List<ResponseEquipment>> GetEquipmentActive();
         Task<ResponseEquipment> GetById(Guid equipmentId);
