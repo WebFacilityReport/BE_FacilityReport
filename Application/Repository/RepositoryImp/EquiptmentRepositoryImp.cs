@@ -11,6 +11,16 @@ namespace Application.Repository.RepositoryImp
         {
         }
 
+        public async Task<List<Equipment>> GetallEquipmentActive()
+        {
+            return await _context.Set<Equipment>()
+                .Include(c => c.HistoryEquipments)
+                .Include(c => c.Resources)
+                .OrderByDescending(c => c.CreatedAt)
+                .Where(c => c.Status.Equals(STATUSEQUIPMENT.ACTIVE.ToString()))
+                .ToListAsync();
+        }
+
         public async Task<List<Equipment>> GetallEquipmentFix()
         {
             return await _context.Set<Equipment>()

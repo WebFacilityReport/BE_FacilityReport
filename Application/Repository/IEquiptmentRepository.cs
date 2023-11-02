@@ -9,5 +9,7 @@ namespace Application.Repository
         Task<List<Equipment>> GetEquipment();
         Task<Equipment> GetById(Guid id);
         Task<List<Equipment>> GetallEquipmentFix();
+        Task<List<Equipment>> GetallEquipmentActive();
+
     }
 }

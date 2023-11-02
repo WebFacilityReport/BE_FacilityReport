@@ -59,4 +59,29 @@ public class FeedbackServiceImp : IFeedbackService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<ResponseFeedBack> CreateFeedBackRz(RequestFeedBackRZ requestFeedBackrz)
+    {
+        await _unitofWork.Account.GetById(requestFeedBackrz.AccountId);
+        var feedback = _mapper.Map<Feedback>(requestFeedBackrz);
+
+        var equipment = await _unitofWork.Equiptment.GetById(requestFeedBackrz.EquipmentId);
+
+        feedback.NumberFeedBack = 0;
+        feedback.Status = STATUSFEEDBACK.ACTIVE.ToString();
+        feedback.CreatedAt = vietnamNow;
+        equipment.Status = STATUSEQUIPMENT.FIX.ToString();
+
+        _unitofWork.Equiptment.Update(equipment);
+        _unitofWork.Feedback.Add(feedback);
+        _unitofWork.Commit();
+
+        return _mapper.Map<ResponseFeedBack>(feedback);
+    }
+
+    public async Task<List<ResponseFeedBack>> GetFeedBackbyAccountRZ(Guid accountid)
+    {
+        var feedback = await _unitofWork.Feedback.GetAllByAccountId(accountid);
+        return _mapper.Map<List<ResponseFeedBack>>(feedback);
+    }
 }

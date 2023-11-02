@@ -41,6 +41,12 @@ namespace Infrastructure.IService.ServiceImplement
             return _mapper.Map<List<ResponseEquipment>>(equipment);
         }
 
+        public async Task<List<ResponseEquipment>> GetEquipmentActive()
+        {
+            var equipment = await _unitofWork.Equiptment.GetallEquipmentActive();
+            return _mapper.Map<List<ResponseEquipment>>(equipment);
+        }
+
         public async Task<List<ResponseEquipment>> GetEquipmentFix()
         {
             var equipment = await _unitofWork.Equiptment.GetallEquipmentFix();

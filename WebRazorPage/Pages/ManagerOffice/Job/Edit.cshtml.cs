@@ -46,6 +46,7 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
             catch (Exception ex)
             {
                 ViewData["Message"] = ex.Message.ToString();
+                Job = await _jobService.GetTaskById(id);
                 return Page();
             }
         }
@@ -76,6 +77,8 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
             catch (Exception ex)
             {
                 ViewData["Message"] = ex.Message.ToString();
+                Job = await _jobService.GetTaskById(Job.TaskId);
+
                 return Page();
             }
         }

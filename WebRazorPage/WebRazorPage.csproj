@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\Customer\" />
-    <Folder Include="Pages\ManagerOffice\FeedBack\" />
-    <Folder Include="Pages\Staff\" />
   </ItemGroup>
 
 </Project>

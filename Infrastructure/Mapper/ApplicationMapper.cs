@@ -242,6 +242,11 @@ public class ApplicationMapper : Profile
              .ForMember(p => p.Comment, act => act.MapFrom(src => src.Comment))
              .ForMember(p => p.EquipmentId, act => act.MapFrom(src => src.EquipmentId));
 
+        CreateMap<RequestFeedBackRZ, Feedback>()
+             .ForMember(p => p.Comment, act => act.MapFrom(src => src.Comment))
+             .ForMember(p => p.AccountId, act => act.MapFrom(src => src.AccountId))
+             .ForMember(p => p.EquipmentId, act => act.MapFrom(src => src.EquipmentId));
+
         //----------------------------------------------------------------
         CreateMap<Feedback, ResponseFeedBack>()
              .ForMember(p => p.Comment, act => act.MapFrom(src => src.Comment))

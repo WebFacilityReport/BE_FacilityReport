@@ -76,7 +76,7 @@ namespace BE_FacilityFeedBackWebApi.Controllers
                 Data = response
             });
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<List<ResponseAllAccount>>> GetALLAccount()
         {

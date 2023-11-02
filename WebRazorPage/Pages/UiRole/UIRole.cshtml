@@ -20,6 +20,7 @@
         <a href="/ManagerOffice/Job/Index" class="btn btn-primary">Manage Job</a>
         <a href="/ManagerOffice/Resource/Index" class="btn btn-primary">Manage Resource</a>
         <a href="/ManagerOffice/Equipment/Index" class="btn btn-primary">Manage Equipment</a>
+        <a href="/FeedBack/Index" class="btn btn-primary">Manage FeedBack</a>
     </div>
 }
 else if (role == "STAFF")
@@ -29,6 +30,8 @@ else if (role == "STAFF")
 
     <div class="button-container">
         <a href="/ManagerOffice/Job/Index" class="btn btn-primary">Manage Job</a>
+        <a href="/FeedBack/Index" class="btn btn-primary">Manage FeedBack</a>
+
         @*<a href="/ManagerOffice/Resource/Index" class="btn btn-primary">Manage Resource</a>
         <a href="/ManagerOffice/Equipment/Index" class="btn btn-primary">Manage Equipment</a>
 
@@ -36,9 +39,17 @@ else if (role == "STAFF")
         <a href="/RentingTransaction/Index" class="btn btn-primary">Manage RentingTransaction</a>*@
     </div>
 }
-else
+else if (role == "CUSTOMER")
 {
-    <h1>Welcome, Guest!</h1>
-    <p>Please log in to access the main page.</p>
-    <a href="/login" class="btn btn-primary">Go to Login</a>
+    <h1>Welcome, CUSTOMER! @accountId!</h1><a href="/Login/LoginPage" class="btn btn-primary">Log Out</a>
+    <div class="button-container">
+        @*<a href="/ManagerOffice/Job/Index" class="btn btn-primary">Manage Job</a>*@
+        <a href="/FeedBack/Index" class="btn btn-primary">Manage FeedBack</a>
+
+        @*<a href="/ManagerOffice/Resource/Index" class="btn btn-primary">Manage Resource</a>
+    <a href="/ManagerOffice/Equipment/Index" class="btn btn-primary">Manage Equipment</a>
+
+    <a href="/RentingDetail/Index?id=@accountId" class="btn btn-primary">Manage RentingDetail</a>
+    <a href="/RentingTransaction/Index" class="btn btn-primary">Manage RentingTransaction</a>*@
+    </div>
 }

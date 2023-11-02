@@ -21,6 +21,15 @@ namespace Application.Repository.RepositoryImp
             return await _context.Set<Feedback>().Include(c => c.Equipment).Include(c => c.Account).ToListAsync();
         }
 
+        public async Task<List<Feedback>> GetAllByAccountId(Guid accountId)
+        {
+            var feedback = await _context.Set<Feedback>()
+                .Include(c => c.Equipment)
+                .Include(c => c.Account)
+                .Where(c => c.AccountId == accountId).ToListAsync();
+            return feedback;
+        }
+
         public async Task<Feedback> GetById(Guid id)
         {
 
