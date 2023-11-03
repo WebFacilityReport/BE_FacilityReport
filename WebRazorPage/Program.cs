@@ -1,5 +1,6 @@
 using Domain.Entity;
 using Infrastructure.IService.ServiceImplement;
+using WebRazorPage;
 using WebRazorPage.Configuration;
 
 
@@ -19,6 +20,7 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(20); // Adjust as needed
 });
+builder.Services.AddSignalR();
 
 
 var app = builder.Build();
@@ -42,6 +44,8 @@ app.UseEndpoints(endpoints =>
     endpoints.MapRazorPages();
     endpoints.MapHub<ChatHub>("/chatHub"); // Map the ChatHub to a specific endpoint
 });
+
+app.MapHub<ConnectionHub>("/chatHub");
 
 
 app.Run();
