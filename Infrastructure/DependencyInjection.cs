@@ -28,6 +28,7 @@ public static class DependencyInjection
         services.AddTransient<IHistoryEquipmentService, HistoryEquipmentServiceImp>();
         services.AddTransient<IImageService, ImageServiceImp>();
         services.AddTransient<IJobService, JobServiceImp>();
+        services.AddTransient<INotificationService, NotificationServiceImp>();
         services.AddTransient<IReService, ResourceServiceImp>();
         services.AddTransient<IChatHub, ChatHub>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();

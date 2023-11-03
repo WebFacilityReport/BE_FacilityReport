@@ -16,6 +16,7 @@ namespace Infrastructure.IUnitofwork
         IImageRepository Image { get; }
         IResourceRepository Resource { get; }
         ITaskRepository Task { get; }
+        INotificationRepository Notification { get; }   
         void Commit();
     }
 }

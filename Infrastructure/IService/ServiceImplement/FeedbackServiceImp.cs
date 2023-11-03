@@ -67,6 +67,7 @@ public class FeedbackServiceImp : IFeedbackService
 
         var equipment = await _unitofWork.Equiptment.GetById(requestFeedBackrz.EquipmentId);
 
+        feedback.FeedBackId = Guid.NewGuid();
         feedback.NumberFeedBack = 0;
         feedback.Status = STATUSFEEDBACK.ACTIVE.ToString();
         feedback.CreatedAt = vietnamNow;

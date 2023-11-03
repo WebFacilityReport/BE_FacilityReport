@@ -23,6 +23,7 @@ public class ResourceServiceImp : IReService
         var task = await _unitofWork.Task.GetById(requestResouce.TaskId);
 
         var resource = _mapper.Map<Resource>(requestResouce);
+        resource.ResourcesId = Guid.NewGuid();
         resource.UsedQuantity = 0;
         resource.Status = StatusResource.ACTIVE.ToString();
         resource.CreatedAt = DateTime.UtcNow;

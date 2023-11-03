@@ -16,11 +16,11 @@ namespace Application.Repository.RepositoryImp
         public async Task<Job> CheckExsitTaskbyHistoryWithEquipmentId(Guid equipmentId)
         {
             var check = await _context.Set<Job>()
-                .Include(c => c.HistoryEquipments)
+                .Include(c => c.HistoryEquipment)
                 .ThenInclude(c => c.Equipment)
-                .FirstOrDefaultAsync(c => c.HistoryEquipments.EquipmentId == equipmentId
-                       && c.HistoryEquipments.Job.Status.Equals(StatusTask.ACTIVE.ToString())
-                       && c.HistoryEquipments.NameHistory.Equals(NAMETASK.FIXEQUIPMENT.ToString())
+                .FirstOrDefaultAsync(c => c.HistoryEquipment.EquipmentId == equipmentId
+                       && c.HistoryEquipment.Job.Status.Equals(StatusTask.ACTIVE.ToString())
+                       && c.HistoryEquipment.NameHistory.Equals(NAMETASK.FIXEQUIPMENT.ToString())
                        );
             if (check != null)
             {

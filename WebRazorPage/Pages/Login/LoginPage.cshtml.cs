@@ -1,9 +1,10 @@
+using Domain.Entity;
 using Domain.Enum;
 using Infrastructure.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-
+using System.Text.Json;
 
 namespace WebRazor.Pages
 {
@@ -18,6 +19,8 @@ namespace WebRazor.Pages
         [Required]
         public string Password { get; set; }
 
+        [BindProperty]
+        public Account Account { get; set; } = default!;
 
         private readonly IAccountService _accountService;
 
@@ -36,26 +39,10 @@ namespace WebRazor.Pages
                 }
                 else
                 {
-                    var account = await _accountService.LoginRZ(UserName, Password);
-                    if (account.Role.Equals(ROlE.MANAGER_OFFICE.ToString()))
-                    {
-                        HttpContext.Session.SetString("ROLE", "MANAGER_OFFICE");
-                    }
-                    else if (account.Role.Equals(ROlE.CUSTOMER.ToString()))
-                    {
-                        HttpContext.Session.SetString("ROLE", "CUSTOMER");
-                    }
-                    else if (account.Role.Equals(ROlE.STAFF.ToString()))
-                    {
-                        HttpContext.Session.SetString("ROLE", "STAFF");
-                    }
-                    else if (account.Role.Equals(ROlE.MANAGER.ToString()))
-                    {
-                        HttpContext.Session.SetString("ROLE", "MANAGER");
-                    }
-                    HttpContext.Session.SetString("ACCOUNTID", account.Username.ToString());
+                    var account = await _accountService.LoginRZ(UserName, Password);  
+                    HttpContext.Session.SetString("Account", JsonSerializer.Serialize(account));
 
-                    return Redirect("/UIROLE");
+                    return Redirect("/Homepage");
                 }
             }
             catch (Exception ex)

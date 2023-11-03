@@ -6,6 +6,7 @@ using Infrastructure.IUnitofwork;
 using Infrastructure.Model.Request.RequestTask;
 using Infrastructure.Model.Response.ResponseTask;
 using System.Security.Principal;
+using System.Threading.Tasks.Dataflow;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
@@ -40,6 +41,7 @@ namespace Infrastructure.IService.ServiceImplement
                 var job = _mapper.Map<Job>(requestTaskEquipment);
                 if (resource.Status.Equals(StatusResource.ACTIVE.ToString()))
                 {
+                    
                     job.CreatorId = account.AccountId;
                     job.NameTask = NAMETASK.CREATEEQUIPMENT.ToString();
                     job.Status = StatusTask.ACTIVE.ToString();
@@ -51,8 +53,8 @@ namespace Infrastructure.IService.ServiceImplement
                         {
                             throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
                         }
-                        _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
-                        _unitofWork.Equiptment.Add(job.HistoryEquipments.Equipment);
+                        _unitofWork.HistoryEquipment.Add(job.HistoryEquipment);
+                        _unitofWork.Equiptment.Add(job.HistoryEquipment.Equipment);
                         _unitofWork.Task.Add(job);
                         _unitofWork.Commit();
                         return _mapper.Map<ResponseTask>(job);
@@ -88,6 +90,8 @@ namespace Infrastructure.IService.ServiceImplement
                     throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
                 }
                 var add = _unitofWork.Task.Add(job);
+
+
                 _unitofWork.Resource.Add(job.Resource);
                 _unitofWork.Commit();
                 return _mapper.Map<ResponseTask>(add);
@@ -139,14 +143,14 @@ namespace Infrastructure.IService.ServiceImplement
                     job.CreatorId = account.AccountId;
                     job.Status = StatusTask.ACTIVE.ToString();
                     job.NameTask = NAMETASK.FIXEQUIPMENT.ToString();
-                    job.HistoryEquipments.EquipmentId = requestUpdateStatusHistory.EquipmentId;
+                    job.HistoryEquipment.EquipmentId = requestUpdateStatusHistory.EquipmentId;
                     job.CreatedAt = DateTime.UtcNow;
                     if (job.Deadline <= job.CreatedAt.AddHours(2))
                     {
                         throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
                     }
                     var checkHistory = await _unitofWork.Task.CheckExsitTaskbyHistoryWithEquipmentId(equipment.EquipmentId);
-                    _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
+                    _unitofWork.HistoryEquipment.Add(job.HistoryEquipment);
                     _unitofWork.Task.Add(job);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(job);
@@ -187,6 +191,7 @@ namespace Infrastructure.IService.ServiceImplement
                     throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
                 }
                 var add = _unitofWork.Task.Add(job);
+
                 _unitofWork.Resource.Add(job.Resource);
                 _unitofWork.Commit();
                 return _mapper.Map<ResponseTask>(add);
@@ -217,8 +222,8 @@ namespace Infrastructure.IService.ServiceImplement
                         {
                             throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
                         }
-                        _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
-                        _unitofWork.Equiptment.Add(job.HistoryEquipments.Equipment);
+                        _unitofWork.HistoryEquipment.Add(job.HistoryEquipment);
+                        _unitofWork.Equiptment.Add(job.HistoryEquipment.Equipment);
                         _unitofWork.Task.Add(job);
                         _unitofWork.Commit();
                         return _mapper.Map<ResponseTask>(job);
@@ -247,16 +252,17 @@ namespace Infrastructure.IService.ServiceImplement
                 if (equipment.Status.Equals(STATUSEQUIPMENT.FIX.ToString()))
                 {
                     var job = _mapper.Map<Job>(requestUpdateStatusHistory);
+                    
                     job.Status = StatusTask.ACTIVE.ToString();
                     job.NameTask = NAMETASK.FIXEQUIPMENT.ToString();
-                    job.HistoryEquipments.EquipmentId = requestUpdateStatusHistory.EquipmentId;
+                    job.HistoryEquipment.EquipmentId = requestUpdateStatusHistory.EquipmentId;
                     job.CreatedAt = vietnamNow;
                     if (job.Deadline <= job.CreatedAt.AddHours(2))
                     {
                         throw new Exception("Yêu Cầu Hoàn Thành Ít Nhất 2h");
                     }
                     await _unitofWork.Task.CheckExsitTaskbyHistoryWithEquipmentId(equipment.EquipmentId);
-                    _unitofWork.HistoryEquipment.Add(job.HistoryEquipments);
+                    _unitofWork.HistoryEquipment.Add(job.HistoryEquipment);
                     _unitofWork.Task.Add(job);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(job);
@@ -305,7 +311,7 @@ namespace Infrastructure.IService.ServiceImplement
                     checkequipemnt.Equipment.Status = STATUSEQUIPMENT.ACTIVE.ToString();
                     var update = _unitofWork.Task.Update(task);
                     _unitofWork.Equiptment.Update(checkequipemnt.Equipment);
-                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipments);
+                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipment);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(update);
                 }
@@ -318,7 +324,7 @@ namespace Infrastructure.IService.ServiceImplement
                     checkequipemnt.Equipment.Status = STATUSEQUIPMENT.INACTIVE.ToString();
                     var update = _unitofWork.Task.Update(task);
                     _unitofWork.Equiptment.Update(checkequipemnt.Equipment);
-                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipments);
+                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipment);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(update);
                 }
@@ -330,7 +336,7 @@ namespace Infrastructure.IService.ServiceImplement
                     checkequipemnt.Equipment.Status = STATUSEQUIPMENT.ACTIVE.ToString();
                     var update = _unitofWork.Task.Update(task);
                     _unitofWork.Equiptment.Update(checkequipemnt.Equipment);
-                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipments);
+                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipment);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(update);
                 }
@@ -342,7 +348,7 @@ namespace Infrastructure.IService.ServiceImplement
                     checkequipemnt.Equipment.Status = STATUSEQUIPMENT.FIX.ToString();
                     var update = _unitofWork.Task.Update(task);
                     _unitofWork.Equiptment.Update(checkequipemnt.Equipment);
-                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipments);
+                    _unitofWork.HistoryEquipment.Update(task.HistoryEquipment);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(update);
                 }

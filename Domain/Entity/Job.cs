@@ -5,10 +5,6 @@ namespace Domain.Entity
 {
     public partial class Job
     {
-        public Job()
-        {
-        }
-
         public Guid JobId { get; set; }
         public string Status { get; set; } = null!;
         public string NameTask { get; set; } = null!;
@@ -21,7 +17,7 @@ namespace Domain.Entity
 
         public virtual Account Creator { get; set; } = null!;
         public virtual Account Employee { get; set; } = null!;
+        public virtual HistoryEquipment? HistoryEquipment { get; set; }
         public virtual Resource? Resource { get; set; }
-        public virtual HistoryEquipment HistoryEquipments { get; set; }
     }
 }

@@ -1,9 +1,15 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 
 namespace Domain.Entity
 {
     public partial class Feedback
     {
+        public Feedback()
+        {
+            Images = new HashSet<Image>();
+        }
+
         public Guid FeedBackId { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Status { get; set; } = null!;
@@ -14,7 +20,6 @@ namespace Domain.Entity
 
         public virtual Account? Account { get; set; }
         public virtual Equipment Equipment { get; set; } = null!;
-        public virtual ICollection<Image>? Images { get; set; }
-
+        public virtual ICollection<Image> Images { get; set; }
     }
 }

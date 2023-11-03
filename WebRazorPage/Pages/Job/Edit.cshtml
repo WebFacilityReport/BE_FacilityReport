@@ -1,0 +1,167 @@
+﻿@page
+@model WebRazorPage.Pages.ManagerOffice.Job.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    var role = HttpContext.Session.GetString("ROLE");
+    var accountId = HttpContext.Session.GetString("ACCOUNTID");
+}
+
+<div class="d-flex justify-content-between">
+    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
+    <div class="btn-group dropstart">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
+            Dropstart
+        </button>
+        <ul id="listNotifications" class="dropdown-menu">
+        </ul>
+    </div>
+</div>
+
+<hr />
+
+<h1>Edit</h1>
+<h4>Job</h4>
+<hr />
+@if (role == "MANAGER_OFFICE")
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Job.TaskId" />
+                @* <div class="form-group">
+                <label asp-for="Job.NameTask" class="control-label"></label>
+                <input asp-for="Job.NameTask" class="form-control" readonly="true" />
+                <span asp-validation-for="Job.NameTask" class="text-danger"></span>
+            </div>*@
+
+                <div class="form-group">
+                    <label asp-for="Job.Description" class="control-label"></label>
+                    <input asp-for="Job.Description" class="form-control" />
+                    <span asp-validation-for="Job.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Job.Title" class="control-label"></label>
+                    <input asp-for="Job.Title" class="form-control" />
+                    <span asp-validation-for="Job.Title" class="text-danger"></span>
+                </div>
+                @*<div class="form-group">
+                <label asp-for="Job.CreatedAt" class="control-label"></label>
+                <input asp-for="Job.CreatedAt" class="form-control" readonly="true" />
+                <span asp-validation-for="Job.CreatedAt" class="text-danger"></span>
+            </div>*@
+                <div class="form-group">
+                    <label asp-for="Job.Deadline" class="control-label"></label>
+                    <input asp-for="Job.Deadline" class="form-control" />
+                    <span asp-validation-for="Job.Deadline" class="text-danger"></span>
+                </div>
+                @*<div class="form-group">
+                <label asp-for="Job.Status" class="control-label"></label>
+                <input asp-for="Job.Status" class="form-control" readonly="true" />
+                <span asp-validation-for="Job.Status" class="text-danger"></span>
+            </div>*@
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+        @if (!string.IsNullOrEmpty(ViewBag.Message))
+        {
+            <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
+        }
+    </div>
+
+    <div>
+        <a asp-page="./Index">Back to List</a>
+    </div>
+}
+else if (role == "STAFF")
+{
+    <h1>Edit</h1>
+
+    <h3>Are you sure you want to done this?</h3>
+    <div>
+        <h4>Job</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.TaskId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.TaskId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.CreatorId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.CreatorId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.EmployeeId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.EmployeeId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.NameTask)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.NameTask)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.emailEmployee)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.emailEmployee)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.CreatedAt)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.CreatedAt)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.Deadline)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.Deadline)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Job.Status)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Job.Status)
+            </dd>
+
+            @if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
+            }
+        </dl>
+
+        <form method="post">
+            <input type="hidden" asp-for="Job.TaskId" />
+            <input type="submit" value="DONE" class="btn btn-danger" /> |
+            <a asp-page="./Index">Back to List</a>
+        </form>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

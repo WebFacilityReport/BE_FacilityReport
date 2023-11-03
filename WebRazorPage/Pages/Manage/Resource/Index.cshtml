@@ -1,0 +1,98 @@
+﻿@page
+@model WebRazorPage.Pages.ManagerOffice.Resource.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-flex justify-content-between">
+    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
+    <div class="btn-group dropstart">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
+            Dropstart
+        </button>
+        <ul id="listNotifications" class="dropdown-menu">
+        </ul>
+    </div>
+</div>
+<hr/>
+    <h1>Resources</h1>
+    <form method="get">
+        <div class="form-group d-flex gap-3 w-25 mt-3">
+            <input type="text" asp-for="SearchQuery" class="form-control" />
+            <button type="submit" class="btn btn-outline-dark">Find</button>
+            <a href="/Home" class="btn btn-dark">Back</a>
+        </div>
+    </form>
+
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].ResourcesId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].TaskId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].NameResource)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].UsedQuantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].TotalQuantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].Size)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resource[0].CreatedAt)
+                </th>
+            <th>
+                Actions
+            </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Resource)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResourcesId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NameResource)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UsedQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Size)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                      <div class="d-flex gap-3">
+                        <a asp-page="./Edit" asp-route-id="@item.ResourcesId" class="btn btn-dark">Edit</a>
+                    <a asp-page="./Details" asp-route-id="@item.ResourcesId" class="btn btn-outline-dark">Details</a>
+                    <a asp-page="./Delete" asp-route-id="@item.ResourcesId" class="btn btn-dark">Delete</a>
+                    </div>
+                </td>
+                </tr>
+            }
+        </tbody>
+    </table>

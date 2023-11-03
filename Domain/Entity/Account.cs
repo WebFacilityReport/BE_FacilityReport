@@ -10,6 +10,7 @@ namespace Domain.Entity
             Feedbacks = new HashSet<Feedback>();
             JobCreators = new HashSet<Job>();
             JobEmployees = new HashSet<Job>();
+            Notifications = new HashSet<Notification>();
         }
 
         public Guid AccountId { get; set; }
@@ -26,6 +27,5 @@ namespace Domain.Entity
         public virtual ICollection<Job> JobCreators { get; set; }
         public virtual ICollection<Job> JobEmployees { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
-
     }
 }

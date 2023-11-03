@@ -38,14 +38,16 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
+app.MapHub<ConnectionHub>("/connectionHub");
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapRazorPages();
-    endpoints.MapHub<ChatHub>("/chatHub"); // Map the ChatHub to a specific endpoint
-});
-
-app.MapHub<ConnectionHub>("/chatHub");
-
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapRazorPages();
+//    endpoints.MapHub<ChatHub>("/connectionHub"); // Map the ChatHub to a specific endpoint
+//    endpoints.MapGet("/", context => {
+//        context.Response.Redirect("/Login/LoginPage");
+//        return Task.CompletedTask;
+//    });
+//});
 
 app.Run();

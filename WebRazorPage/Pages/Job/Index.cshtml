@@ -1,0 +1,210 @@
+﻿@page
+@model WebRazorPage.Pages.ManagerOffice.Job.IndexModel
+
+@{
+    ViewData["Title"] = "Jobs";
+}
+
+<div class="d-flex justify-content-between">
+    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
+    <div class="btn-group dropstart">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
+            Dropstart
+        </button>
+        <ul id="listNotifications" class="dropdown-menu">
+        </ul>
+    </div>
+</div>
+
+<hr />
+
+
+@if (Model.Account.Role == "MANAGER_OFFICE")
+{
+    <h1>Jobs</h1>
+   
+
+    <div class="d-flex gap-3">
+        <a href="/Home" class="btn btn-outline-dark">Back</a>
+            <a asp-page="Create" class="btn btn-dark">Task New Resource</a>
+        <a asp-page="CreateEquipment" class="btn btn-outline-dark">Task New Equipment</a>
+        <a asp-page="CreateFixEquipment" class="btn btn-dark">Task Fix Equipment</a>
+    </div>
+    <form method="get">
+        <div class="form-group d-flex gap-3 w-25 mt-3">
+            <input type="text" asp-for="SearchQuery" class="form-control" />
+            <button type="submit" class="btn btn-dark">Find</button>
+        </div>
+       
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].TaskId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].CreatorId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].EmployeeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].NameTask)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].emailEmployee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].Deadline)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Job)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatorId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NameTask)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.emailEmployee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deadline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.TaskId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.TaskId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.TaskId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model.Account.Role == "STAFF")
+{
+    <h1>Index</h1>
+    <a href="/Home" class="btn btn-primary">Back</a>
+    <form method="get">
+        <div class="form-group">
+            <label for="Query">Từ khóa: NameResource or STATUS </label>
+            <input type="text" asp-for="SearchQuery" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Tìm</button>
+    </form> 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].TaskId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].CreatorId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].EmployeeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].NameTask)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].emailEmployee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].Deadline)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Job[0].Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Job)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatorId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NameTask)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.emailEmployee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deadline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.TaskId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.TaskId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.TaskId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

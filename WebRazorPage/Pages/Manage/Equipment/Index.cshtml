@@ -1,0 +1,86 @@
+﻿@page
+@model WebRazorPage.Pages.ManagerOffice.Equipment.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="d-flex justify-content-between">
+    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
+    <div class="btn-group dropstart">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
+            Dropstart
+        </button>
+        <ul id="listNotifications" class="dropdown-menu">
+        </ul>
+    </div>
+</div>
+
+<hr />
+
+    <h1>Equipments</h1>
+   
+    <form method="get">
+    <div class="form-group mt-3 d-flex gap-3 w-25">
+            <input type="text" asp-for="SearchQuery" class="form-control" />
+        <button type="submit" class="btn btn-outline-dark">Find</button>
+        <a href="/Home" class="btn btn-dark">Back</a>
+
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Equipment[0].EquipmentId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Equipment[0].ResourcesId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Equipment[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Equipment[0].Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Equipment[0].CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Equipment[0].ImageEquip)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Equipment)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EquipmentId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResourcesId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImageEquip)
+                    </td>
+                    <td class="d-flex gap-3">
+                        @*<a asp-page="./Edit" asp-route-id="@item.EquipmentId">Edit</a> |*@
+                        <a asp-page="./Details" class="btn btn-outline-dark" asp-route-id="@item.EquipmentId">Details</a>
+                    <a asp-page="./Delete" class="btn btn-dark"  asp-route-id="@item.EquipmentId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

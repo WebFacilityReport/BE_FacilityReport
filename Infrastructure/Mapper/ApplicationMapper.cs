@@ -122,7 +122,7 @@ public class ApplicationMapper : Profile
              .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
              .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
              .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
-             .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
+             .ForMember(c => c.HistoryEquipment, act => act.MapFrom(c =>
                  new HistoryEquipment
                  {
                      Date = vietnamNow,
@@ -145,7 +145,7 @@ public class ApplicationMapper : Profile
              .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
              .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
              .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
-             .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
+             .ForMember(c => c.HistoryEquipment, act => act.MapFrom(c =>
                  new HistoryEquipment
                  {
                      Date = vietnamNow,
@@ -169,7 +169,7 @@ public class ApplicationMapper : Profile
             .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
             .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
-            .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
+            .ForMember(c => c.HistoryEquipment, act => act.MapFrom(c =>
                 new HistoryEquipment
                 {
                     Date = vietnamNow,
@@ -184,7 +184,7 @@ public class ApplicationMapper : Profile
             .ForMember(p => p.Deadline, act => act.MapFrom(src => src.Deadline))
             .ForMember(p => p.EmployeeId, act => act.MapFrom(src => src.EmployeeId))
             .ForMember(p => p.Description, act => act.MapFrom(src => src.DescriptionJob))
-            .ForMember(c => c.HistoryEquipments, act => act.MapFrom(c =>
+            .ForMember(c => c.HistoryEquipment, act => act.MapFrom(c =>
                 new HistoryEquipment
                 {
                     Date = vietnamNow,
@@ -268,5 +268,16 @@ public class ApplicationMapper : Profile
              .ForMember(p => p.ImageEquip, act => act.MapFrom(src => src.ImageEquip))
              .ForMember(p => p.CreatedAt, act => act.MapFrom(src => src.CreatedAt));
         //----------------------------------------------------------------
+
+        CreateMap<NotificationDTO, Notification>();
+        CreateMap<Notification, NotificationDTO>();
     }
+}
+
+public class NotificationDTO
+{
+        public Guid NotificationId { get; set; }
+        public string Title { get; set; } = null!;
+        public string Message { get; set; } = null!;
+        public Guid AccountId { get; set; }
 }

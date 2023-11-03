@@ -1,0 +1,96 @@
+﻿@page
+@model WebRazorPage.Pages.FeedBacks.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-flex justify-content-between">
+    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
+    <div class="btn-group dropstart">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
+            Dropstart
+        </button>
+        <ul id="listNotifications" class="dropdown-menu">
+        </ul>
+    </div>
+</div>
+
+<hr />
+    <h1>Feedbacks</h1>
+    <div class="d-flex gap-3 mt-3">
+    <a href="/Home" class="btn btn-outline-dark"> Back</a>
+
+    <div>
+        <a asp-page="Create" class="btn btn-dark">Create New</a>
+    </div>
+    </div>
+    
+
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Feedback[0].FeedBackId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Feedback[0].Comment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Feedback[0].CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Feedback[0].NumberFeedBack)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Feedback[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Feedback[0].AccountId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Feedback[0].EquipmentId)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Feedback)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FeedBackId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberFeedBack)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EquipmentId)
+                    </td>
+
+                    <td>
+                        @*<a asp-page="./Edit" asp-route-id="@item.FeedBackId">Edit</a> |*@
+                        <a class="btn btn-dark" asp-page="./Details" asp-route-id="@item.FeedBackId">Details</a> 
+                        @*<a asp-page="./Delete" asp-route-id="@item.FeedBackId">Delete</a>*@
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
+    }

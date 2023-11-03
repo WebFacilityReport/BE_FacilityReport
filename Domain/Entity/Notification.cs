@@ -1,14 +1,15 @@
-﻿namespace Domain.Entity;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class Notification
+namespace Domain.Entity
 {
-    public string NotificationId { get; set; } = null!;
+    public partial class Notification
+    {
+        public Guid NotificationId { get; set; }
+        public string Title { get; set; } = null!;
+        public string Message { get; set; } = null!;
+        public Guid AccountId { get; set; }
 
-    public string Title { get; set; } = null!;
-
-    public string Message { get; set; } = null!;
-
-    public Guid AccountId { get; set; }
-
-    public virtual Account Account { get; set; } = null!;
+        public virtual Account Account { get; set; } = null!;
+    }
 }

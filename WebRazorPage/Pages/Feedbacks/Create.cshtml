@@ -1,0 +1,54 @@
+﻿@page
+@model WebRazorPage.Pages.FeedBacks.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="d-flex justify-content-between">
+    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
+    <div class="btn-group dropstart">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
+            Dropstart
+        </button>
+        <ul id="listNotifications" class="dropdown-menu">
+        </ul>
+    </div>
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h1> CREATE FEEDBACK </h1>
+        <input id="accountIdInput" value="@Model.Account.AccountId" type="hidden"/>
+        <div class="form-group mt-3">
+            <label asp-for="Feedback.Comment" class="control-label"></label>
+            <input id="commentInput" asp-for="Feedback.Comment" class="form-control" />
+            <span asp-validation-for="Feedback.Comment" class="text-danger"></span>
+        </div>
+        <div class="form-group  mt-3">
+            <label class="control-label"> Equipment </label>
+            <select id="equipmentIdInput" asp-for="Feedback.EquipmentId" class="form-control" asp-items="ViewBag.EquipmentId"></select>
+        </div>
+        <div class="form-group d-flex gap-3 mt-3">
+            <a asp-page="Index" class="btn btn-outline-dark">Back To List</a>
+            <button id="createFeedbackButton" class="btn btn-dark">Create</button>
+        </div>
+
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <p class="alert alert-danger" role="alert">@ViewData["ErrorMessage"]</p>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

@@ -15,6 +15,7 @@ namespace Infrastructure.IUnitofwork.Unitofwork
             _historyEquipmentRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IResourceRepository _resourceRepository;
+        private readonly INotificationRepository _notificationRepository;
 
         public Unitofwork(FacilityReportContext context)
         {
@@ -26,6 +27,7 @@ namespace Infrastructure.IUnitofwork.Unitofwork
             _resourceRepository = new ResourceRepositoryImp(context);
             _historyEquipmentRepository = new HistoryEquipmentRepositoryImp(context);
             _feedbackRepository = new FeedbackRepositoryImp(context);
+            _notificationRepository = new NotificationRepositoryImp(context);
         }
 
         public IAccountRepository Account => _accountRepository;
@@ -38,10 +40,11 @@ namespace Infrastructure.IUnitofwork.Unitofwork
 
         public IImageRepository Image => _imageRepository;
 
-
         public IResourceRepository Resource => _resourceRepository;
 
         public ITaskRepository Task => _taskRepository;
+
+        public INotificationRepository Notification => _notificationRepository;
 
         public void Commit()
         {
