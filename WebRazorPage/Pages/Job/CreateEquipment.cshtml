@@ -24,56 +24,51 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Account.AccountId" class="control-label"></label>
-                <input asp-for="Account.AccountId" class="form-control" readonly="true" />
+            <input id ="accountIdInput" asp-for="Account.AccountId" class="form-control" readonly="true" />
                 <span asp-validation-for="Account.AccountId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.EmployeeId" class="control-label"></label>
-                <select asp-for="Job.EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
+            <select id="employeeIdInput" asp-for="Job.EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Job.ResourceId" class="control-label"></label>
-                <select asp-for="Job.ResourceId" asp-items="ViewBag.ResourceId" class="form-control"></select>
+            <select id="resourceIdInput"  asp-for="Job.ResourceId" asp-items="ViewBag.ResourceId" class="form-control"></select>
             </div>
-
-
             <div class="form-group">
                 <label asp-for="Job.Title" class="control-label"></label>
-                <input asp-for="Job.Title" class="form-control" />
+            <input id="titleInput"  asp-for="Job.Title" class="form-control" />
                 <span asp-validation-for="Job.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.DescriptionJob" class="control-label"></label>
-                <input asp-for="Job.DescriptionJob" class="form-control" />
+                <input id="descriptionJobInput" asp-for="Job.DescriptionJob" class="form-control" />
                 <span asp-validation-for="Job.DescriptionJob" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.Deadline" class="control-label"></label>
-                <input asp-for="Job.Deadline" class="form-control" />
+            <input id="deadlineInput"  asp-for="Job.Deadline" class="form-control" />
                 <span asp-validation-for="Job.Deadline" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.Location" class="control-label"></label>
-                <input asp-for="Job.Location" class="form-control" />
+                <input id="locationInput" asp-for="Job.Location" class="form-control" />
                 <span asp-validation-for="Job.Location" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.ImageEquip" class="control-label"></label>
-                <input asp-for="Job.ImageEquip" class="form-control" />
+            <input id="imageEquipInput" asp-for="Job.ImageEquip" class="form-control" />
                 <span asp-validation-for="Job.ImageEquip" class="text-danger"></span>
             </div>
           
-            
-           
+          
             <div class="form-group mt-3 gap-3 d-flex">
                     <a asp-page="Index" class="btn btn-outline-dark">Back to List</a>
-                <input type="submit" value="Create" class="btn btn-dark" />
+            <input id="createEquipmentTaskButton" value="Create" class="btn btn-dark" />
             </div>
-        </form>
         @if (!string.IsNullOrEmpty(ViewBag.Message))
         {
             <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>

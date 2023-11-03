@@ -4,10 +4,6 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/connectionHub").bu
 
 connection.start();
 
-connection.on("CreateFeedbackSuccessfully", function (message) {
-    console.log("CreateFeedbackSuccessfully: " + message);
-});
-
 
 function updateNotifications(message) {
     var button = document.getElementById("numNotifications");
@@ -19,14 +15,10 @@ function updateNotifications(message) {
 
     message.forEach(function (notification) {
         var listItem = document.createElement("li");
-        listItem.innerHTML = '<li><a class="dropdown-item" href="#">' + notification.message + '</a></li>';
+        listItem.innerHTML = '<li><a class="dropdown-item" href="#">' + notification.title + '</a></li>';
         list.appendChild(listItem);
     });
 }
-
-connection.on("CreateFeedbackSuccessfullyNotify", function (message) {
-    updateNotifications(message);
-});
 
 
 function createFeedback(feedback) {
@@ -36,15 +28,130 @@ function createFeedback(feedback) {
     connection.invoke("CreateFeedback", feedback)
 }
 
-var createFeedbackButton = document.getElementById("createFeedbackButton");
-createFeedbackButton.addEventListener("click", function () {
-    var feedback = {
-        accountId: document.getElementById("accountIdInput").value,
-        comment: document.getElementById("commentInput").value,
-        equipmentId: document.getElementById("equipmentIdInput").value
-    };
+try {
+    var createFeedbackButton = document.getElementById("createFeedbackButton");
+    createFeedbackButton.addEventListener("click", function () {
+        var feedback = {
+            accountId: document.getElementById("accountIdInput").value,
+            comment: document.getElementById("commentInput").value,
+            equipmentId: document.getElementById("equipmentIdInput").value
+        };
 
-    console.log(feedback)
+        console.log(feedback)
 
-    createFeedback(feedback);
+        createFeedback(feedback);
+    });
+
+} catch (e) {
+    console.log(e)
+}
+
+
+connection.on("UpdateNotify", function (message) {
+    updateNotifications(message);
+});
+
+function createFixTask(job) {
+    //var comment = feedback.comment;
+    //var equipmentId = feedback.equipmentId;
+
+    connection.invoke("CreateFixEquipmentJob", job)
+}
+
+try {
+    var createFixTaskButton = document.getElementById("createFixTaskButton");
+    createFixTaskButton.addEventListener("click", function () {
+        var fixTask = {
+            creatorId: document.getElementById("accountIdInput").value,
+            employeeId: document.getElementById("employeeIdInput").value,
+            equipmentId: document.getElementById("equipmentIdInput").value,
+            title: document.getElementById("titleInput").value,
+            descriptionJob: document.getElementById("descriptionJobInput").value,
+            deadline: document.getElementById("deadlineInput").value,
+            imageEquip: document.getElementById("imageEquipInput").value
+        };
+
+        console.log(fixTask);
+
+        createFixTask(fixTask);
+    });
+} catch (e) {
+    console.log(e)
+}
+
+function createEquipmentTask(job) {
+    //var comment = feedback.comment;
+    //var equipmentId = feedback.equipmentId;
+
+    connection.invoke("CreateEquipmentJob", job)
+}
+
+
+try {
+    var createEquipmentTaskButton = document.getElementById("createEquipmentTaskButton");
+    createEquipmentTaskButton.addEventListener("click", function () {
+        var equipmentTask = {
+            creatorId: document.getElementById("accountIdInput").value,
+            employeeId: document.getElementById("employeeIdInput").value,
+            resourceId: document.getElementById("resourceIdInput").value,
+            title: document.getElementById("titleInput").value,
+            descriptionJob: document.getElementById("descriptionJobInput").value,
+            deadline: document.getElementById("deadlineInput").value,
+            location: document.getElementById("locationInput").value,
+            imageEquip: document.getElementById("imageEquipInput").value
+        };
+
+        console.log(equipmentTask);
+
+        createEquipmentTask(equipmentTask);
+    });
+} catch (e) {
+    console.log(e)
+}
+
+function createResourceTask(job) {
+    //var comment = feedback.comment;
+    //var equipmentId = feedback.equipmentId;
+
+    connection.invoke("CreateResourceJob", job)
+}
+
+
+try {
+    var createResourceTaskButton = document.getElementById("createResourceTaskButton");
+    createResourceTaskButton.addEventListener("click", function () {
+        var task = {
+            creatorId: document.getElementById("accountIdInput").value,
+            employeeId: document.getElementById("employeeIdInput").value,
+            title: document.getElementById("titleInput").value,
+            descriptionJob: document.getElementById("descriptionJobInput").value,
+            deadline: document.getElementById("deadlineInput").value,
+            nameResource: document.getElementById("nameResourceInput").value,
+            description: document.getElementById("descriptionInput").value,
+            totalQuantity: Number.parseInt(document.getElementById("totalQuantityInput").value),
+            size: document.getElementById("sizeInput").value,
+            image: document.getElementById("imageInput").value
+        }
+
+        console.log(task);
+
+        createResourceTask(task);
+});
+} catch (e) {
+    console.log(e)
+}
+
+
+// responses
+connection.on("UpdateNotify", function (message) {
+    updateNotifications(message);
+});
+
+
+connection.on("Response", function (message) {
+    console.log("Response: " + message);
+});
+
+connection.on("Error", function (message) {
+    console.log("Error: " + message);
 });

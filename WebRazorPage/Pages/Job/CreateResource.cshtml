@@ -25,63 +25,61 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Account.AccountId" class="control-label"></label>
-                <input asp-for="Account.AccountId" class="form-control" readonly="true" />
+                <input id="accountIdInput" asp-for="Account.AccountId" class="form-control" readonly="true" />
                 <span asp-validation-for="Account.AccountId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.EmployeeId" class="control-label"></label>
-                <select asp-for="Job.EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
+            <select id="employeeIdInput" asp-for="Job.EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Job.Title" class="control-label"></label>
-                <input asp-for="Job.Title" class="form-control" />
+            <input id="titleInput" asp-for="Job.Title" class="form-control" />
                 <span asp-validation-for="Job.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.DescriptionJob" class="control-label"></label>
-                <input asp-for="Job.DescriptionJob" class="form-control" />
+                <input id="descriptionJobInput" asp-for="Job.DescriptionJob" class="form-control" />
                 <span asp-validation-for="Job.DescriptionJob" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.Deadline" class="control-label"></label>
-                <input asp-for="Job.Deadline" class="form-control" />
+                <input id="deadlineInput" asp-for="Job.Deadline" class="form-control" />
                 <span asp-validation-for="Job.Deadline" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.NameResource" class="control-label"></label>
-                <input asp-for="Job.NameResource" class="form-control" />
+                <input id="nameResourceInput" asp-for="Job.NameResource" class="form-control" />
                 <span asp-validation-for="Job.NameResource" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.Description" class="control-label"></label>
-                <input asp-for="Job.Description" class="form-control" />
+            <input id="descriptionInput" asp-for="Job.Description" class="form-control" />
                 <span asp-validation-for="Job.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.TotalQuantity" class="control-label"></label>
-                <input asp-for="Job.TotalQuantity" class="form-control" />
+            <input id="totalQuantityInput" asp-for="Job.TotalQuantity" class="form-control" />
                 <span asp-validation-for="Job.TotalQuantity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.Size" class="control-label"></label>
-                <input asp-for="Job.Size" class="form-control" />
+                <input id="sizeInput" asp-for="Job.Size" class="form-control" />
                 <span asp-validation-for="Job.Size" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.Image" class="control-label"></label>
-                <input asp-for="Job.Image" class="form-control" />
+                <input id="imageInput" asp-for="Job.Image" class="form-control" />
                 <span asp-validation-for="Job.Image" class="text-danger"></span>
             </div>
             
             < <div class="form-group mt-3 gap-3 d-flex">
                 <a asp-page="Index" class="btn btn-outline-dark">Back to List</a>
-                <input type="submit" value="Create" class="btn btn-dark" />
+            <button id="createResourceTaskButton" class="btn btn-dark"> Create </button>
             </div>
-        </form>
         @if (!string.IsNullOrEmpty(ViewBag.Message))
         {
             <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
