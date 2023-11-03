@@ -28,6 +28,7 @@ namespace Domain.Entity
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                //optionsBuilder.UseSqlServer("Server=LAPTOP-ULDR55OI\\MSSQLSERVER01;Database=FacilityReport;User ID=sa;Password=12345;TrustServerCertificate=True;MultipleActiveResultSets=true");
                 optionsBuilder.UseSqlServer(GetConnectionString());
             }
         }
@@ -377,11 +378,14 @@ namespace Domain.Entity
                 entity.ToTable("Notification");
 
                 entity.Property(e => e.NotificationId)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("NotificationId"); ;
                 entity.Property(e => e.AccountId)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+                entity.Property(e => e.CreateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at");
                 entity.Property(e => e.Message)
                     .HasMaxLength(10)
                     .IsFixedLength();

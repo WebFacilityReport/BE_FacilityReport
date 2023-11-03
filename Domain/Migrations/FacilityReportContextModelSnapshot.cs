@@ -328,15 +328,19 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Notification", b =>
                 {
-                    b.Property<string>("NotificationId")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                    b.Property<Guid>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("NotificationId");
 
                     b.Property<Guid>("AccountId")
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("Message")
                         .IsRequired()
