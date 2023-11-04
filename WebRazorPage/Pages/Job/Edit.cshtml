@@ -3,27 +3,16 @@
 
 @{
     ViewData["Title"] = "Edit";
-    var role = HttpContext.Session.GetString("ROLE");
-    var accountId = HttpContext.Session.GetString("ACCOUNTID");
 }
 
-<div class="d-flex justify-content-between">
-    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
-    <div class="btn-group dropstart">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
-            Dropstart
-        </button>
-        <ul id="listNotifications" class="dropdown-menu">
-        </ul>
-    </div>
-</div>
+<div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
+
 
 <hr />
 
-<h1>Edit</h1>
-<h4>Job</h4>
-<hr />
-@if (role == "MANAGER_OFFICE")
+<h1>Edit Job</h1>
+
+@if (Model.Account.Role == "MANAGER_OFFICE")
 {
     <div class="row">
         <div class="col-md-4">
@@ -61,8 +50,9 @@
                 <input asp-for="Job.Status" class="form-control" readonly="true" />
                 <span asp-validation-for="Job.Status" class="text-danger"></span>
             </div>*@
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="form-group d-flex gap-3 mt-3">
+                    <a asp-page="./Index" class="btn btn-outline-dark">Back to List</a>
+                    <input type="submit" value="Save" class="btn btn-dark" />
                 </div>
             </form>
         </div>
@@ -71,19 +61,11 @@
             <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
         }
     </div>
-
-    <div>
-        <a asp-page="./Index">Back to List</a>
-    </div>
 }
-else if (role == "STAFF")
+else if (Model.Account.Role == "STAFF")
 {
-    <h1>Edit</h1>
-
     <h3>Are you sure you want to done this?</h3>
-    <div>
-        <h4>Job</h4>
-        <hr />
+    <div class="mt-3">
         <dl class="row">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Job.TaskId)
@@ -146,18 +128,22 @@ else if (role == "STAFF")
                 @Html.DisplayFor(model => model.Job.Status)
             </dd>
 
-            @if (!string.IsNullOrEmpty(ViewBag.Message))
-            {
-                <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
-            }
         </dl>
 
         <form method="post">
-            <input type="hidden" asp-for="Job.TaskId" />
-            <input type="submit" value="DONE" class="btn btn-danger" /> |
-            <a asp-page="./Index">Back to List</a>
+            <div class="d-flex gap-3">
+                <input type="hidden" asp-for="Job.TaskId" />
+                <input type="submit" value="Done" class="btn btn-outline-dark" />
+                <input type="submit" asp-page-handler="Reject" value="Reject" class="btn btn-outline-dark" />
+                <a class="btn btn-dark" asp-page="./Index">Back to List</a>
+            </div>
         </form>
     </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
 }
 
 @section Scripts {

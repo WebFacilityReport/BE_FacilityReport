@@ -20,6 +20,11 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
             _accountService = accountService;
             _jobService = jobService;
         }
+
+
+        [BindProperty]
+        public string Now { get; set; } = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+
         [BindProperty]
         public RequestTaskResourceRz Job { get; set; } = default!;
 

@@ -1,8 +1,7 @@
 using Domain.Entity;
 using Infrastructure.IService.ServiceImplement;
-using WebRazorPage;
 using WebRazorPage.Configuration;
-
+using WebRazorPage.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +19,10 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(20); // Adjust as needed
 });
-builder.Services.AddSignalR();
-
+builder.Services.AddSignalR(options =>
+{
+    options.MaximumReceiveMessageSize = 1024000; // Set the maximum message size in bytes (for example, 100 KB)
+});
 
 var app = builder.Build();
 

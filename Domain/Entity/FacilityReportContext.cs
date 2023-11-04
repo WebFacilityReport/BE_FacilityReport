@@ -106,7 +106,6 @@ namespace Domain.Entity
                     .HasColumnName("created_at");
 
                 entity.Property(e => e.ImageEquip)
-                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("imageEquip");
 
@@ -359,7 +358,6 @@ namespace Domain.Entity
                     .HasColumnName("description");
 
                 entity.Property(e => e.Image)
-                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("image");
 

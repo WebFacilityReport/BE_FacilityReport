@@ -7,17 +7,7 @@
     var name = HttpContext.Session.GetString("customerId");
 }
 
-<div class="d-flex justify-content-between">
-    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
-    <div class="btn-group dropstart">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
-            Dropstart
-        </button>
-        <ul id="listNotifications" class="dropdown-menu">
-        </ul>
-    </div>
-</div>
-
+<div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
 <hr />
 
 <h1>Details</h1>
@@ -94,6 +84,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Job.TaskId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" class="btn btn-outline-dark" asp-route-id="@Model.Job.TaskId">Edit</a>
+    <a asp-page="./Index" class="btn btn-dark">Back to List</a>
 </div>

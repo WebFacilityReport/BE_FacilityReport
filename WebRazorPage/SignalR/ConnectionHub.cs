@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
 using System.Text.Json;
 
-namespace WebRazorPage
+namespace WebRazorPage.SignalR
 {
     public class ConnectionHub : Hub
     {
@@ -58,6 +58,13 @@ namespace WebRazorPage
 
         public async Task CreateFeedback(RequestFeedBackRZ feedback)
         {
+            var errors = new InputValidation().ValidateCreateFeedback(feedback);
+            if (errors.HasError())
+            {
+                await Clients.Caller.SendAsync("Error", errors.CreateMessage());
+                return;
+            }    
+
             var _feedback = await _feedbackService.CreateFeedBackRz(feedback);
 
             var accounts = await _accountService.SearchAccountRole("MANAGER_OFFICE");
@@ -97,7 +104,13 @@ namespace WebRazorPage
 
         public async Task CreateFixEquipmentJob(RequestUpdateStatusHistoryRZ job)
         {
-            Console.WriteLine(JsonSerializer.Serialize(job));
+            var errors = new InputValidation().ValidateUpdateStatusHistory(job);
+            if (errors.HasError())
+            {
+                await Clients.Caller.SendAsync("Error", errors.CreateMessage());
+                return;
+            }
+
             var accountId = ConnectedClients[Context.ConnectionId];
             var account = await _accountService.GetById(accountId);
             if (account.Role != "MANAGER_OFFICE")
@@ -135,7 +148,13 @@ namespace WebRazorPage
 
         public async Task CreateEquipmentJob(RequestTaskEquipmentRZ job)
         {
-            Console.WriteLine(JsonSerializer.Serialize(job));
+            var errors = new InputValidation().ValidateTaskEquipment(job);
+            if (errors.HasError())
+            {
+                await Clients.Caller.SendAsync("Error", errors.CreateMessage());
+                return;
+            }
+
             var accountId = ConnectedClients[Context.ConnectionId];
             var account = await _accountService.GetById(accountId);
             if (account.Role != "MANAGER_OFFICE")
@@ -173,6 +192,13 @@ namespace WebRazorPage
 
         public async Task CreateResourceJob(RequestTaskResourceRz job)
         {
+            var errors = new InputValidation().ValidateTaskResource(job);
+            if (errors.HasError())
+            {
+                await Clients.Caller.SendAsync("Error", errors.CreateMessage());
+                return;
+            }
+
             Console.WriteLine("ok" + JsonSerializer.Serialize(job));
             var accountId = ConnectedClients[Context.ConnectionId];
             var account = await _accountService.GetById(accountId);
@@ -208,6 +234,6 @@ namespace WebRazorPage
             }
             await Clients.Caller.SendAsync("Response", "You have successfully created an add resource task");
         }
-
     }
 }
+

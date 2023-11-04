@@ -25,6 +25,8 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
             _jobService = jobService;
         }
 
+
+
         [BindProperty]
         public ResponseTask Job { get; set; } = default!;
 

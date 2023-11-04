@@ -25,7 +25,7 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
         [BindProperty]
         public RequestUpdateTask RequestJob { get; set; } = default!;
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public Account Account { get; set; } = default!;
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -67,24 +67,66 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            var accountJsonString = HttpContext.Session.GetString("Account");
+
+            if (accountJsonString == null) return Redirect("/");
+
+            var account = JsonSerializer.Deserialize<Account>(accountJsonString);
+
+            if (account == null) return Redirect("/");
+
+            Account = account;
+
             try
             {
-                var role = HttpContext.Session.GetString("ROLE");
-                var accountId = HttpContext.Session.GetString("ACCOUNTID");
-                if (role == "MANAGER_OFFICE")
+                if (Account.Role == "MANAGER_OFFICE")
                 {
                     RequestJob.Description = Job.Description;
                     RequestJob.Title = Job.Title;
                     RequestJob.Deadline = Job.Deadline;
                     Job = await _jobService.UpdateTask(Job.TaskId, RequestJob);
-                    return RedirectToPage("./Index");
                 }
-                else if (role == "STAFF")
+                else if (Account.Role == "STAFF")
                 {
-                    Job = await _jobService.ChangeStatusStaff(Job.TaskId, StatusTask.DONE.ToString());
-                    return RedirectToPage("./Index");
+                    Job = await _jobService.ChangeStatusStaff(Job.TaskId, StatusTask.DONE.ToString());             
                 }
+                return RedirectToPage("./Index");
+            }
+            catch (Exception ex)
+            {
+                ViewData["Message"] = ex.Message.ToString();
+                Job = await _jobService.GetTaskById(Job.TaskId);
+
                 return Page();
+            }
+        }
+
+        public async Task<IActionResult> OnPostRejectAsync()
+        {
+            var accountJsonString = HttpContext.Session.GetString("Account");
+
+            if (accountJsonString == null) return Redirect("/");
+
+            var account = JsonSerializer.Deserialize<Account>(accountJsonString);
+
+            if (account == null) return Redirect("/");
+
+            Account = account;
+
+            try
+            {
+                if (Account.Role == "MANAGER_OFFICE")
+                {
+                    RequestJob.Description = Job.Description;
+                    RequestJob.Title = Job.Title;
+                    RequestJob.Deadline = Job.Deadline;
+                    Job = await _jobService.UpdateTask(Job.TaskId, RequestJob);
+                }
+                else if (Account.Role == "STAFF")
+                {
+                    Job = await _jobService.ChangeStatusStaff(Job.TaskId, StatusTask.REJECT.ToString());
+                }
+                return RedirectToPage("./Index");
             }
             catch (Exception ex)
             {

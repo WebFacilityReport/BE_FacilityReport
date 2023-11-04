@@ -25,6 +25,9 @@ public class CreateFixEquipmentModel : PageModel
     }
 
     [BindProperty]
+    public string Now { get; set; } = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+
+    [BindProperty]
     public RequestUpdateStatusHistoryRZ Job { get; set; } = default!;
 
     [BindProperty(SupportsGet = true)]

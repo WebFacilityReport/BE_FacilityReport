@@ -61,6 +61,7 @@ function createFixTask(job) {
 try {
     var createFixTaskButton = document.getElementById("createFixTaskButton");
     createFixTaskButton.addEventListener("click", function () {
+        var fileInput = document.getElementById("imageEquipInput");
         var fixTask = {
             creatorId: document.getElementById("accountIdInput").value,
             employeeId: document.getElementById("employeeIdInput").value,
@@ -68,12 +69,23 @@ try {
             title: document.getElementById("titleInput").value,
             descriptionJob: document.getElementById("descriptionJobInput").value,
             deadline: document.getElementById("deadlineInput").value,
-            imageEquip: document.getElementById("imageEquipInput").value
+            imageEquip: ""
         };
 
-        console.log(fixTask);
+        var file = fileInput.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                fixTask.imageEquip = reader.result; // Set the base64 string as imageEquip
 
-        createFixTask(fixTask);
+                console.log(fixTask);
+                createFixTask(fixTask);
+            };
+            reader.readAsDataURL(file); // Read the file as data URL
+        } else {
+            console.log("No file selected");
+        }
+
     });
 } catch (e) {
     console.log(e)
@@ -90,6 +102,8 @@ function createEquipmentTask(job) {
 try {
     var createEquipmentTaskButton = document.getElementById("createEquipmentTaskButton");
     createEquipmentTaskButton.addEventListener("click", function () {
+   
+        var fileInput = document.getElementById("imageEquipInput");
         var equipmentTask = {
             creatorId: document.getElementById("accountIdInput").value,
             employeeId: document.getElementById("employeeIdInput").value,
@@ -98,12 +112,21 @@ try {
             descriptionJob: document.getElementById("descriptionJobInput").value,
             deadline: document.getElementById("deadlineInput").value,
             location: document.getElementById("locationInput").value,
-            imageEquip: document.getElementById("imageEquipInput").value
+            imageEquip: ""
         };
 
-        console.log(equipmentTask);
-
-        createEquipmentTask(equipmentTask);
+        var file = fileInput.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                equipmentTask.imageEquip = reader.result; // Set the base64 string as imageEquip
+                console.log(equipmentTask);
+                createEquipmentTask(equipmentTask);
+            };
+            reader.readAsDataURL(file); // Read the file as data URL
+        } else {
+            console.log("No file selected");
+        }
     });
 } catch (e) {
     console.log(e)
@@ -120,6 +143,8 @@ function createResourceTask(job) {
 try {
     var createResourceTaskButton = document.getElementById("createResourceTaskButton");
     createResourceTaskButton.addEventListener("click", function () {
+
+        var fileInput = document.getElementById("imageInput");
         var task = {
             creatorId: document.getElementById("accountIdInput").value,
             employeeId: document.getElementById("employeeIdInput").value,
@@ -130,12 +155,22 @@ try {
             description: document.getElementById("descriptionInput").value,
             totalQuantity: Number.parseInt(document.getElementById("totalQuantityInput").value),
             size: document.getElementById("sizeInput").value,
-            image: document.getElementById("imageInput").value
+            image: ""
         }
 
-        console.log(task);
+        var file = fileInput.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                task.image = reader.result; 
+                console.log(task);
+                createResourceTask(task);
+            };
+            reader.readAsDataURL(file); // Read the file as data URL
+        } else {
+            console.log("No file selected");
+        }
 
-        createResourceTask(task);
 });
 } catch (e) {
     console.log(e)
@@ -149,9 +184,9 @@ connection.on("UpdateNotify", function (message) {
 
 
 connection.on("Response", function (message) {
-    console.log("Response: " + message);
+    alert(message);
 });
 
 connection.on("Error", function (message) {
-    console.log("Error: " + message);
+    alert(message);
 });

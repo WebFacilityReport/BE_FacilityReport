@@ -39,7 +39,7 @@ public class ResourceServiceImp : IReService
     public async Task<ResponseResource> DeleteStatus(Guid resourceId)
     {
         var resource = await _unitofWork.Resource.GetById(resourceId);
-        resource.Status = StatusResource.INACTIVE.ToString();
+        resource.Status = StatusResource.REJECT.ToString();
         _unitofWork.Resource.Update(resource);
         _unitofWork.Commit();
         return _mapper.Map<ResponseResource>(resource);

@@ -67,7 +67,7 @@ namespace WebRazorPage.Pages.ManagerOffice.Resource
                 {
                     return NotFound();
                 }
-                var resource = await _resourceService.UpdateStatus(id,StatusResource.INACTIVE.ToString());
+                var resource = await _resourceService.UpdateStatus(id,StatusResource.REJECT.ToString());
                 return RedirectToPage("./Index");
             }
             catch (Exception ex)

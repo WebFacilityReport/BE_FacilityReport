@@ -5,16 +5,8 @@
     ViewData["Title"] = "Create Fix Equipment";
 }
 
-<div class="d-flex justify-content-between">
+
     <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
-    <div class="btn-group dropstart">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
-            Dropstart
-        </button>
-        <ul id="listNotifications" class="dropdown-menu">
-        </ul>
-    </div>
-</div>
 
 <hr />
 
@@ -22,45 +14,40 @@
 
 <div class="row mt-3">
     <div class="col-md-4">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Account.AccountId" class="control-label"></label>
-                <input id="accountIdInput" asp-for="Account.AccountId" class="form-control" readonly="true" />
-                <span asp-validation-for="Account.AccountId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Job.EmployeeId" class="control-label"></label>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input id="accountIdInput" asp-for="Account.AccountId" type="hidden" />
+        <div class="form-group">
+            <label asp-for="Job.EmployeeId" class="control-label"></label>
             <select id="employeeIdInput" asp-for="Job.EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Job.EquipmentId" class="control-label"></label>
+        </div>
+        <div class="form-group">
+            <label asp-for="Job.EquipmentId" class="control-label"></label>
             <select id="equipmentIdInput" asp-for="Job.EquipmentId" class="form-control" asp-items="ViewBag.EquipmentId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Job.Title" class="control-label"></label>
+        </div>
+        <div class="form-group">
+            <label asp-for="Job.Title" class="control-label"></label>
             <input id="titleInput" asp-for="Job.Title" class="form-control" />
-                <span asp-validation-for="Job.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Job.DescriptionJob" class="control-label"></label>
-            <input id="descriptionJobInput"  asp-for="Job.DescriptionJob" class="form-control" />
-                <span asp-validation-for="Job.DescriptionJob" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Job.Deadline" class="control-label"></label>
-            <input id="deadlineInput" asp-for="Job.Deadline" class="form-control" />
-                <span asp-validation-for="Job.Deadline" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Job.ImageEquip" class="control-label"></label>
-            <input id="imageEquipInput"  asp-for="Job.ImageEquip" class="form-control" />
-                <span asp-validation-for="Job.ImageEquip" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group mt-3 gap-3 d-flex">
-                <a asp-page="Index" class="btn btn-outline-dark">Back to List</a>
-            <button id="createFixTaskButton"class="btn btn-dark">Create</button>
-            </div>
+            <span asp-validation-for="Job.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Job.DescriptionJob" class="control-label"></label>
+            <input id="descriptionJobInput" asp-for="Job.DescriptionJob" class="form-control" />
+            <span asp-validation-for="Job.DescriptionJob" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Job.Deadline" class="control-label"></label>
+            <input id="deadlineInput" asp-for="Job.Deadline" value="@Model.Now" class="form-control" />
+            <span asp-validation-for="Job.Deadline" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Job.ImageEquip" class="control-label"></label>
+            <input id="imageEquipInput" type="file" class="form-control" accept="image/*" />
+            <span asp-validation-for="Job.ImageEquip" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3 gap-3 d-flex">
+            <a asp-page="Index" class="btn btn-outline-dark">Back to List</a>
+            <button id="createFixTaskButton" class="btn btn-dark">Create</button>
+        </div>
         @if (!string.IsNullOrEmpty(ViewBag.Message))
         {
             <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
@@ -70,5 +57,7 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

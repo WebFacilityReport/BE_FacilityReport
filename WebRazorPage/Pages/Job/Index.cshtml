@@ -5,17 +5,8 @@
     ViewData["Title"] = "Jobs";
 }
 
-<div class="d-flex justify-content-between">
-    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
-    <div class="btn-group dropstart">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
-            Dropstart
-        </button>
-        <ul id="listNotifications" class="dropdown-menu">
-        </ul>
-    </div>
-</div>
 
+    <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
 <hr />
 
 
@@ -70,7 +61,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Job[0].Status)
                 </th>
-                <th></th>
+                <th> Actions </th>
             </tr>
         </thead>
         <tbody>
@@ -107,10 +98,10 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.TaskId">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.TaskId">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.TaskId">Delete</a>
+                    <td class="d-flex gap-3">
+                        <a asp-page="./Edit" class="btn btn-dark" asp-route-id="@item.TaskId">Edit</a>
+                        <a asp-page="./Details" class="btn btn-outline-dark" asp-route-id="@item.TaskId">Details</a>
+                        <a asp-page="./Delete" class="btn btn-dark" asp-route-id="@item.TaskId">Delete</a>
                     </td>
                 </tr>
             }
@@ -119,14 +110,13 @@
 }
 else if (Model.Account.Role == "STAFF")
 {
-    <h1>Index</h1>
-    <a href="/Home" class="btn btn-primary">Back</a>
+    <h1>Jobs</h1>
     <form method="get">
-        <div class="form-group">
-            <label for="Query">Từ khóa: NameResource or STATUS </label>
+        <div class="form-group d-flex gap-3 w-25 mt-3">
             <input type="text" asp-for="SearchQuery" class="form-control" />
+            <button type="submit" class="btn btn-outline-dark">Find</button>
+            <a href="/Home" class="btn btn-dark">Back</a>
         </div>
-        <button type="submit" class="btn btn-primary">Tìm</button>
     </form> 
     <table class="table">
         <thead>
@@ -198,10 +188,10 @@ else if (Model.Account.Role == "STAFF")
                     <td>
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.TaskId">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.TaskId">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.TaskId">Delete</a>
+                    <td class="d-flex gap-3">
+                        <a asp-page="./Edit" class="btn btn-dark" asp-route-id="@item.TaskId">Edit</a>
+                        <a asp-page="./Details" class="btn btn-outline-dark" asp-route-id="@item.TaskId">Details</a>
+                        <a asp-page="./Delete" class="btn btn-dark" asp-route-id="@item.TaskId">Delete</a>
                     </td>
                 </tr>
             }

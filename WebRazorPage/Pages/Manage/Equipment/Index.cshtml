@@ -6,16 +6,8 @@
 }
 
 
-<div class="d-flex justify-content-between">
     <div> Hi, @Model.Account.Username. You are @Model.Account.Role</div>
-    <div class="btn-group dropstart">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="numNotifications">
-            Dropstart
-        </button>
-        <ul id="listNotifications" class="dropdown-menu">
-        </ul>
-    </div>
-</div>
+
 
 <hr />
 
@@ -72,9 +64,10 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.CreatedAt)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ImageEquip)
-                    </td>
+                <td>
+                    <img src="@Url.Content(item.ImageEquip)" class="img-fluid img-thumbnail" alt="Image" />
+                </td>
+
                     <td class="d-flex gap-3">
                         @*<a asp-page="./Edit" asp-route-id="@item.EquipmentId">Edit</a> |*@
                         <a asp-page="./Details" class="btn btn-outline-dark" asp-route-id="@item.EquipmentId">Details</a>

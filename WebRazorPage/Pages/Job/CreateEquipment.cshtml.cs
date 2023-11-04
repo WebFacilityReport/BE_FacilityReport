@@ -6,6 +6,7 @@ using Infrastructure.Model.Request.RequestTask;
 using Domain.Enum;
 using Domain.Entity;
 using System.Text.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebRazorPage.Pages.ManagerOffice.Job
 {
@@ -23,8 +24,11 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
         }
 
         [BindProperty]
+        public string Now { get; set; } = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+
+        [BindProperty]
         public RequestTaskEquipmentRZ Job { get; set; } = default!;
-        
+
         [BindProperty(SupportsGet = true)]
         public Account Account { get; set; } = default!;
         public async Task<IActionResult> OnGetAsync()
@@ -45,7 +49,7 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
                 ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
                 ViewData["ResourceId"] = new SelectList(resource.Select(c => new SelectListItem
                 {
-                    Text = $"{c.NameResource}-{c.ResourcesId}",
+                    Text = $"{c.NameResource}",
                     Value = c.ResourcesId.ToString() // Chuyển ResourceId thành chuỗi (string)
                 }), "Value", "Text"); return Page();
             }
@@ -55,7 +59,7 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
                 ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
                 ViewData["ResourceId"] = new SelectList(resource.Select(c => new SelectListItem
                 {
-                    Text = $"{c.NameResource}-{c.ResourcesId}",
+                    Text = c.NameResource,
                     Value = c.ResourcesId.ToString() // Chuyển ResourceId thành chuỗi (string)
                 }), "Value", "Text");
                 return Page();
@@ -83,7 +87,7 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
                 ViewData["EmployeeId"] = new SelectList(await _accountService.SearchAccountRole(ROlE.STAFF.ToString()), "AccountId", "Username");
                 ViewData["ResourceId"] = new SelectList((await _reService.getAllResourceACTIVEs()).Select(c => new SelectListItem
                 {
-                    Text = $"{c.NameResource}-{c.ResourcesId}",
+                    Text = c.NameResource,
                     Value = c.ResourcesId.ToString() // Chuyển ResourceId thành chuỗi (string)
                 }), "Value", "Text");
 
@@ -92,3 +96,4 @@ namespace WebRazorPage.Pages.ManagerOffice.Job
         }
     }
 }
+
