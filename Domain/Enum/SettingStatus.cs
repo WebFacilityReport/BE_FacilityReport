@@ -8,9 +8,8 @@ public enum StatusTask
 }
 public enum StatusResource
 {   
-    DONE,
     ACTIVE,
-    REJECT,
+    INACTIVE,
 }
 public enum STATUSFEEDBACK
 {

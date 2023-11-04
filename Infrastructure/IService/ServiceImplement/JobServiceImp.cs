@@ -291,14 +291,14 @@ namespace Infrastructure.IService.ServiceImplement
                 task.Status = status;
                 if (task.Status.Equals(StatusTask.DONE.ToString()) && task.NameTask.Equals(NAMETASK.RESOURCE.ToString()))
                 {
-                    task.Resource.Status = StatusResource.DONE.ToString();
+                    task.Resource.Status = StatusResource.ACTIVE.ToString();
                     var update = _unitofWork.Task.Update(task);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(update);
                 }
                 if (task.Status.Equals(StatusTask.REJECT.ToString()) && task.NameTask.Equals(NAMETASK.RESOURCE.ToString()))
                 {
-                    task.Resource.Status = StatusResource.REJECT.ToString();
+                    task.Resource.Status = StatusResource.INACTIVE.ToString();
                     var update = _unitofWork.Task.Update(task);
                     _unitofWork.Commit();
                     return _mapper.Map<ResponseTask>(update);
