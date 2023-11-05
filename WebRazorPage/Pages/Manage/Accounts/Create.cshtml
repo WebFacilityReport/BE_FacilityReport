@@ -1,0 +1,67 @@
+﻿@page
+@model WebRazorPage.Pages.Manage.Accounts.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div> Hi, @Model.SessionAccount.Username. You are @Model.SessionAccount.Role</div>
+
+<hr />
+<h1>Create</h1>
+
+<h4>Account</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Account.Username" class="control-label"></label>
+                <input asp-for="Account.Username" class="form-control" />
+                <span asp-validation-for="Account.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Password" class="control-label"></label>
+                <input asp-for="Account.Password" class="form-control" />
+                <span asp-validation-for="Account.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Email" class="control-label"></label>
+                <input asp-for="Account.Email" class="form-control" />
+                <span asp-validation-for="Account.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Phone" class="control-label"></label>
+                <input asp-for="Account.Phone" class="form-control" />
+                <span asp-validation-for="Account.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Address" class="control-label"></label>
+                <input asp-for="Account.Address" class="form-control" />
+                <span asp-validation-for="Account.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Birthday" class="control-label"></label>
+                <input asp-for="Account.Birthday" type="date" class="form-control" value="@Model.Now"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Role</label>
+                <select asp-for="Role"  asp-items="@Model.SelectListRoleSelect" class="form-control"></select>
+            </div>
+            @if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="text-danger"> @ViewData["Message"]</div>
+            }
+            <div class="form-group d-flex gap-3 mt-3">
+                <a asp-page="Index" class="btn btn-outline-dark">Back to List</a>
+                <input type="submit" value="Create" class="btn btn-dark" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

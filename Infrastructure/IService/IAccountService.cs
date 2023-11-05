@@ -1,5 +1,7 @@
-﻿using Infrastructure.Model.Request.RequestAccount;
+﻿using Domain.Entity;
+using Infrastructure.Model.Request.RequestAccount;
 using Infrastructure.Model.Response.ResponseAccount;
+using System.Threading.Tasks;
 
 namespace Infrastructure.IService
 {
@@ -11,6 +13,12 @@ namespace Infrastructure.IService
         Task<ResponseAllAccount> RegisterAccountManagerOffice(RequestRegisterAccount requestRegisterAccount);
         Task<ResponseAllAccount> RegisterAccountAdmin(RequestRegisterAccount requestRegisterAccount);
         Task<List<ResponseAllAccount>> GetAllAccounts();
+
+        Task<List<Account>> GetAllAccountsRZ();
+        Task<Account> GetByIdRZ(Guid id);
+        Task<Account> AddRZ(Account account);
+        Task<Account> UpdateRZ(Account account);
+        Task<Account> DeleteRZ(Guid id);
 
         Task<ResponseAllAccount> UpdateAccount(UpdateAccount requestUpdateAccount);
 

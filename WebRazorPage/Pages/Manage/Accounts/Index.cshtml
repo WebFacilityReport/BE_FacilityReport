@@ -1,0 +1,85 @@
+﻿@page
+@model WebRazorPage.Pages.Manage.Accounts.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div> Hi, @Model.SessionAccount.Username. You are @Model.SessionAccount.Role</div>
+
+<hr />
+
+<h1>Accounts</h1>
+
+        <a asp-page="Create" class="btn btn-dark">Create</a>
+
+<form method="get">
+    <div class="form-group d-flex gap-3 w-25 mt-3">
+        <input type="text" class="form-control" />
+        <button type="submit" class="btn btn-outline-dark">Find</button>
+        <a href="/Home" class="btn btn-dark">Back</a>
+    </div>
+
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accounts[0].Status)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Accounts) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Birthday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            <td class="d-flex gap-3">
+                <a asp-page="./Edit" asp-route-id="@item.AccountId" class="btn btn-dark">Edit</a>
+                    <a asp-page="./Details" asp-route-id="@item.AccountId" class="btn btn-outline-dark">Details</a>
+                    <a asp-page="./Delete" asp-route-id="@item.AccountId" class="btn btn-dark">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

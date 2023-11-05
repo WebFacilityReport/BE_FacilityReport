@@ -1,0 +1,66 @@
+﻿@page
+@model WebRazorPage.Pages.Manage.Accounts.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div> Hi, @Model.SessionAccount.Username. You are @Model.SessionAccount.Role</div>
+
+<hr />
+
+<h1>Edit Account</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <input type="hidden" asp-for="Account.AccountId" />
+            <div class="form-group">
+                <label asp-for="Account.Username" class="control-label"></label>
+                <input asp-for="Account.Username" class="form-control" />
+                <span asp-validation-for="Account.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Email" class="control-label"></label>
+                <input asp-for="Account.Email" class="form-control" />
+                <span asp-validation-for="Account.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Phone" class="control-label"></label>
+                <input asp-for="Account.Phone" class="form-control" />
+                <span asp-validation-for="Account.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Address" class="control-label"></label>
+                <input asp-for="Account.Address" class="form-control" />
+                <span asp-validation-for="Account.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Birthday</label>
+                <input asp-for="Account.Birthday" type="date" value="@Model.Now" class="form-control" />
+                <span asp-validation-for="Account.Birthday" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Role" class="control-label"></label>
+                <input asp-for="Account.Role" class="form-control" />
+                <span asp-validation-for="Account.Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Status" class="control-label"></label>
+                <input asp-for="Account.Status" class="form-control" />
+                <span asp-validation-for="Account.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

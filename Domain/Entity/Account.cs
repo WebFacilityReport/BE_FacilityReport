@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entity
 {
@@ -14,6 +15,7 @@ namespace Domain.Entity
         }
 
         public Guid AccountId { get; set; }
+
         public string Username { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Email { get; set; } = null!;

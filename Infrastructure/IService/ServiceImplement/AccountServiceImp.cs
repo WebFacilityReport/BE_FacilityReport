@@ -5,6 +5,7 @@ using Infrastructure.Common.SecurityService;
 using Infrastructure.IUnitofwork;
 using Infrastructure.Model.Request.RequestAccount;
 using Infrastructure.Model.Response.ResponseAccount;
+using System.Security.Principal;
 
 namespace Infrastructure.IService.ServiceImplement
 {
@@ -247,6 +248,36 @@ namespace Infrastructure.IService.ServiceImplement
         {
             var login = await _unitofWork.Account.GetByUsername(username);
             return _mapper.Map<ResponseAllAccount>(login);
+        }
+
+        public Task<List<Account>> GetAllAccountsRZ()
+        {
+            return _unitofWork.Account.GetAll();
+        }
+
+        public Task<Account> GetByIdRZ(Guid id)
+        {
+            return _unitofWork.Account.GetById(id);
+        }
+
+        public async Task<Account> AddRZ(Account account)
+        {
+            return _unitofWork.Account.Add(account);
+        }
+
+        public async Task<Account> UpdateRZ(Account account)
+        {
+            return _unitofWork.Account.Update(account);
+        }
+
+        public async Task<Account> DeleteRZ(Guid accountId)
+        {   
+            var account = await _unitofWork.Account.GetById(accountId);
+            if (account == null) throw new Exception("Account does not exist.");
+            
+            account.Status = "INACTIVE";
+            _unitofWork.Commit();
+            return account;
         }
     }
 }
