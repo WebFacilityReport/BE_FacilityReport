@@ -100,7 +100,7 @@ namespace WebRazorPage.SignalR
                 }
 
                 await Clients.Caller.SendAsync("Response", "You have successfully created a feedback");
-                await Clients.Caller.SendAsync("redirectToPageIndex"); // Gọi hàm JavaScript để chuyển hướng người dùng
+                await Clients.Caller.SendAsync("redirectToIndexPage"); // Gọi hàm JavaScript để chuyển hướng người dùng
 
             }
 
@@ -155,7 +155,7 @@ namespace WebRazorPage.SignalR
                         .SendAsync("UpdateNotify", _notis);
                 }
                 await Clients.Caller.SendAsync("Response", "You have successfully created a fix equipment task");
-                await Clients.Caller.SendAsync("redirectToPageIndex"); // Gọi hàm JavaScript để chuyển hướng người dùng
+                await Clients.Caller.SendAsync("redirectToIndexPage"); // Gọi hàm JavaScript để chuyển hướng người dùng
 
             }
             catch (Exception ex)
@@ -210,7 +210,7 @@ namespace WebRazorPage.SignalR
                         .SendAsync("UpdateNotify", _notis);
                 }
                 await Clients.Caller.SendAsync("Response", "You have successfully created an add equipment task");
-                await Clients.Caller.SendAsync("redirectToPageIndex"); // Gọi hàm JavaScript để chuyển hướng người dùng
+                await Clients.Caller.SendAsync("redirectToIndexPage"); // Gọi hàm JavaScript để chuyển hướng người dùng
 
             }
             catch (Exception ex)
@@ -264,7 +264,7 @@ namespace WebRazorPage.SignalR
                         .SendAsync("UpdateNotify", _notis);
                 }
                 await Clients.Caller.SendAsync("Response", "You have successfully created an add resource task");
-                await Clients.Caller.SendAsync("redirectToPageIndex"); // Gọi hàm JavaScript để chuyển hướng người dùng
+                await Clients.Caller.SendAsync("redirectToIndexPage"); // Gọi hàm JavaScript để chuyển hướng người dùng
 
             }
             catch (Exception ex)

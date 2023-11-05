@@ -1,14 +1,13 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/connectionHub").build();
-
+function redirectToIndexPage() {
+    window.location.href = '/Index'; // Đặt URL của trang thành trang "index"
+}
 connection.start();
 
 
-// Hàm này sẽ được gọi khi tác vụ hoàn thành
-function redirectToIndexPage() {
-    window.location.href = '/Index'; // Chuyển hướng người dùng đến trang Index
-}
+
 
 function updateNotifications(message) {
     var button = document.getElementById("numNotifications");
@@ -31,6 +30,12 @@ function createFeedback(feedback) {
     //var equipmentId = feedback.equipmentId;
 
     connection.invoke("CreateFeedback", feedback)
+        .then(function () {
+            redirectToIndexPage(); // Chuyển hướng người dùng đến trang "index"
+        })
+        .catch(function (error) {
+            alert("Error: " + error);
+        });
 }
 
 try {
@@ -45,9 +50,7 @@ try {
         console.log(feedback)
 
         createFeedback(feedback);
-        connection.on("redirectToIndex", function () {
-            redirectToIndexPage();
-        });
+       
     });
 
 } catch (e) {
@@ -64,6 +67,12 @@ function createFixTask(job) {
     //var equipmentId = feedback.equipmentId;
 
     connection.invoke("CreateFixEquipmentJob", job)
+        .then(function () {
+            redirectToIndexPage(); // Chuyển hướng người dùng đến trang "index"
+        })
+        .catch(function (error) {
+            alert("Error: " + error);
+        });
 }
 
 try {
@@ -81,9 +90,7 @@ try {
         };
         createFixTask(fixTask);
 
-        connection.on("redirectToIndex", function () {
-            redirectToIndexPage();
-        });
+       
        
 
     });
@@ -96,6 +103,13 @@ function createEquipmentTask(job) {
     //var equipmentId = feedback.equipmentId;
 
     connection.invoke("CreateEquipmentJob", job)
+        .then(function () {
+            redirectToIndexPage(); // Chuyển hướng người dùng đến trang "index"
+        })
+        .catch(function (error) {
+            alert("Error: " + error);
+        });
+    
 }
 
 
@@ -115,10 +129,7 @@ try {
             imageEquip: ""
         };
         createEquipmentTask(equipmentTask);
-
-        connection.on("redirectToIndex", function () {
-            redirectToIndexPage();
-        });
+       
         
     });
 } catch (e) {
@@ -130,6 +141,13 @@ function createResourceTask(job) {
     //var equipmentId = feedback.equipmentId;
 
     connection.invoke("CreateResourceJob", job)
+        .then(function () {
+            redirectToIndexPage(); // Chuyển hướng người dùng đến trang "index"
+        })
+        .catch(function (error) {
+            alert("Error: " + error);
+        });
+   
 }
 
 
@@ -151,10 +169,6 @@ try {
             image: ""
         }
         createResourceTask(task);
-
-        connection.on("redirectToIndex", function () {
-            redirectToIndexPage();
-        });
 
 });
 } catch (e) {
