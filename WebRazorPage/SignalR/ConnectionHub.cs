@@ -80,7 +80,7 @@ namespace WebRazorPage.SignalR
                         AccountId = account.AccountId,
                         Message = "321323",
                         Title = $"An feedback with id {_feedback.FeedBackId} has been created",
-                        NotificationId = Guid.NewGuid(),
+                        CreateAt = DateTime.Now,
                     });
 
                     foreach (var connectedClient in ConnectedClients)
@@ -100,6 +100,8 @@ namespace WebRazorPage.SignalR
                 }
 
                 await Clients.Caller.SendAsync("Response", "You have successfully created a feedback");
+                await Clients.Caller.SendAsync("redirectToPageIndex"); // Gọi hàm JavaScript để chuyển hướng người dùng
+
             }
 
             catch (Exception ex)
@@ -134,7 +136,8 @@ namespace WebRazorPage.SignalR
                     AccountId = job.EmployeeId,
                     Message = "321323",
                     Title = $"A fix equipment task with id {_job.TaskId} has been assigned to you",
-                    NotificationId = Guid.NewGuid(),
+                    CreateAt = DateTime.Now,
+
                 });
 
                 foreach (var connectedClient in ConnectedClients)
@@ -152,6 +155,8 @@ namespace WebRazorPage.SignalR
                         .SendAsync("UpdateNotify", _notis);
                 }
                 await Clients.Caller.SendAsync("Response", "You have successfully created a fix equipment task");
+                await Clients.Caller.SendAsync("redirectToPageIndex"); // Gọi hàm JavaScript để chuyển hướng người dùng
+
             }
             catch (Exception ex)
             {
@@ -186,7 +191,8 @@ namespace WebRazorPage.SignalR
                     AccountId = job.EmployeeId,
                     Message = "321323",
                     Title = $"A create equipment task with id {_job.TaskId} has been assigned to you",
-                    NotificationId = Guid.NewGuid(),
+                    CreateAt = DateTime.Now,
+
                 });
 
                 foreach (var connectedClient in ConnectedClients)
@@ -204,6 +210,8 @@ namespace WebRazorPage.SignalR
                         .SendAsync("UpdateNotify", _notis);
                 }
                 await Clients.Caller.SendAsync("Response", "You have successfully created an add equipment task");
+                await Clients.Caller.SendAsync("redirectToPageIndex"); // Gọi hàm JavaScript để chuyển hướng người dùng
+
             }
             catch (Exception ex)
             {
@@ -237,7 +245,8 @@ namespace WebRazorPage.SignalR
                     AccountId = job.EmployeeId,
                     Message = "321323",
                     Title = $"A create resource task with id {_job.TaskId} has been assigned to you",
-                    NotificationId = Guid.NewGuid(),
+                    CreateAt = DateTime.Now,
+
                 });
 
                 foreach (var connectedClient in ConnectedClients)
@@ -255,6 +264,8 @@ namespace WebRazorPage.SignalR
                         .SendAsync("UpdateNotify", _notis);
                 }
                 await Clients.Caller.SendAsync("Response", "You have successfully created an add resource task");
+                await Clients.Caller.SendAsync("redirectToPageIndex"); // Gọi hàm JavaScript để chuyển hướng người dùng
+
             }
             catch (Exception ex)
             {

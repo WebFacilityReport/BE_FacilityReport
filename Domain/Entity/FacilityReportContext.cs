@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Domain.Entity
 {
@@ -22,18 +20,29 @@ namespace Domain.Entity
         public virtual DbSet<HistoryEquipment> HistoryEquipments { get; set; } = null!;
         public virtual DbSet<Image> Images { get; set; } = null!;
         public virtual DbSet<Job> Jobs { get; set; } = null!;
-        public virtual DbSet<Notification> Notifications { get; set; } = null!;
         public virtual DbSet<Resource> Resources { get; set; } = null!;
+        public virtual DbSet<Notification> Notifications { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=12345;database=FacilityReport;TrustServerCertificate=True");
+                //optionsBuilder.UseSqlServer("Server=LAPTOP-ULDR55OI\\MSSQLSERVER01;Database=FacilityReport;User ID=sa;Password=12345;TrustServerCertificate=True;MultipleActiveResultSets=true");
+                optionsBuilder.UseSqlServer(GetConnectionString());
             }
         }
 
+        private string GetConnectionString()
+        {
+            IConfiguration config = new ConfigurationBuilder()
+             .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.Development.json", true, true)
+            .Build();
+            var strConn = config["ConnectString:DatabaseConnection"];
+
+            return strConn;
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>(entity =>
@@ -106,6 +115,7 @@ namespace Domain.Entity
                     .HasColumnName("created_at");
 
                 entity.Property(e => e.ImageEquip)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("imageEquip");
 
@@ -135,6 +145,7 @@ namespace Domain.Entity
                 entity.HasIndex(e => e.AccountId, "IX_Feedback_accountId");
 
                 entity.HasIndex(e => e.EquipmentId, "IX_Feedback_equipmentId");
+
 
                 entity.Property(e => e.FeedBackId)
                     .ValueGeneratedOnAdd()
@@ -179,13 +190,9 @@ namespace Domain.Entity
 
                 entity.ToTable("HistoryEquipment");
 
-                entity.HasIndex(e => e.JobId, "AK_HistoryEquipment_jobId")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.EquipmentId, "IX_HistoryEquipment_equipmentId");
 
-                entity.HasIndex(e => e.JobId, "IX_HistoryEquipment_jobId")
-                    .IsUnique();
+                entity.HasIndex(e => e.JobId).IsUnique();
 
                 entity.Property(e => e.HistoryId)
                     .ValueGeneratedOnAdd()
@@ -214,6 +221,7 @@ namespace Domain.Entity
                     .HasForeignKey(d => d.EquipmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__HistoryEq__equip__48CFD27E");
+                entity.HasAlternateKey(e => e.JobId);
 
                 entity.HasOne(d => d.Job)
                     .WithOne(p => p.HistoryEquipment)
@@ -226,7 +234,7 @@ namespace Domain.Entity
             {
                 entity.ToTable("Image");
 
-                entity.HasIndex(e => e.FeedbackId, "IX_Image_feedbackId");
+                entity.HasIndex(e => e.FeedbackId);
 
                 entity.Property(e => e.ImageId)
                     .ValueGeneratedOnAdd()
@@ -236,12 +244,12 @@ namespace Domain.Entity
                     .HasColumnType("datetime")
                     .HasColumnName("dateImgae");
 
-                entity.Property(e => e.FeedbackId).HasColumnName("feedbackId");
-
                 entity.Property(e => e.NameImage)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("nameImage");
+
+                entity.Property(e => e.FeedbackId).HasColumnName("feedbackId");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(2000)
@@ -311,38 +319,13 @@ namespace Domain.Entity
                     .HasConstraintName("FK__Job__employeeId__403A8C7D");
             });
 
-            modelBuilder.Entity<Notification>(entity =>
-            {
-                entity.ToTable("Notification");
-
-                entity.HasIndex(e => e.AccountId, "IX_Notification_AccountId");
-
-                entity.Property(e => e.NotificationId).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.Message)
-                    .HasMaxLength(2000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Title)
-                    .HasMaxLength(2000)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Notifications)
-                    .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-            });
 
             modelBuilder.Entity<Resource>(entity =>
             {
                 entity.HasKey(e => e.ResourcesId)
                     .HasName("PK__Resource__557C3399398C1175");
 
-                entity.HasIndex(e => e.JobId, "AK_Resources_jobId")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.JobId, "IX_Resources_jobId")
-                    .IsUnique();
+                entity.HasIndex(e => e.JobId).IsUnique(); // Thêm ràng buộc Unique Constraint cho trường JobId
 
                 entity.Property(e => e.ResourcesId)
                     .ValueGeneratedOnAdd()
@@ -356,8 +339,10 @@ namespace Domain.Entity
                     .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("description");
+                entity.Property(e => e.JobId).IsRequired(); // Đảm bảo JobId là bắt buộc
 
                 entity.Property(e => e.Image)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("image");
 
@@ -378,8 +363,8 @@ namespace Domain.Entity
                     .IsUnicode(false)
                     .HasColumnName("status");
 
+                entity.HasAlternateKey(e => e.JobId);
                 entity.Property(e => e.TotalQuantity).HasColumnName("totalQuantity");
-
                 entity.Property(e => e.UsedQuantity).HasColumnName("usedQuantity");
 
                 entity.HasOne(d => d.Job)
@@ -388,10 +373,33 @@ namespace Domain.Entity
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Resources__jobId__4316F928");
             });
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.ToTable("Notification");
+
+                entity.Property(e => e.NotificationId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("NotificationId"); ;
+                entity.Property(e => e.AccountId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.CreateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at");
+                entity.Property(e => e.Message)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+                entity.Property(e => e.Title)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.HasOne(d => d.Account).WithMany(p => p.Notifications)
+                    .HasForeignKey(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }
-
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

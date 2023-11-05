@@ -1,9 +1,14 @@
-"use strict";
+﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/connectionHub").build();
 
 connection.start();
 
+
+// Hàm này sẽ được gọi khi tác vụ hoàn thành
+function redirectToIndexPage() {
+    window.location.href = '/Index'; // Chuyển hướng người dùng đến trang Index
+}
 
 function updateNotifications(message) {
     var button = document.getElementById("numNotifications");
@@ -40,6 +45,9 @@ try {
         console.log(feedback)
 
         createFeedback(feedback);
+        connection.on("redirectToIndex", function () {
+            redirectToIndexPage();
+        });
     });
 
 } catch (e) {
@@ -71,20 +79,12 @@ try {
             deadline: document.getElementById("deadlineInput").value,
             imageEquip: ""
         };
+        createFixTask(fixTask);
 
-        var file = fileInput.files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onloadend = function () {
-                fixTask.imageEquip = reader.result; // Set the base64 string as imageEquip
-
-                console.log(fixTask);
-                createFixTask(fixTask);
-            };
-            reader.readAsDataURL(file); // Read the file as data URL
-        } else {
-            console.log("No file selected");
-        }
+        connection.on("redirectToIndex", function () {
+            redirectToIndexPage();
+        });
+       
 
     });
 } catch (e) {
@@ -114,19 +114,12 @@ try {
             location: document.getElementById("locationInput").value,
             imageEquip: ""
         };
+        createEquipmentTask(equipmentTask);
 
-        var file = fileInput.files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onloadend = function () {
-                equipmentTask.imageEquip = reader.result; // Set the base64 string as imageEquip
-                console.log(equipmentTask);
-                createEquipmentTask(equipmentTask);
-            };
-            reader.readAsDataURL(file); // Read the file as data URL
-        } else {
-            console.log("No file selected");
-        }
+        connection.on("redirectToIndex", function () {
+            redirectToIndexPage();
+        });
+        
     });
 } catch (e) {
     console.log(e)
@@ -157,19 +150,11 @@ try {
             size: document.getElementById("sizeInput").value,
             image: ""
         }
+        createResourceTask(task);
 
-        var file = fileInput.files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onloadend = function () {
-                task.image = reader.result; 
-                console.log(task);
-                createResourceTask(task);
-            };
-            reader.readAsDataURL(file); // Read the file as data URL
-        } else {
-            console.log("No file selected");
-        }
+        connection.on("redirectToIndex", function () {
+            redirectToIndexPage();
+        });
 
 });
 } catch (e) {
