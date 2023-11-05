@@ -1,4 +1,6 @@
-﻿using Application.IGenericRepository;
+﻿
+
+using Application.IGenericRepository;
 using Domain.Entity;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace Application.Repository
 {
     public interface INotificationRepository : IGenericRepository<Notification>
     {
-        
+
         public Task<List<Notification>> GetAll(Guid accountId);
     }
 }
